@@ -18,17 +18,19 @@ allprojects {
 dependencies {
     osgiRuntime 'org.slf4j:slf4j-simple:1.7.16'
     osgiRuntime 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
-    osgiRuntime 'org.apache.felix:org.apache.felix.webconsole:3.1.8'
     osgiRuntime 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
 
     // osgiRuntime 'org.apache.felix:org.apache.felix.http.bundle:3.0.0'
-    // osgiRuntime 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
+    osgiRuntime 'commons-fileupload:commons-fileupload:1.3.1'
+    osgiRuntime 'commons-io:commons-io:2.4'
+    osgiRuntime 'org.json:json:20160212'
+    osgiRuntime 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
 }
 
 runOsgi {
     bundles += IPOJO_ALL_BUNDLES
     bundles += FELIX_GOGO_BUNDLES
-    bundles += subprojects // allprojects.findAll { it.plugins.hasPlugin('osgi') }
+    bundles += subprojects
 }
 
 subprojects {
