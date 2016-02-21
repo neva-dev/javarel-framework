@@ -1,26 +1,34 @@
-group 'com.neva.javarel'
-version '1.0-SNAPSHOT'
-
 buildscript {
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0"
-    }
+    apply from: project.rootProject.relativePath('buildscript.gradle'), to: buildscript
+}
+
+apply plugin: 'com.athaydes.osgi-run'
+
+allprojects {
+    group 'com.neva.javarel'
+    version '1.0'
+
+    apply plugin: 'idea'
 
     repositories {
         mavenCentral()
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'kotlin'
+dependencies {
+    osgiRuntime 'org.slf4j:slf4j-simple:1.7.16'
+    osgiRuntime 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
+    osgiRuntime 'org.apache.felix:org.apache.felix.webconsole:3.1.8'
+    osgiRuntime 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
 
-sourceCompatibility = 1.5
-
-repositories {
-    mavenCentral()
+    // osgiRuntime 'org.apache.felix:org.apache.felix.http.bundle:3.0.0'
+    // osgiRuntime 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
 }
 
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.0-beta-4584"
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+runOsgi {
+    bundles += IPOJO_ALL_BUNDLES
+    bundles += FELIX_GOGO_BUNDLES
+    bundles += [
+            project(':core')
+    ]
 }
