@@ -28,7 +28,21 @@ dependencies {
 runOsgi {
     bundles += IPOJO_ALL_BUNDLES
     bundles += FELIX_GOGO_BUNDLES
-    bundles += [
-            project(':core')
-    ]
+    bundles += subprojects // allprojects.findAll { it.plugins.hasPlugin('osgi') }
+}
+
+subprojects {
+
+    plugins.withId 'osgi', {
+        dependencies {
+            compile 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.0'
+
+            compile 'org.osgi:org.osgi.enterprise:5.0.0'
+            compile 'org.osgi:org.osgi.core:4.3.1'
+            compile 'org.apache.felix:org.apache.felix.ipojo.annotations:1.12.1'
+
+            testCompile group: 'junit', name: 'junit', version: '4.11'
+        }
+    }
+
 }

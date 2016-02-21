@@ -8,7 +8,6 @@ apply plugin: 'com.athaydes.ipojo'
 
 jar {
     manifest {
-        instruction 'Export-Package', "com.neva.javarel.core;version=${project.version}"
-        instruction 'Bundle-Activator', 'com.neva.javarel.core.Activator'
+        instruction 'Export-Package', "com.neva.javarel.rest;version=${project.version}"
     }
 }
