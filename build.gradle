@@ -6,7 +6,7 @@ apply plugin: 'com.athaydes.osgi-run'
 
 allprojects {
     group 'com.neva.javarel'
-    version '1.0'
+    version "1.0.0.ALPHA"
 
     apply plugin: 'idea'
 
@@ -32,6 +32,7 @@ runOsgi {
 }
 
 subprojects {
+    apply plugin: 'base'
 
     plugins.withId 'osgi', {
         dependencies {
