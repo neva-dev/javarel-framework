@@ -8,6 +8,6 @@ apply plugin: 'com.athaydes.ipojo'
 
 jar {
     manifest {
-        instruction 'Export-Package', "com.neva.javarel.storage.nosql;version=${project.version}"
+        instruction 'Export-Package', "com.neva.javarel.storage.repository.api.*;version=${project.version}"
     }
 }

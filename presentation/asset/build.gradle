@@ -8,6 +8,10 @@ apply plugin: 'com.athaydes.ipojo'
 
 jar {
     manifest {
-        instruction 'Export-Package', "com.neva.javarel.storage.sql;version=${project.version}"
+        instruction 'Export-Package', "com.neva.javarel.presentation.asset.api.*;version=${project.version}"
     }
+}
+
+dependencies {
+    compile project(':communication:rest')
 }

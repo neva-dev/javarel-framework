@@ -1,4 +1,4 @@
-package com.neva.javarel.communication.rest.impl
+package com.neva.presentation.asset.impl
 
 import com.neva.javarel.communication.rest.api.RestResource
 import org.apache.felix.ipojo.annotations.Component
@@ -11,13 +11,13 @@ import javax.ws.rs.core.Response
 @Component(immediate = true)
 @Instantiate
 @Provides
-@Path("/sample")
-class SampleResource : RestResource {
+@Path("/asset")
+class AssetResource : RestResource {
 
-    @Path("/hello")
+    @Path("/read")
     @GET
-    fun getHello(): Response? {
-        return Response.ok("Hello World!").build()
+    fun getRead(): Response? {
+        return Response.ok("Assets world!").build()
     }
 
 }

@@ -8,6 +8,6 @@ apply plugin: 'com.athaydes.ipojo'
 
 jar {
     manifest {
-        instruction 'Export-Package', "com.neva.javarel.presentation.view.api.*;version=${project.version}"
+        instruction 'Export-Package', "com.neva.javarel.storage.database.api.*;version=${project.version}"
     }
 }
