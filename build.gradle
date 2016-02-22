@@ -34,6 +34,8 @@ runOsgi {
     bundles += IPOJO_ALL_BUNDLES
     bundles += FELIX_GOGO_BUNDLES
     bundles += subprojects
+
+    javaArgs = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 }
 
 subprojects {
