@@ -1,5 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
+import com.google.common.collect.Lists
 import com.neva.javarel.communication.rest.api.RestResource
 import org.apache.felix.ipojo.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
@@ -9,7 +10,7 @@ import java.util.*
 
 @Component(immediate = true)
 @Instantiate
-class RestApplication : ResourceConfig() {
+class RestApplication {
 
     companion object {
         // TODO let it be parameterizable
@@ -19,25 +20,33 @@ class RestApplication : ResourceConfig() {
     @Requires
     lateinit var httpService: HttpService
 
-    @Requires(specification = RestResource::class)
-    lateinit var resources: List<RestResource>
+    var resources = Lists.newCopyOnWriteArrayList<RestResource>()
 
-    @Validate
-    fun validate() {
-        // TODO check why only one resource is being registered
-        for (resource in resources) {
-            register(resource)
+    @Bind(aggregate = true)
+    fun bindResource(resource: RestResource) {
+        resources.add(resource)
+        updateHttpService()
+    }
+
+    @Unbind
+    fun unbindResource(resource: RestResource) {
+        resources.remove(resource)
+        updateHttpService()
+    }
+
+    private fun updateHttpService() {
+        if (resources.isNotEmpty()) {
+            httpService.unregister(servletPrefix)
         }
 
-        val servletContainer = ServletContainer(this)
+        var config = ResourceConfig()
+        for (resource in resources) {
+            config.register(resource)
+        }
+        val servletContainer = ServletContainer(config)
         val props = Hashtable<String, String>()
 
         httpService.registerServlet(servletPrefix, servletContainer, props, null);
-    }
-
-    @Invalidate
-    fun invalidate() {
-        httpService.unregister(servletPrefix)
     }
 
 }
