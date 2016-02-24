@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.api
+package com.neva.javarel.resource.api
 
 import java.io.InputStream
 

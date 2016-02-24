@@ -1,9 +1,9 @@
-package com.neva.javarel.storage.impl
+package com.neva.javarel.resource.impl
 
-import com.neva.javarel.storage.api.AdaptableResource
-import com.neva.javarel.storage.api.ResourceDescriptor
-import com.neva.javarel.storage.api.ResourceException
-import com.neva.javarel.storage.api.ResourceResolver
+import com.neva.javarel.resource.api.AdaptableResource
+import com.neva.javarel.resource.api.ResourceDescriptor
+import com.neva.javarel.resource.api.ResourceException
+import com.neva.javarel.resource.api.ResourceResolver
 
 import java.io.IOException
 import java.io.InputStream

@@ -1,10 +1,10 @@
-package com.neva.javarel.storage.impl
+package com.neva.javarel.resource.impl
 
 import com.google.common.collect.Maps
-import com.neva.javarel.storage.api.Resource
-import com.neva.javarel.storage.api.ResourceDescriptor
-import com.neva.javarel.storage.api.ResourceProvider
-import com.neva.javarel.storage.api.ResourceResolver
+import com.neva.javarel.resource.api.Resource
+import com.neva.javarel.resource.api.ResourceDescriptor
+import com.neva.javarel.resource.api.ResourceProvider
+import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides

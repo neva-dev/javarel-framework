@@ -1,6 +1,6 @@
 rootProject.name = 'framework'
 
-include ':core'
+include ':resource'
 include ':communication:rest'
 include ':presentation:asset'
 include ':presentation:view'

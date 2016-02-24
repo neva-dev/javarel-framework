@@ -1,7 +1,7 @@
-package com.neva.javarel.storage.impl
+package com.neva.javarel.resource.impl
 
 import com.google.common.collect.Lists
-import com.neva.javarel.storage.api.*
+import com.neva.javarel.resource.api.*
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
@@ -29,17 +29,23 @@ class GenericResourceResolver : ResourceResolver {
         val providers = findProviders(descriptor)
 
         if (providers.isEmpty()) {
-            throw ResourceException(String.format("Cannot find any provider for resource: '%s'", descriptor.uri))
+            throw ResourceException("Cannot find any provider for resource: '${descriptor.uri}'")
         }
 
-        val resource = provideResource(descriptor, providers) ?: throw ResourceException(String.format("Resource by URI cannot be found: %s", descriptor.uri))
+        val resource = provideResource(descriptor, providers)
+        if (resource == null) {
+            throw ResourceException("Resource by URI cannot be found: '${descriptor.uri}'")
+        }
 
         return resource
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> adapt(resource: Resource, clazz: Class<T>): T {
-        val adapter = findAdapter(clazz) ?: throw ResourceException(String.format("There is no valid resource adapter for class: '%s'", clazz))
+        val adapter = findAdapter(clazz)
+        if (adapter == null) {
+            throw ResourceException("There is no valid resource adapter for class: '${clazz}'")
+        }
 
         return adapter.adapt(resource) as T
     }
