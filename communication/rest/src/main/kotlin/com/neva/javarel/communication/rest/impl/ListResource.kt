@@ -11,12 +11,12 @@ import javax.ws.rs.core.Response
 @Component
 @Instantiate
 @Provides
-@Path("/sample")
-class SampleResource : RestResource {
+@Path("/rest")
+class ListResource : RestResource {
 
-    @Path("/hello")
+    @Path("/list")
     @GET
-    fun getHello(): Response? {
+    fun getList(): Response? {
         return Response.ok("Hello World!").build()
     }
 

@@ -1,6 +1,8 @@
 package com.neva.javarel.communication.rest.impl
 
+import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestResource
 import org.apache.felix.ipojo.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
@@ -10,17 +12,16 @@ import java.util.*
 
 @Component(immediate = true)
 @Instantiate
-class RestApplication {
+class JerseyRestApplication : RestApplication {
 
     companion object {
-        // TODO let it be parameterizable
         val servletPrefix = "/"
     }
 
     @Requires
     lateinit var httpService: HttpService
 
-    var resources = Lists.newCopyOnWriteArrayList<RestResource>()
+    private var resources = Lists.newCopyOnWriteArrayList<RestResource>()
 
     @Bind(aggregate = true)
     fun bindResource(resource: RestResource) {
@@ -35,18 +36,24 @@ class RestApplication {
     }
 
     private fun updateHttpService() {
-        if (resources.isNotEmpty()) {
-            httpService.unregister(servletPrefix)
-        }
+        synchronized(this) {
+            if (resources.isNotEmpty()) {
+                httpService.unregister(servletPrefix)
+            }
 
-        var config = ResourceConfig()
-        for (resource in resources) {
-            config.register(resource)
-        }
-        val servletContainer = ServletContainer(config)
-        val props = Hashtable<String, String>()
+            var config = ResourceConfig()
+            for (resource in resources) {
+                config.register(resource)
+            }
+            val servletContainer = ServletContainer(config)
+            val props = Hashtable<String, String>()
 
-        httpService.registerServlet(servletPrefix, servletContainer, props, null);
+            httpService.registerServlet(servletPrefix, servletContainer, props, null);
+        }
+    }
+
+    override fun getResources(): Collection<RestResource> {
+        return ImmutableList.copyOf(resources);
     }
 
 }

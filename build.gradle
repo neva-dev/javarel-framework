@@ -51,6 +51,10 @@ subprojects {
             compile 'javax.servlet:javax.servlet-api:3.0.1'
 
             compile 'com.google.guava:guava:19.0'
+            compile 'commons-io:commons-io:2.4'
+            compile 'org.apache.commons:commons-lang3:3.4'
+            compile 'org.slf4j:slf4j-api:1.7.6'
+
 
             testCompile group: 'junit', name: 'junit', version: '4.11'
         }
