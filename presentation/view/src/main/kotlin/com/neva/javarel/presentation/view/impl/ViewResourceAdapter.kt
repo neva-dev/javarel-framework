@@ -10,7 +10,7 @@ import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
 import org.apache.felix.ipojo.annotations.Requires
 
-@Component
+@Component(immediate = true)
 @Provides
 @Instantiate
 class ViewResourceAdapter : ResourceAdapter {

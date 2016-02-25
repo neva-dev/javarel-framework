@@ -10,7 +10,7 @@ import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.core.Response
 
-@Component
+@Component(immediate = true)
 @Instantiate
 @Provides(specifications = arrayOf(RestResource::class))
 @Path("/adm/system")

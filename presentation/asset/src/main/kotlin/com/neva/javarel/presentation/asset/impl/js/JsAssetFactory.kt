@@ -8,7 +8,7 @@ import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
 
-@Component
+@Component(immediate = true)
 @Instantiate
 @Provides
 class JsAssetFactory : AssetFactory {

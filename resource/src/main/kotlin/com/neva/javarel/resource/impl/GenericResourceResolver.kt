@@ -8,7 +8,7 @@ import org.apache.felix.ipojo.annotations.Provides
 import org.apache.felix.ipojo.annotations.Requires
 import java.util.*
 
-@Component
+@Component(immediate = true)
 @Provides
 @Instantiate
 class GenericResourceResolver : ResourceResolver {

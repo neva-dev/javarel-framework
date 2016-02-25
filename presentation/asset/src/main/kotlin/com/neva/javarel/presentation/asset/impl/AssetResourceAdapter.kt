@@ -9,7 +9,7 @@ import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
 import org.apache.felix.ipojo.annotations.Requires
 
-@Component
+@Component(immediate = true)
 @Instantiate
 @Provides
 class AssetResourceAdapter : ResourceAdapter {

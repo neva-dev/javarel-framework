@@ -5,19 +5,16 @@ import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.resource.api.ResourceProvider
 import com.neva.javarel.resource.api.ResourceResolver
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.ipojo.annotations.*
 import org.osgi.framework.Bundle
 import org.osgi.framework.BundleContext
 
-@Component
+@Component(immediate = true)
 @Provides
 @Instantiate
 class BundleResourceProvider : ResourceProvider {
 
-    @Requires
+    @Context
     lateinit var context: BundleContext
 
     private val bundles = Maps.newConcurrentMap<String, Bundle>()
