@@ -4,10 +4,6 @@ import org.apache.commons.io.FilenameUtils
 
 class ResourceDescriptor(val uri: String) {
 
-    companion object {
-        val PROTOCOL_SEPARATOR = ":"
-    }
-
     val protocol: String
 
     val path: String
@@ -19,9 +15,9 @@ class ResourceDescriptor(val uri: String) {
     val extension: String
 
     init {
-        val parts = uri.split(PROTOCOL_SEPARATOR.toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
-        if (parts.size == 1) {
-            throw IllegalArgumentException(String.format("Resource descriptor URI '%s' should contain " + "protocol separator '%s'", uri, PROTOCOL_SEPARATOR))
+        val parts = uri.split(ResourceMapper.PROTOCOL_SEPARATOR)
+        if (parts.size < 2) {
+            throw IllegalArgumentException("Resource descriptor URI '$uri' should contain " + "protocol separator '${ResourceMapper.PROTOCOL_SEPARATOR}'")
         }
 
         this.protocol = parts[0]
@@ -32,7 +28,7 @@ class ResourceDescriptor(val uri: String) {
     }
 
     override fun toString(): String {
-        return String.format("Resource descriptor '%s'", uri)
+        return "Resource descriptor '$uri'"
     }
 
 

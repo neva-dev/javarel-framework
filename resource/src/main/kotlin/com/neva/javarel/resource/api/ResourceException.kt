@@ -1,6 +1,6 @@
 package com.neva.javarel.resource.api
 
-class ResourceException : Exception {
+open class ResourceException : Exception {
 
     constructor(message: String) : super(message)
 

@@ -10,4 +10,8 @@ jar {
     manifest {
         instruction 'Export-Package', "com.neva.javarel.presentation.view.api.*;version=${project.version}"
     }
+
+    dependencies {
+        compile project(':resource')
+    }
 }

@@ -16,7 +16,7 @@ class UrlResource(override val resolver: ResourceResolver, override val descript
             try {
                 return url.openStream()
             } catch (e: IOException) {
-                throw ResourceException(String.format("Cannot read resource content using URL: '%s'", url))
+                throw ResourceException("Cannot read resource content using URL: '$url'")
             }
 
         }

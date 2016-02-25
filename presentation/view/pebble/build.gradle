@@ -10,4 +10,10 @@ jar {
     manifest {
         instruction 'Export-Package', "com.neva.javarel.presentation.view.pebble;version=${project.version}"
     }
+
+    dependencies {
+        compile project(':resource')
+        compile project(':presentation:view')
+        compile 'com.mitchellbosecke:pebble:2.1.0'
+    }
 }
