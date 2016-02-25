@@ -13,5 +13,9 @@ jar {
 }
 
 dependencies {
+    compile project(':resource')
     compile project(':communication:rest')
+
+    compile 'org.apache.tika:tika-core:1.11'
+
 }
