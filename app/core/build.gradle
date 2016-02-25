@@ -17,6 +17,7 @@ jar {
 
 dependencies {
     compile project(':resource')
-    compile project(':presentation:asset')
     compile project(':communication:rest')
+    compile project(':presentation:asset')
+    compile project(':presentation:view')
 }

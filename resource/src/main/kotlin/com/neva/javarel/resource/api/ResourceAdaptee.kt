@@ -13,7 +13,7 @@ abstract class ResourceAdaptee(protected val resource: Resource) : Resource {
     override val inputStream: InputStream
         get() = resource.inputStream
 
-    override fun <T> `as`(clazz: Class<T>): T {
-        return resource.`as`(clazz)
+    override fun <T> adaptTo(clazz: Class<T>): T {
+        return resource.adaptTo(clazz)
     }
 }

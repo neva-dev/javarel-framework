@@ -10,5 +10,5 @@ interface Resource {
 
     val inputStream: InputStream
 
-    fun <T> `as`(clazz: Class<T>): T
+    fun <T> adaptTo(clazz: Class<T>): T
 }
