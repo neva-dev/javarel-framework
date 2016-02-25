@@ -1,6 +1,6 @@
 package com.neva.javarel.app.core.impl.asset
 
-import com.neva.javarel.communication.rest.api.RestResource
+import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceMapper
@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response
 @Provides
 @Instantiate
 @Path("/asset")
-class AssetController : RestResource {
+class AssetController : RestComponent {
 
     @Requires
     lateinit var resolver: ResourceResolver

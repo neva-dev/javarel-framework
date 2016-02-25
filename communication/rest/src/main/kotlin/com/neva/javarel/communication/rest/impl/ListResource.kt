@@ -1,6 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.neva.javarel.communication.rest.api.RestResource
+import com.neva.javarel.communication.rest.api.RestComponent
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response
 @Instantiate
 @Provides
 @Path("/rest")
-class ListResource : RestResource {
+class ListResource : RestComponent {
 
     @Path("/list")
     @GET

@@ -1,6 +1,6 @@
 package com.neva.javarel.app.adm.impl.system
 
-import com.neva.javarel.communication.rest.api.RestResource
+import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
@@ -12,9 +12,9 @@ import javax.ws.rs.core.Response
 
 @Component(immediate = true)
 @Instantiate
-@Provides(specifications = arrayOf(RestResource::class))
+@Provides(specifications = arrayOf(RestComponent::class))
 @Path("/adm/system")
-class SystemController : RestResource {
+class SystemController : RestComponent {
 
     // TODO not initialized
     @Requires(optional = true)

@@ -3,7 +3,7 @@ package com.neva.javarel.communication.rest.impl
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.neva.javarel.communication.rest.api.RestApplication
-import com.neva.javarel.communication.rest.api.RestResource
+import com.neva.javarel.communication.rest.api.RestComponent
 import org.apache.felix.ipojo.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
@@ -21,28 +21,28 @@ class JerseyRestApplication : RestApplication {
     @Requires
     lateinit var httpService: HttpService
 
-    private var resources = Lists.newCopyOnWriteArrayList<RestResource>()
+    private var components = Lists.newCopyOnWriteArrayList<RestComponent>()
 
     @Bind(aggregate = true)
-    fun bindResource(resource: RestResource) {
-        resources.add(resource)
+    fun bindResource(component: RestComponent) {
+        components.add(component)
         updateHttpService()
     }
 
     @Unbind
-    fun unbindResource(resource: RestResource) {
-        resources.remove(resource)
+    fun unbindResource(component: RestComponent) {
+        components.remove(component)
         updateHttpService()
     }
 
     private fun updateHttpService() {
         synchronized(this) {
-            if (resources.isNotEmpty()) {
+            if (components.isNotEmpty()) {
                 httpService.unregister(servletPrefix)
             }
 
             var config = ResourceConfig()
-            for (resource in resources) {
+            for (resource in components) {
                 config.register(resource)
             }
             val servletContainer = ServletContainer(config)
@@ -52,8 +52,8 @@ class JerseyRestApplication : RestApplication {
         }
     }
 
-    override fun getResources(): Collection<RestResource> {
-        return ImmutableList.copyOf(resources);
+    override fun getComponents(): Collection<RestComponent> {
+        return ImmutableList.copyOf(components);
     }
 
 }
