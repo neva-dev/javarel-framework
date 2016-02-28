@@ -5,7 +5,10 @@ import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.resource.api.ResourceProvider
 import com.neva.javarel.resource.api.ResourceResolver
-import org.apache.felix.ipojo.annotations.*
+import org.apache.felix.ipojo.annotations.Component
+import org.apache.felix.ipojo.annotations.Context
+import org.apache.felix.ipojo.annotations.Instantiate
+import org.apache.felix.ipojo.annotations.Provides
 import org.osgi.framework.Bundle
 import org.osgi.framework.BundleContext
 
@@ -36,7 +39,7 @@ class BundleResourceProvider : ResourceProvider {
     }
 
     private fun getBundle(descriptor: ResourceDescriptor): Bundle? {
-        val symbolicName = descriptor.protocol
+        val symbolicName = descriptor.parts[0]
 
         if (!bundles.containsKey(symbolicName)) {
             for (bundle in context.bundles) {
