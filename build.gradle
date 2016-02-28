@@ -2,7 +2,7 @@ buildscript {
     apply from: project.rootProject.relativePath('buildscript.gradle'), to: buildscript
 }
 
-apply plugin: 'com.athaydes.osgi-run'
+apply plugin: 'osgi-container'
 
 allprojects {
     group 'com.neva.javarel'
@@ -18,24 +18,35 @@ allprojects {
 }
 
 dependencies {
-    osgiRuntime 'org.slf4j:slf4j-log4j12:1.7.6'
+    osgiBundle 'org.slf4j:slf4j-log4j12:1.7.6'
 
-    osgiRuntime 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
-    osgiRuntime 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
-    osgiRuntime 'org.apache.felix:org.apache.felix.eventadmin:1.4.6'
+    osgiBundle 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
+    osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
+    osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.6'
 
-    osgiRuntime 'commons-fileupload:commons-fileupload:1.3.1'
-    osgiRuntime 'commons-io:commons-io:2.4'
-    osgiRuntime 'org.json:json:20160212'
-    osgiRuntime 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
+    osgiBundle 'commons-fileupload:commons-fileupload:1.3.1'
+    osgiBundle 'commons-io:commons-io:2.4'
+    osgiBundle 'org.json:json:20160212'
+    osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
 }
 
-runOsgi {
-    bundles += IPOJO_ALL_BUNDLES
-    bundles += FELIX_GOGO_BUNDLES
-    bundles += subprojects
+osgiContainer {
+    debug()
+}
 
-    javaArgs = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+dependencies {
+    osgiMain 'org.apache.felix:org.apache.felix.main:5.4.0'
+    osgiBundle 'org.apache.felix:configadmin:1.x.x'
+
+    osgiBundle ':app:core'
+    osgiBundle ':app:adm'
+    osgiBundle ':resource'
+    osgiBundle ':communication:rest'
+    osgiBundle ':presentation:asset'
+    osgiBundle ':presentation:view'
+    osgiBundle ':presentation:view:pebble'
+    osgiBundle ':storage:database'
+    osgiBundle ':storage:repository'
 }
 
 subprojects {
