@@ -7,11 +7,9 @@ class BuildTask extends ContainerTask {
     static final NAME = "buildOsgiContainer"
 
     BuildTask() {
-//        project.afterEvaluate {
-//            inputs.properties(extension.config)
-//            inputs.files(extension.runners)
-//            outputs.dir(extension.containerDir)
-//        }
+        inputs.properties(extension.config)
+        inputs.files(extension.runners)
+        outputs.dir(extension.containerDir)
     }
 
     @TaskAction
