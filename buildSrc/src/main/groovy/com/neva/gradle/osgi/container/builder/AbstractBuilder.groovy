@@ -15,13 +15,13 @@ class AbstractBuilder implements ContainerBuilder {
 
     @Override
     def main() {
-        def config = project.configurations.getByName(ContainerConfig.MAIN.name)
+        def config = project.configurations.getByName(ContainerConfig.MAIN)
         def size = config.dependencies.size()
 
         if (size == 0) {
-            throw new ContainerException("Configuration named '${ContainerConfig.MAIN.name}' should have container main dependency defined.")
+            throw new ContainerException("Configuration named '${ContainerConfig.MAIN}' should have container main dependency defined.")
         } else if (size != 1) {
-            throw new ContainerException("Configuration named '${ContainerConfig.MAIN.name}' cannot have more than one dependency defined.")
+            throw new ContainerException("Configuration named '${ContainerConfig.MAIN}' cannot have more than one dependency defined.")
         }
 
         project.copy {
@@ -36,21 +36,22 @@ class AbstractBuilder implements ContainerBuilder {
         //wrapBundles()
     }
 
-    def fineBundles() {
-        def config = project.configurations.getByName(ContainerConfig.BUNDLE.name)
-
-        // TODO filter non-bundles
-
+    def copyBundles(config) {
         project.copy {
             from config
             into "${extension.containerDir}/${extension.bundlePath}"
         }
     }
 
-    def wrapBundles() {
-        def config = project.configurations.getByName(ContainerConfig.WRAP.name)
+    def fineBundles() {
+        copyBundles(project.configurations.getByName(ContainerConfig.MODULE))
+        copyBundles(project.configurations.getByName(ContainerConfig.BUNDLE))
+    }
 
-        // TODO filter bundles
+    def wrapBundles() {
+        def config = project.configurations.getByName(ContainerConfig.WRAP)
+
+        // TODO wrap
 
         project.copy {
             from config

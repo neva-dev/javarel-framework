@@ -3,7 +3,7 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'osgi'
+apply plugin: 'osgi-module'
 apply plugin: 'com.athaydes.ipojo'
 
 jar {

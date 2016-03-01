@@ -1,14 +1,16 @@
 package com.neva.gradle.osgi.container;
 
-enum ContainerConfig {
-    MAIN("osgiMain"),
-    BUNDLE("osgiBundle"),
-    WRAP("osgiWrap"),
-    EMBED("osgiEmbed")
+final class ContainerConfig {
 
-    String name
+    static final COMPILE = 'compile'
 
-    ContainerConfig(String name) {
-        this.name = name
-    }
+    static final MAIN = 'osgiMain'
+
+    static final MODULE = 'osgiModule'
+
+    static final BUNDLE = 'osgiBundle'
+
+    static final WRAP = 'osgiWrap'
+
+    static final EMBED = "osgiEmbed"
 }

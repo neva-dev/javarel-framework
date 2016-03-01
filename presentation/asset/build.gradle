@@ -3,7 +3,7 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'osgi'
+apply plugin: 'osgi-module'
 apply plugin: 'com.athaydes.ipojo'
 
 jar {
@@ -16,6 +16,6 @@ dependencies {
     compile project(':resource')
     compile project(':communication:rest')
 
-    compile 'org.apache.tika:tika-core:1.11'
+    osgiBundle 'org.apache.tika:tika-core:1.11'
 
 }

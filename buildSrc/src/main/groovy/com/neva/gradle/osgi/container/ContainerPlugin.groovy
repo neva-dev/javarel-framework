@@ -8,11 +8,10 @@ class ContainerPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        project.plugins.apply(ModulePlugin)
         project.extensions.create(ContainerExtension.NAME, ContainerExtension, project)
-        project.task(BuildTask.NAME, type: BuildTask)
+        project.configurations.create(ContainerConfig.MODULE)
 
-        ContainerConfig.values().each {
-            project.configurations.create(it.name)
-        }
+        project.task(BuildTask.NAME, type: BuildTask)
     }
 }

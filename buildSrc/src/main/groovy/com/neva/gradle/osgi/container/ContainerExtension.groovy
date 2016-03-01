@@ -41,8 +41,8 @@ class ContainerExtension {
     def felix() {
         builder = new FelixBuilder(project)
         bundlePath = 'bundle'
-        runners += project.file("felix/run.sh")
-        configFile(project.file("felix/config.properties"))
+        runners += project.file("osgiContainer/felix/run.sh")
+        configFile(project.file("osgiContainer/felix/config.properties"))
     }
 
     def debug(Integer port = 18080, Boolean suspend = true) {

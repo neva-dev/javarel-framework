@@ -3,7 +3,7 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'osgi'
+apply plugin: 'osgi-module'
 apply plugin: 'com.athaydes.ipojo'
 
 jar {
@@ -14,6 +14,7 @@ jar {
     dependencies {
         compile project(':resource')
         compile project(':presentation:view')
-        compile 'com.mitchellbosecke:pebble:2.1.0'
+
+        osgiWrap 'com.mitchellbosecke:pebble:2.1.0'
     }
 }
