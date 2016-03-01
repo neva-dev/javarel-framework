@@ -3,7 +3,10 @@ package com.neva.gradle.osgi.container.builder
 import com.neva.gradle.osgi.container.ContainerConfig
 import com.neva.gradle.osgi.container.ContainerException
 import com.neva.gradle.osgi.container.ContainerExtension
+
+import com.neva.gradle.osgi.container.util.ConfigResolver
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ProjectDependency
 
 class AbstractBuilder implements ContainerBuilder {
 
@@ -32,30 +35,36 @@ class AbstractBuilder implements ContainerBuilder {
 
     @Override
     def bundles() {
-        fineBundles()
-        //wrapBundles()
+        def moduleConfig = project.configurations.getByName(ContainerConfig.MODULE)
+        def moduleDeps = ConfigResolver.spreadDeps(moduleConfig)
+        def moduleJars = moduleConfig.resolve()
+
+        def allBundles = new HashSet<>(moduleJars)
+        def allJars = new HashSet<>()
+
+        moduleDeps.each { ProjectDependency projectDependency ->
+            def subProject = projectDependency.dependencyProject
+            def subBundles = subProject.configurations.getByName(ContainerConfig.BUNDLE).resolve()
+            def subJars = subProject.configurations.getByName(ContainerConfig.WRAP).resolve()
+
+            allBundles += subBundles
+            allJars += subJars
+        }
+
+        copyBundles(allBundles)
+        wrapBundles(allJars)
     }
 
-    def copyBundles(config) {
+    def copyBundles(Collection<File> files) {
         project.copy {
-            from config
-            into "${extension.containerDir}/${extension.bundlePath}"
+            from files
+            into bundleDir
         }
     }
 
-    def fineBundles() {
-        copyBundles(project.configurations.getByName(ContainerConfig.MODULE))
-        copyBundles(project.configurations.getByName(ContainerConfig.BUNDLE))
-    }
-
-    def wrapBundles() {
-        def config = project.configurations.getByName(ContainerConfig.WRAP)
-
-        // TODO wrap
-
-        project.copy {
-            from config
-            into "${extension.containerDir}/${extension.bundlePath}"
+    def wrapBundles(Collection<File> jars) {
+        jars.each { File jar ->
+            //BundleWrapper.wrapNonBundle(jar, bundleDir)
         }
     }
 
@@ -69,7 +78,12 @@ class AbstractBuilder implements ContainerBuilder {
         // nothing to do
     }
 
-    def ContainerExtension getExtension() {
+    String getBundleDir() {
+        "${extension.containerDir}/${extension.bundlePath}"
+    }
+
+    ContainerExtension getExtension() {
         project.extensions.getByName(ContainerExtension.NAME) as ContainerExtension
     }
+
 }

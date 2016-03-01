@@ -25,18 +25,19 @@ subprojects {
             osgiBundle 'org.osgi:org.osgi.enterprise:5.0.0'
             osgiBundle 'org.osgi:org.osgi.core:5.0.0'
 
-            osgiBundle 'org.apache.felix:org.apache.felix.ipojo.annotations:1.12.1'
             osgiBundle 'javax.servlet:javax.servlet-api:3.0.1'
 
             osgiBundle 'com.google.guava:guava:19.0'
             osgiBundle 'commons-io:commons-io:2.4'
             osgiBundle 'org.apache.commons:commons-lang3:3.4'
             osgiBundle 'org.slf4j:slf4j-api:1.7.6'
+
+            compile 'org.apache.felix:org.apache.felix.ipojo.annotations:1.12.1'
         }
     }
 
     plugins.withId 'kotlin', {
-        //testCompile group: 'junit', name: 'junit', version: '4.11'
+        // testCompile group: 'junit', name: 'junit', version: '4.11'
     }
 }
 

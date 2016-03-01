@@ -1,6 +1,5 @@
 dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0"
-    classpath "com.athaydes.gradle.osgi:osgi-run-core:1.4.0"
     classpath "com.athaydes.gradle.osgi:ipojo-plugin:1.2.0"
 }
 
