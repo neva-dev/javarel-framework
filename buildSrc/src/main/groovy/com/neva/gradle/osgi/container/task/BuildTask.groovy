@@ -14,7 +14,18 @@ class BuildTask extends ContainerTask {
 
     @TaskAction
     def invoke() {
-        logger.info "Container build properly in '${extension.containerDir}'"
-    }
+        logger.info "Creating container"
+        extension.builder.main()
 
+        logger.info "Preparing bundles"
+        extension.builder.bundles()
+
+        logger.info "Preparing configuration"
+        extension.builder.configs()
+
+        logger.info "Preparing runner scripts"
+        extension.builder.scripts()
+
+        logger.info "Container build properly"
+    }
 }
