@@ -1,0 +1,56 @@
+buildscript {
+    apply from: rootProject.file('buildscript.gradle'), to: buildscript
+}
+
+apply plugin: 'osgi-container'
+
+dependencies {
+    osgiMain 'org.apache.felix:org.apache.felix.main:5.4.0'
+
+    osgiBundle 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
+    osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
+    osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.6'
+
+    osgiBundle 'org.slf4j:slf4j-log4j12:1.7.6'
+    osgiBundle 'commons-fileupload:commons-fileupload:1.3.1'
+    osgiBundle 'commons-io:commons-io:2.4'
+    osgiBundle 'org.json:json:20160212'
+    osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
+
+    osgiBundle project(':app:core')
+    osgiBundle project(':app:adm')
+    osgiBundle project(':resource')
+    osgiBundle project(':communication:rest')
+    osgiBundle project(':presentation:asset')
+    osgiBundle project(':presentation:view')
+    osgiBundle project(':presentation:view:pebble')
+    osgiBundle project(':storage:database')
+    osgiBundle project(':storage:repository')
+}
+
+subprojects {
+    plugins.withId 'osgi', {
+        dependencies {
+            compile 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.0'
+
+            compile 'org.osgi:org.osgi.enterprise:5.0.0'
+            compile 'org.osgi:org.osgi.core:5.0.0'
+
+            compile 'org.apache.felix:org.apache.felix.ipojo.annotations:1.12.1'
+            compile 'javax.servlet:javax.servlet-api:3.0.1'
+
+            compile 'com.google.guava:guava:19.0'
+            compile 'commons-io:commons-io:2.4'
+            compile 'org.apache.commons:commons-lang3:3.4'
+            compile 'org.slf4j:slf4j-api:1.7.6'
+
+
+            testCompile group: 'junit', name: 'junit', version: '4.11'
+        }
+    }
+}
+
+osgiContainer {
+    felix()
+    debug()
+}

@@ -1,7 +1,6 @@
 rootProject.name = 'framework'
 
-include ':app:core'
-include ':app:adm'
+include ':container'
 include ':resource'
 include ':communication:rest'
 include ':presentation:asset'
@@ -9,3 +8,6 @@ include ':presentation:view'
 include ':presentation:view:pebble'
 include ':storage:database'
 include ':storage:repository'
+
+include ':app:core'
+include ':app:adm'

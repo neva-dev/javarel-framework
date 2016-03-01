@@ -26,8 +26,6 @@ class ContainerExtension {
 
     ContainerExtension(Project project) {
         this.project = project
-
-        felix()
     }
 
     def configFile(File file) {
@@ -41,12 +39,10 @@ class ContainerExtension {
     }
 
     def felix() {
-        def rootPath = 'osgiContainer/felix'
-
         builder = new FelixBuilder(project)
         bundlePath = 'bundle'
-        runners += project.file("$rootPath/run.sh")
-        configFile(project.file("$rootPath/config.properties"))
+        runners += project.file("felix/run.sh")
+        configFile(project.file("felix/config.properties"))
     }
 
     def debug(Integer port = 18080, Boolean suspend = true) {
