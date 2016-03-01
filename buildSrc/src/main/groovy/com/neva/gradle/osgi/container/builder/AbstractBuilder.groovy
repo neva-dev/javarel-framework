@@ -32,17 +32,22 @@ class AbstractBuilder implements ContainerBuilder {
 
     @Override
     def bundles() {
-        return null
+        def bundleConfig = project.configurations.getByName(ContainerConfig.BUNDLE.name)
+
+        project.copy {
+            from bundleConfig
+            into "${extension.containerDir}/${extension.bundlePath}"
+        }
     }
 
     @Override
     def configs() {
-        return null
+        // nothing to do
     }
 
     @Override
     def scripts() {
-        return null
+        // nothing to do
     }
 
     def ContainerExtension getExtension() {

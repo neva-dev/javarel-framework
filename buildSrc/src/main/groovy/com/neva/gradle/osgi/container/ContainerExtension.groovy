@@ -16,7 +16,7 @@ class ContainerExtension {
 
     List<File> runners = []
 
-    String bundlePath = ''
+    String bundlePath = 'bundle'
 
     String containerDir = "build/osgiContainer"
 
