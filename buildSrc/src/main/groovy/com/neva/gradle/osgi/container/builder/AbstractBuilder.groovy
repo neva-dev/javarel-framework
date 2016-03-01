@@ -5,7 +5,7 @@ import com.neva.gradle.osgi.container.ContainerException
 import com.neva.gradle.osgi.container.ContainerExtension
 import org.gradle.api.Project
 
-class AbstractBuilder implements Builder {
+class AbstractBuilder implements ContainerBuilder {
 
     Project project
 

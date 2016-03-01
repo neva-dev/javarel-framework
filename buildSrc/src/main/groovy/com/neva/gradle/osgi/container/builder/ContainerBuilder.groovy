@@ -1,6 +1,6 @@
 package com.neva.gradle.osgi.container.builder
 
-interface Builder {
+interface ContainerBuilder {
 
     def main()
 

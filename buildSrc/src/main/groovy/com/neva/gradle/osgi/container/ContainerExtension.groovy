@@ -1,6 +1,6 @@
 package com.neva.gradle.osgi.container
 
-import com.neva.gradle.osgi.container.builder.Builder
+import com.neva.gradle.osgi.container.builder.ContainerBuilder
 import com.neva.gradle.osgi.container.builder.FelixBuilder
 import org.gradle.api.Project
 
@@ -10,7 +10,7 @@ class ContainerExtension {
 
     Project project
 
-    Builder builder
+    ContainerBuilder builder
 
     Map<String, Object> config = [:]
 
