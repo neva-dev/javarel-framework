@@ -32,10 +32,28 @@ class AbstractBuilder implements ContainerBuilder {
 
     @Override
     def bundles() {
-        def bundleConfig = project.configurations.getByName(ContainerConfig.BUNDLE.name)
+        fineBundles()
+        //wrapBundles()
+    }
+
+    def fineBundles() {
+        def config = project.configurations.getByName(ContainerConfig.BUNDLE.name)
+
+        // TODO filter non-bundles
 
         project.copy {
-            from bundleConfig
+            from config
+            into "${extension.containerDir}/${extension.bundlePath}"
+        }
+    }
+
+    def wrapBundles() {
+        def config = project.configurations.getByName(ContainerConfig.WRAP.name)
+
+        // TODO filter bundles
+
+        project.copy {
+            from config
             into "${extension.containerDir}/${extension.bundlePath}"
         }
     }
