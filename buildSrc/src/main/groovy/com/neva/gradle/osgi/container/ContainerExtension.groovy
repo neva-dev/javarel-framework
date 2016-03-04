@@ -18,17 +18,21 @@ class ContainerExtension {
 
     String bundlePath = 'bundle'
 
+    String configFile = 'conf/config.properties'
+
     String containerDir = "build/osgiContainer"
 
-    String javaArgs = []
+    String javaCommand = 'java'
 
-    String programArgs = []
+    String javaArgs = ''
+
+    String programArgs = ''
 
     ContainerExtension(Project project) {
         this.project = project
     }
 
-    def configFile(File file) {
+    def config(File file) {
         def props = new Properties()
         props.load(new FileInputStream(file))
         config.putAll(props as Map)
@@ -42,7 +46,7 @@ class ContainerExtension {
         builder = new FelixBuilder(project)
         bundlePath = 'bundle'
         runners += project.file("osgiContainer/felix/run.sh")
-        configFile(project.file("osgiContainer/felix/config.properties"))
+        config(project.file("osgiContainer/felix/config.properties"))
     }
 
     def debug(Integer port = 18080, Boolean suspend = true) {

@@ -3,12 +3,15 @@ package com.neva.gradle.osgi.container.builder
 import com.neva.gradle.osgi.container.ContainerConfig
 import com.neva.gradle.osgi.container.ContainerException
 import com.neva.gradle.osgi.container.ContainerExtension
-
-import com.neva.gradle.osgi.container.util.ConfigResolver
+import com.neva.gradle.osgi.container.util.DependencyResolver
+import com.neva.gradle.osgi.container.util.MapStringifier
+import groovy.text.SimpleTemplateEngine
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 
 class AbstractBuilder implements ContainerBuilder {
+
+    static final FILE_ENCODING = 'UTF-8'
 
     Project project
 
@@ -36,7 +39,7 @@ class AbstractBuilder implements ContainerBuilder {
     @Override
     def bundles() {
         def moduleConfig = project.configurations.getByName(ContainerConfig.MODULE)
-        def moduleDeps = ConfigResolver.spreadDeps(moduleConfig)
+        def moduleDeps = DependencyResolver.spread(moduleConfig)
         def moduleJars = moduleConfig.resolve()
 
         def allBundles = new HashSet<>(moduleJars)
@@ -70,16 +73,39 @@ class AbstractBuilder implements ContainerBuilder {
 
     @Override
     def configs() {
-        // nothing to do
+        configFile.parentFile.mkdirs()
+        configFile.write(configContent, FILE_ENCODING)
     }
 
     @Override
     def scripts() {
-        // nothing to do
+        def engine = new SimpleTemplateEngine()
+
+        extension.runners.each { runner ->
+            def target = new File("${extension.containerDir}/${runner.name}")
+            def script = engine.createTemplate(runner).make([
+                    'config' : extension,
+                    'mainJar': mainJar
+            ]).toString()
+            target.write(script, FILE_ENCODING)
+        }
+    }
+
+    String getConfigContent() {
+        MapStringifier.asProperties(extension.config)
+    }
+
+    File getMainJar() {
+        def config = project.configurations.getByName(ContainerConfig.MAIN)
+        config.files.first()
     }
 
     String getBundleDir() {
         "${extension.containerDir}/${extension.bundlePath}"
+    }
+
+    File getConfigFile() {
+        new File("${extension.containerDir}/${extension.configFile}")
     }
 
     ContainerExtension getExtension() {

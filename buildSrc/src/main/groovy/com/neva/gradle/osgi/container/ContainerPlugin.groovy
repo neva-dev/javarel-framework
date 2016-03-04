@@ -13,7 +13,7 @@ class ContainerPlugin implements Plugin<Project> {
         project.configurations.create(ContainerConfig.MODULE, {
             it.transitive = false
         })
-
+        project.dependencies.add(ContainerConfig.MODULE, project)
         project.task(BuildTask.NAME, type: BuildTask)
     }
 }
