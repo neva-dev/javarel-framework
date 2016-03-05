@@ -15,6 +15,6 @@ jar {
         compile project(':resource')
         compile project(':presentation:view')
 
-        osgiWrap 'com.mitchellbosecke:pebble:2.1.0'
+        osgiBundle 'com.mitchellbosecke:pebble:2.1.0'
     }
 }

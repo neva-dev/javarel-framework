@@ -3,11 +3,14 @@ package com.neva.gradle.osgi.container.builder
 import com.neva.gradle.osgi.container.ContainerConfig
 import com.neva.gradle.osgi.container.ContainerException
 import com.neva.gradle.osgi.container.ContainerExtension
+import com.neva.gradle.osgi.container.util.BundleDetector
+import com.neva.gradle.osgi.container.util.BundleWrapper
 import com.neva.gradle.osgi.container.util.DependencyResolver
 import com.neva.gradle.osgi.container.util.MapStringifier
 import groovy.text.SimpleTemplateEngine
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.file.FileTreeElement
 
 class AbstractBuilder implements ContainerBuilder {
 
@@ -43,31 +46,35 @@ class AbstractBuilder implements ContainerBuilder {
         def moduleJars = moduleConfig.resolve()
 
         def allBundles = new HashSet<>(moduleJars)
-        def allJars = new HashSet<>()
 
         moduleDeps.each { ProjectDependency projectDependency ->
             def subProject = projectDependency.dependencyProject
             def subBundles = subProject.configurations.getByName(ContainerConfig.BUNDLE).resolve()
-            def subJars = subProject.configurations.getByName(ContainerConfig.WRAP).resolve()
 
             allBundles += subBundles
-            allJars += subJars
         }
 
         copyBundles(allBundles)
-        wrapBundles(allJars)
     }
 
     def copyBundles(Collection<File> files) {
+        def nonBundles = []
+
         project.copy {
             from files
             into bundleDir
-        }
-    }
+            exclude { FileTreeElement element ->
+                def nonBundle = !BundleDetector.isBundle(element.file)
+                if (nonBundle) {
+                    nonBundles += element.file
+                }
 
-    def wrapBundles(Collection<File> jars) {
-        jars.each { File jar ->
-            //BundleWrapper.wrapNonBundle(jar, bundleDir)
+                return nonBundle
+            }
+        }
+
+        nonBundles.each { File file ->
+            BundleWrapper.wrapNonBundle(file, bundleDir)
         }
     }
 

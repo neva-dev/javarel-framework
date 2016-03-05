@@ -12,20 +12,11 @@ class ModulePlugin implements Plugin<Project> {
         project.plugins.apply(OsgiPlugin)
         project.configurations.create(ContainerConfig.MAIN)
 
-        createConfig(project, ContainerConfig.BUNDLE, {
-            it.transitive = false
-        })
-
-        createConfig(project, ContainerConfig.WRAP, {
-            it.transitive = false
-        })
-
-        createConfig(project, ContainerConfig.EMBED, {
-            it.transitive = false
-        })
+        createConfig(project, ContainerConfig.BUNDLE)
+        createConfig(project, ContainerConfig.EMBED)
     }
 
-    def createConfig(Project project, String configName, Closure configurer) {
+    def createConfig(Project project, String configName, Closure configurer = {}) {
         def config = project.configurations.create(configName, configurer)
 
         extendConfig(project, ContainerConfig.COMPILE, { Configuration base ->

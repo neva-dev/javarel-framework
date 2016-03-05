@@ -10,7 +10,5 @@ final class ContainerConfig {
 
     static final BUNDLE = 'osgiBundle'
 
-    static final WRAP = 'osgiWrap'
-
     static final EMBED = "osgiEmbed"
 }
