@@ -10,8 +10,9 @@ apply plugin: 'com.athaydes.ipojo'
 
 jar {
     manifest {
-        instruction 'Bundle-Name', project.description
+        name project.description
         instruction 'Private-Package', "com.neva.javarel.app.core.api.*;version=${project.version}"
+        instruction 'Resource-Uri', 'core'
     }
 }
 
