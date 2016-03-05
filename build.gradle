@@ -17,8 +17,15 @@ allprojects {
     }
 }
 
-subprojects {
+subprojects { subProject ->
     plugins.withId 'osgi-module', {
+        jar {
+            manifest {
+                name subProject.description
+                instruction 'Bundle-Category', 'javarel'
+            }
+        }
+
         dependencies {
             osgiBundle 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.0'
 
@@ -63,15 +70,15 @@ dependencies {
     osgiBundle 'commons-io:commons-io:2.4'
     osgiBundle 'org.json:json:20160212'
 
-//    osgiModule project(':app:core')
-//    osgiModule project(':app:adm')
-//    osgiModule project(':resource')
-//    osgiModule project(':communication:rest')
-//    osgiModule project(':presentation:asset')
-//    osgiModule project(':presentation:view')
-//    osgiModule project(':presentation:view:pebble')
-//    osgiModule project(':storage:database')
-//    osgiModule project(':storage:repository')
+    osgiModule project(':app:core')
+    osgiModule project(':app:adm')
+    osgiModule project(':resource')
+    osgiModule project(':communication:rest')
+    osgiModule project(':presentation:asset')
+    osgiModule project(':presentation:view')
+    osgiModule project(':presentation:view:pebble')
+    osgiModule project(':storage:database')
+    osgiModule project(':storage:repository')
 }
 
 osgiContainer {

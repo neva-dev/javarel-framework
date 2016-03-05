@@ -2,7 +2,7 @@ buildscript {
     apply from: rootProject.file('buildscript.gradle'), to: buildscript
 }
 
-description = 'Javarel - Asset handling'
+description = 'Javarel - Asset Handling'
 
 apply plugin: 'kotlin'
 apply plugin: 'osgi-module'
