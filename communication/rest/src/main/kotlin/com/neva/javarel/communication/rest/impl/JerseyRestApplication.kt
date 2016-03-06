@@ -15,7 +15,7 @@ import java.util.*
 class JerseyRestApplication : RestApplication {
 
     companion object {
-        val servletPrefix = "/"
+        val servletPrefix = "/javarel"
     }
 
     @Requires
@@ -23,16 +23,28 @@ class JerseyRestApplication : RestApplication {
 
     private var components = Lists.newCopyOnWriteArrayList<RestComponent>()
 
-    @Bind(aggregate = true)
-    fun bindResource(component: RestComponent) {
-        components.add(component)
-        updateHttpService()
-    }
+//    @Bind(aggregate = true)
+//    fun bindResource(component: RestComponent) {
+//        components.add(component)
+//        updateHttpService()
+//    }
+//
+//    @Unbind
+//    fun unbindResource(component: RestComponent) {
+//        components.remove(component)
+//        updateHttpService()
+//    }
 
-    @Unbind
-    fun unbindResource(component: RestComponent) {
-        components.remove(component)
-        updateHttpService()
+    @Validate
+    fun validate() {
+        var config = ResourceConfig()
+        config.register(ListResource())
+
+        val servletContainer = ServletContainer(config)
+        val props = Hashtable<String, String>()
+        val context = httpService.createDefaultHttpContext()
+
+        httpService.registerServlet(servletPrefix, servletContainer, props, context)
     }
 
     private fun updateHttpService() {
