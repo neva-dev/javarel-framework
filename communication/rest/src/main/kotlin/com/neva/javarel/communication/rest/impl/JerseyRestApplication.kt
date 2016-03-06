@@ -38,7 +38,11 @@ class JerseyRestApplication : RestApplication {
     private fun updateHttpService() {
         synchronized(this) {
             if (components.isNotEmpty()) {
-                httpService.unregister(servletPrefix)
+                try {
+                    httpService.unregister(servletPrefix)
+                } catch (e: Throwable) {
+                    // nothing to do
+                }
             }
 
             var config = ResourceConfig()
@@ -49,7 +53,12 @@ class JerseyRestApplication : RestApplication {
             val props = Hashtable<String, String>()
 
             if (components.isNotEmpty()) {
-                httpService.registerServlet(servletPrefix, servletContainer, props, null);
+                try {
+                    httpService.registerServlet(servletPrefix, servletContainer, props, null)
+                } catch (e: Throwable) {
+                    // nothing to do
+                }
+
             }
         }
     }
