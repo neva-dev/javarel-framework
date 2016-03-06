@@ -10,10 +10,16 @@ class ContainerPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.plugins.apply(ModulePlugin)
         project.extensions.create(ContainerExtension.NAME, ContainerExtension, project)
+
         project.configurations.create(ContainerConfig.MODULE, {
             it.transitive = false
         })
+        project.configurations.create(ContainerConfig.MAIN, {
+            it.transitive = false
+        })
+
         project.dependencies.add(ContainerConfig.MODULE, project)
+
         project.task(BuildTask.NAME, type: BuildTask)
     }
 }

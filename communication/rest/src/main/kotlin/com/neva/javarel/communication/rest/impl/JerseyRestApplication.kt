@@ -48,7 +48,9 @@ class JerseyRestApplication : RestApplication {
             val servletContainer = ServletContainer(config)
             val props = Hashtable<String, String>()
 
-            httpService.registerServlet(servletPrefix, servletContainer, props, null);
+            if (components.isNotEmpty()) {
+                httpService.registerServlet(servletPrefix, servletContainer, props, null);
+            }
         }
     }
 

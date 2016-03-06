@@ -10,7 +10,6 @@ class ModulePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.plugins.apply(OsgiPlugin)
-        project.configurations.create(ContainerConfig.MAIN)
 
         createConfig(project, ContainerConfig.BUNDLE)
         createConfig(project, ContainerConfig.EMBED)
