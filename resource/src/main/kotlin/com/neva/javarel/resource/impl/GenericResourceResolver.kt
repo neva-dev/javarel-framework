@@ -7,6 +7,7 @@ import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
 import org.apache.felix.ipojo.annotations.Requires
 import java.util.*
+import kotlin.reflect.KClass
 
 @Component(immediate = true)
 @Provides
@@ -17,7 +18,7 @@ class GenericResourceResolver : ResourceResolver {
     lateinit var providers: List<ResourceProvider>
 
     @Requires(specification = ResourceAdapter::class)
-    lateinit var adapters: List<ResourceAdapter>
+    lateinit var adapters: List<ResourceAdapter<Any>>
 
     override fun find(uri: String): Resource? {
         val descriptor = ResourceDescriptor(uri)
@@ -41,7 +42,7 @@ class GenericResourceResolver : ResourceResolver {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> adapt(resource: Resource, clazz: Class<T>): T {
+    override fun <T : Any> adapt(resource: Resource, clazz: KClass<T>): T {
         val adapter = findAdapter(clazz)
         if (adapter == null) {
             throw ResourceException("There is no valid resource adapter for class: '${clazz}'")
@@ -50,8 +51,12 @@ class GenericResourceResolver : ResourceResolver {
         return adapter.adapt(resource) as T
     }
 
-    override fun isAdaptable(clazz: Class<Any>): Boolean {
+    override fun isAdaptable(clazz: KClass<Any>): Boolean {
         return findAdapter(clazz) != null
+    }
+
+    private fun fixUri(uri: String): String {
+        return if (uri.contains(ResourceMapper.PROTOCOL_SEPARATOR)) uri else ResourceMapper.pathToUri(uri)
     }
 
     private fun provideResource(descriptor: ResourceDescriptor, providers: List<ResourceProvider>): Resource? {
@@ -77,7 +82,7 @@ class GenericResourceResolver : ResourceResolver {
         return result
     }
 
-    private fun <T> findAdapter(clazz: Class<T>): ResourceAdapter? {
+    private fun <T : Any> findAdapter(clazz: KClass<T>): ResourceAdapter<Any>? {
         for (adapter in adapters) {
             if (Objects.equals(clazz, adapter.type)) {
                 return adapter

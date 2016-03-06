@@ -24,7 +24,7 @@ class SystemController : RestComponent {
     @Path("/home")
     fun getHome(): Response {
         val html = resourceResolver.resolve("bundle://adm/view/system/home.peb")
-                .adaptTo(View::class.java)
+                .adaptTo(View::class)
                 .render()
 
         return Response.ok(html)

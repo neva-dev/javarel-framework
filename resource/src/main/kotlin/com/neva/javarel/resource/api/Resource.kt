@@ -1,6 +1,7 @@
 package com.neva.javarel.resource.api
 
 import java.io.InputStream
+import kotlin.reflect.KClass
 
 interface Resource {
 
@@ -10,5 +11,5 @@ interface Resource {
 
     val inputStream: InputStream
 
-    fun <T> adaptTo(clazz: Class<T>): T
+    fun <T : Any> adaptTo(clazz: KClass<T>): T
 }

@@ -24,9 +24,9 @@ class ContainerExtension {
 
     String javaCommand = 'java'
 
-    String javaArgs = ''
+    List<String> javaArgs = []
 
-    String programArgs = ''
+    List<String> programArgs = []
 
     ContainerExtension(Project project) {
         this.project = project
@@ -49,15 +49,15 @@ class ContainerExtension {
         config(project.file("osgiContainer/felix/config.properties"))
     }
 
-    def debug(Integer port = 18080, Boolean suspend = true) {
-        javaArgs = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=${suspend ? 'y' : 'n'},address=$port"
+    def debug(Integer port = 18080, Boolean suspend = false) {
+        javaArgs << "-agentlib:jdwp=transport=dt_socket,server=y,suspend=${suspend ? 'y' : 'n'},address=$port".toString()
     }
 
-    def String getJavaArgs() {
+    String getJavaArgs() {
         return javaArgs.join(' ')
     }
 
-    def String getProgramArgs() {
+    String getProgramArgs() {
         return programArgs.join(' ')
     }
 

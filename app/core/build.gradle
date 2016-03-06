@@ -12,7 +12,7 @@ jar {
     manifest {
         name project.description
         instruction 'Private-Package', "com.neva.javarel.app.core.api.*;version=${project.version}"
-        instruction 'Resource-Uri', 'core'
+        instruction 'Resource-Namespace', 'core'
     }
 }
 

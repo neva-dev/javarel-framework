@@ -17,6 +17,10 @@ import org.osgi.framework.BundleContext
 @Instantiate
 class BundleResourceProvider : ResourceProvider {
 
+    companion object {
+        val namespaceHeaderName = "Resource-Namespace"
+    }
+
     @Context
     lateinit var context: BundleContext
 
@@ -28,7 +32,8 @@ class BundleResourceProvider : ResourceProvider {
 
     override fun provide(resolver: ResourceResolver, descriptor: ResourceDescriptor): Resource? {
         val bundle = getBundle(descriptor) ?: return null
-        val url = bundle.getEntry("/" + descriptor.path)
+        val resourcePath = getResourcePath(descriptor)
+        val url = bundle.getEntry("/" + resourcePath)
 
         var resource: Resource? = null
         if (url != null) {
@@ -39,18 +44,21 @@ class BundleResourceProvider : ResourceProvider {
     }
 
     private fun getBundle(descriptor: ResourceDescriptor): Bundle? {
-        val symbolicName = descriptor.parts[0]
+        val namespace = getResourceNamespace(descriptor)
 
-        if (!bundles.containsKey(symbolicName)) {
+        if (!bundles.containsKey(namespace)) {
             for (bundle in context.bundles) {
-                if (symbolicName.equals(bundle.symbolicName, ignoreCase = true)) {
-                    bundles.put(symbolicName, bundle)
+                if (namespace.equals(bundle.headers.get(namespaceHeaderName))) {
+                    bundles.put(namespace, bundle)
+                    break
                 }
             }
         }
 
-        return bundles[symbolicName]
+        return bundles[namespace]
     }
 
+    private fun getResourcePath(descriptor: ResourceDescriptor) = descriptor.parts.subList(1, descriptor.parts.size).joinToString("/")
 
+    private fun getResourceNamespace(descriptor: ResourceDescriptor) = descriptor.parts[0]
 }

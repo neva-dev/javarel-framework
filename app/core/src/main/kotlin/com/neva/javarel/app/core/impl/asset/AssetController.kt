@@ -27,8 +27,8 @@ class AssetController : RestComponent {
     @Path("/{path:.+}")
     fun getOrigin(@PathParam("path") path: String): Response {
         val resource = getResource(path)
+        val asset = resource.adaptTo(Asset::class)
 
-        val asset = resource.adaptTo(Asset::class.java)
         return Response.ok(asset.read()).type(asset.mimeType).build()
     }
 
@@ -36,8 +36,8 @@ class AssetController : RestComponent {
     @Path("/compiled/{path:.+}")
     fun getCompiled(@PathParam("path") path: String): Response {
         val resource = getResource(path)
+        val asset = resource.adaptTo(Asset::class)
 
-        val asset = resource.adaptTo(Asset::class.java)
         return Response.ok(asset.compile()).type(asset.mimeType).build()
     }
 

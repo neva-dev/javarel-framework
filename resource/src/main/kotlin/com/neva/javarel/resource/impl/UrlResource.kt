@@ -18,6 +18,5 @@ class UrlResource(override val resolver: ResourceResolver, override val descript
             } catch (e: IOException) {
                 throw ResourceException("Cannot read resource content using URL: '$url'")
             }
-
         }
 }

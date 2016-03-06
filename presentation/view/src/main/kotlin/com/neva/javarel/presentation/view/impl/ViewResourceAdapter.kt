@@ -9,19 +9,20 @@ import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
 import org.apache.felix.ipojo.annotations.Requires
+import kotlin.reflect.KClass
 
 @Component(immediate = true)
 @Provides
 @Instantiate
-class ViewResourceAdapter : ResourceAdapter {
+class ViewResourceAdapter : ResourceAdapter<View> {
 
     @Requires(specification = ViewEngine::class)
     lateinit var engines: List<ViewEngine>
 
-    override val type: Class<Any>
-        get() = View::class as Class<Any>
+    override val type: KClass<View>
+        get() = View::class
 
-    override fun adapt(resource: Resource): Any {
+    override fun adapt(resource: Resource): View {
         for (engine in engines) {
             if (engine.handles(resource.descriptor)) {
                 return engine.make(resource)
