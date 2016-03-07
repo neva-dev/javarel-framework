@@ -8,6 +8,7 @@ import org.apache.felix.ipojo.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
 import org.ops4j.pax.web.service.WebContainer
+import org.osgi.service.http.HttpContext
 import java.util.*
 
 @Component(immediate = true)
@@ -35,7 +36,7 @@ class JerseyRestApplication : RestApplication {
         updateHttpService()
     }
 
-    private fun updateHttpService() {
+    override fun updateHttpService() {
         synchronized(this) {
             if (components.isNotEmpty()) {
                 try {
