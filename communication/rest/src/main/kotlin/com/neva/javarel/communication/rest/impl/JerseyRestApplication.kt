@@ -18,7 +18,7 @@ class JerseyRestApplication : RestApplication {
         val servletPrefix = "/*"
     }
 
-    private var components = Lists.newCopyOnWriteArrayList<RestComponent>()
+    private val components = Lists.newCopyOnWriteArrayList<RestComponent>()
 
     @Requires
     lateinit var webContainer: WebContainer

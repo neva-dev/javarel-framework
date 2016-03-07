@@ -79,6 +79,7 @@ dependencies {
     osgiModule project(':presentation:view:pebble')
     osgiModule project(':storage:database')
     osgiModule project(':storage:repository')
+    osgiModule project(':processing:scheduler')
 
     osgiModule project(':app:core')
     osgiModule project(':app:adm')

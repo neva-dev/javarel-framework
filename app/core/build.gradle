@@ -21,4 +21,5 @@ dependencies {
     compile project(':communication:rest')
     compile project(':presentation:asset')
     compile project(':presentation:view')
+    compile project(':processing:scheduler')
 }

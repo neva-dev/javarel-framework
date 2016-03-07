@@ -10,7 +10,7 @@ apply plugin: 'com.athaydes.ipojo'
 
 jar {
     manifest {
-        instruction 'Bundle-Name', project.description
+        name project.description
         instruction 'Export-Package', "com.neva.javarel.communication.rest.api.*;version=${project.version}"
     }
 }

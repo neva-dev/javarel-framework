@@ -8,7 +8,7 @@ include ':communication:logging'
 include ':presentation:asset'
 include ':presentation:view'
 include ':presentation:view:pebble'
-include ':processing.scheduler'
+include ':processing:scheduler'
 include ':storage:database'
 include ':storage:repository'
 

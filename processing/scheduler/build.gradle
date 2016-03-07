@@ -16,5 +16,5 @@ jar {
 }
 
 dependencies {
-    osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.quartz:2.2.2_1'
+    osgiBundle 'org.quartz-scheduler:quartz:2.2.2'
 }
