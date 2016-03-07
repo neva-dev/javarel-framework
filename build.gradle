@@ -62,9 +62,7 @@ dependencies {
     osgiBundle 'org.ops4j.pax.web:pax-web-api:4.2.5'
     osgiBundle 'org.ops4j.pax.web:pax-web-spi:4.2.5'
     osgiBundle 'org.ops4j.pax.web:pax-web-runtime:4.2.5'
-    osgiBundle 'org.ops4j.pax.web:pax-web-extender-war:4.2.5'
     osgiBundle 'org.ops4j.pax.web:pax-web-jetty-bundle:4.2.5'
-    osgiBundle 'org.ops4j.pax.web:pax-web-extender-whiteboard:4.2.5'
 
     osgiBundle 'org.apache.xbean:xbean-finder:4.5'
     osgiBundle 'org.slf4j:slf4j-log4j12:1.7.6'
@@ -88,5 +86,5 @@ dependencies {
 
 osgiContainer {
     felix()
-    debug(18080, true)
+    debug()
 }

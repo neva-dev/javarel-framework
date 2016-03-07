@@ -7,7 +7,7 @@ import com.neva.javarel.communication.rest.api.RestComponent
 import org.apache.felix.ipojo.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
-import org.osgi.service.http.HttpService
+import org.ops4j.pax.web.service.WebContainer
 import java.util.*
 
 @Component(immediate = true)
@@ -18,42 +18,30 @@ class JerseyRestApplication : RestApplication {
         val servletPrefix = "/javarel"
     }
 
-    @Requires
-    lateinit var httpService: HttpService
-
     private var components = Lists.newCopyOnWriteArrayList<RestComponent>()
 
-//    @Bind(aggregate = true)
-//    fun bindResource(component: RestComponent) {
-//        components.add(component)
-//        updateHttpService()
-//    }
-//
-//    @Unbind
-//    fun unbindResource(component: RestComponent) {
-//        components.remove(component)
-//        updateHttpService()
-//    }
+    @Requires
+    lateinit var webContainer: WebContainer
 
-    @Validate
-    fun validate() {
-        var config = ResourceConfig()
-        config.register(ListResource())
+    @Bind(aggregate = true)
+    fun bindResource(component: RestComponent) {
+        components.add(component)
+        updateHttpService()
+    }
 
-        val servletContainer = ServletContainer(config)
-        val props = Hashtable<String, String>()
-        val context = httpService.createDefaultHttpContext()
-
-        httpService.registerServlet(servletPrefix, servletContainer, props, context)
+    @Unbind
+    fun unbindResource(component: RestComponent) {
+        components.remove(component)
+        updateHttpService()
     }
 
     private fun updateHttpService() {
         synchronized(this) {
             if (components.isNotEmpty()) {
                 try {
-                    httpService.unregister(servletPrefix)
+                    webContainer.unregister(servletPrefix)
                 } catch (e: Throwable) {
-                    // nothing to do
+                    // nothing interesting
                 }
             }
 
@@ -65,12 +53,7 @@ class JerseyRestApplication : RestApplication {
             val props = Hashtable<String, String>()
 
             if (components.isNotEmpty()) {
-                try {
-                    httpService.registerServlet(servletPrefix, servletContainer, props, null)
-                } catch (e: Throwable) {
-                    // nothing to do
-                }
-
+                webContainer.registerServlet(servletPrefix, servletContainer, props, null)
             }
         }
     }

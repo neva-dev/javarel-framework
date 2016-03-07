@@ -16,6 +16,7 @@ jar {
 }
 
 dependencies {
-    osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:1_2'
+    osgiBundle 'org.ops4j.pax.web:pax-web-api:4.2.5'
     osgiBundle 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.22.2'
+    osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:1_2'
 }
