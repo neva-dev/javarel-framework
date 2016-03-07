@@ -15,7 +15,7 @@ import java.util.*
 class JerseyRestApplication : RestApplication {
 
     companion object {
-        val servletPrefix = "/javarel"
+        val servletPrefix = "/*"
     }
 
     private var components = Lists.newCopyOnWriteArrayList<RestComponent>()
@@ -53,7 +53,7 @@ class JerseyRestApplication : RestApplication {
             val props = Hashtable<String, String>()
 
             if (components.isNotEmpty()) {
-                webContainer.registerServlet(servletPrefix, servletContainer, props, null)
+                webContainer.registerServlet(servletPrefix, servletContainer, props, webContainer.defaultSharedHttpContext)
             }
         }
     }
