@@ -16,6 +16,7 @@ jar {
     dependencies {
         compile project(':resource')
         compile project(':presentation:view')
+        compile project(':communication:rest')
 
         osgiBundle 'com.mitchellbosecke:pebble:2.1.0'
     }

@@ -1,3 +1,11 @@
 package com.neva.javarel.communication.rest.api
 
-data class RestRoute(val uri: String)
+interface RestRoute {
+
+    val methods: Collection<String>
+
+    val uri: String
+
+    val action: String
+
+}

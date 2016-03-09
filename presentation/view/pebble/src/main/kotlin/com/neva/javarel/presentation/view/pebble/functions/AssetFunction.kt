@@ -7,7 +7,7 @@ class AssetFunction : Function {
 
     override fun execute(args: Map<String, Any>): Any {
         val path = args["0"].toString()
-        return "/core/asset/" + ResourceMapper.uriToPath(path)
+        return "/asset/" + ResourceMapper.uriToPath(path)
     }
 
     override fun getArgumentNames(): MutableList<String>? {
