@@ -4,5 +4,5 @@ interface RestApplication {
 
     val components: Set<RestComponent>
 
-    fun updateHttpService()
+    fun update()
 }

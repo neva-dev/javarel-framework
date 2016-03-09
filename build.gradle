@@ -56,6 +56,9 @@ dependencies {
     osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
     osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.6'
     osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
+    osgiBundle 'org.apache.felix:org.apache.felix.ipojo.webconsole:1.7.0', {
+        transitive = false
+    }
     osgiBundle 'org.apache.felix:org.apache.felix.log:1.0.1'
 
     osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.8.5'

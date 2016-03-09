@@ -12,6 +12,7 @@ import java.util.*
 
 @Component(immediate = true)
 @Instantiate
+@Provides
 class JerseyRestApplication : RestApplication {
 
     companion object {
@@ -26,16 +27,16 @@ class JerseyRestApplication : RestApplication {
     @Bind(aggregate = true)
     fun bindResource(component: RestComponent) {
         registeredComponents.add(component)
-        updateHttpService()
+        update()
     }
 
     @Unbind
     fun unbindResource(component: RestComponent) {
         registeredComponents.remove(component)
-        updateHttpService()
+        update()
     }
 
-    override fun updateHttpService() {
+    override fun update() {
         synchronized(this) {
             if (registeredComponents.isNotEmpty()) {
                 try {
