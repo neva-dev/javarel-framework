@@ -7,7 +7,7 @@ import com.neva.javarel.communication.rest.api.RestComponent
 import org.apache.felix.ipojo.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
-import org.ops4j.pax.web.service.WebContainer
+import org.osgi.service.http.HttpService
 import java.util.*
 
 @Component(immediate = true)
@@ -16,13 +16,13 @@ import java.util.*
 class JerseyRestApplication : RestApplication {
 
     companion object {
-        val servletPrefix = "/*"
+        val servletPrefix = "/"
     }
 
     private val registeredComponents = Sets.newConcurrentHashSet<RestComponent>()
 
     @Requires
-    lateinit var webContainer: WebContainer
+    lateinit var httpService: HttpService
 
     @Bind(aggregate = true)
     fun bindResource(component: RestComponent) {
@@ -40,7 +40,7 @@ class JerseyRestApplication : RestApplication {
         synchronized(this) {
             if (registeredComponents.isNotEmpty()) {
                 try {
-                    webContainer.unregister(servletPrefix)
+                    httpService.unregister(servletPrefix)
                 } catch (e: Throwable) {
                     // nothing interesting
                 }
@@ -54,7 +54,7 @@ class JerseyRestApplication : RestApplication {
             val props = Hashtable<String, String>()
 
             if (registeredComponents.isNotEmpty()) {
-                webContainer.registerServlet(servletPrefix, servletContainer, props, webContainer.defaultSharedHttpContext)
+                httpService.registerServlet(servletPrefix, servletContainer, props, null)
             }
         }
     }
