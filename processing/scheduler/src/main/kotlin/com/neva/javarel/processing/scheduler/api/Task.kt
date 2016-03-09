@@ -5,8 +5,8 @@ import org.quartz.Trigger
 
 interface Task {
 
-    fun getTrigger(): Trigger
+    val trigger: Trigger
 
-    fun getJob(): JobDetail
+    val job: JobDetail
 
 }

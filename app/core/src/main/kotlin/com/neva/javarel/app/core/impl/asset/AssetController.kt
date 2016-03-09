@@ -2,8 +2,6 @@ package com.neva.javarel.app.core.impl.asset
 
 import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.presentation.asset.api.Asset
-import com.neva.javarel.resource.api.Resource
-import com.neva.javarel.resource.api.ResourceMapper
 import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
@@ -26,8 +24,7 @@ class AssetController : RestComponent {
     @GET
     @Path("/{path:.+}")
     fun getOrigin(@PathParam("path") path: String): Response {
-        val resource = getResource(path)
-        val asset = resource.adaptTo(Asset::class)
+        val asset = resolver.resolve(path).adaptTo(Asset::class)
 
         return Response.ok(asset.read()).type(asset.mimeType).build()
     }
@@ -35,13 +32,9 @@ class AssetController : RestComponent {
     @GET
     @Path("/compiled/{path:.+}")
     fun getCompiled(@PathParam("path") path: String): Response {
-        val resource = getResource(path)
-        val asset = resource.adaptTo(Asset::class)
+        val asset = resolver.resolve(path).adaptTo(Asset::class)
 
         return Response.ok(asset.compile()).type(asset.mimeType).build()
     }
 
-    private fun getResource(path: String): Resource {
-        return resolver.resolve(ResourceMapper.pathToUri(path))
-    }
 }

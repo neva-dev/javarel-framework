@@ -16,4 +16,8 @@ object ResourceMapper {
         return StringUtils.trimToEmpty(path).replaceFirst(PATH_SEPARATOR, PROTOCOL_SEPARATOR)
     }
 
+    fun fixUri(uri: String): String {
+        return if (uri.contains(PROTOCOL_SEPARATOR)) uri else pathToUri(uri)
+    }
+
 }

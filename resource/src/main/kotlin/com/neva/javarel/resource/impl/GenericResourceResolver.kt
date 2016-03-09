@@ -26,7 +26,7 @@ class GenericResourceResolver : ResourceResolver {
     }
 
     override fun resolve(uri: String): Resource {
-        val descriptor = ResourceDescriptor(uri)
+        val descriptor = ResourceDescriptor(ResourceMapper.fixUri(uri))
         val providers = findProviders(descriptor)
 
         if (providers.isEmpty()) {
@@ -53,10 +53,6 @@ class GenericResourceResolver : ResourceResolver {
 
     override fun isAdaptable(clazz: KClass<Any>): Boolean {
         return findAdapter(clazz) != null
-    }
-
-    private fun fixUri(uri: String): String {
-        return if (uri.contains(ResourceMapper.PROTOCOL_SEPARATOR)) uri else ResourceMapper.pathToUri(uri)
     }
 
     private fun provideResource(descriptor: ResourceDescriptor, providers: List<ResourceProvider>): Resource? {

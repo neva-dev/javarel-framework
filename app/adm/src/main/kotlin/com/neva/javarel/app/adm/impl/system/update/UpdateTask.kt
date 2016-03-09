@@ -16,21 +16,19 @@ class UpdateTask : Task {
         val logger = LoggerFactory.getLogger(UpdateTask::class.java)
     }
 
-    private val trigger = TriggerBuilder
-            .newTrigger()
-            .withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/1 1/1 * ? *")) // every hour
-            .build();
+    override val trigger: Trigger
+        get() {
+            return TriggerBuilder
+                    .newTrigger()
+                    .withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/1 1/1 * ? *")) // every hour
+                    .build();
+        }
 
-    private val job = JobBuilder.newJob(UpdateJob::class.java)
-            .build()
-
-    override fun getTrigger(): Trigger {
-        return trigger
-    }
-
-    override fun getJob(): JobDetail {
-        return job
-    }
+    override val job: JobDetail
+        get() {
+            return JobBuilder.newJob(UpdateJob::class.java)
+                    .build()
+        }
 
     class UpdateJob : Job {
         override fun execute(context: JobExecutionContext?) {

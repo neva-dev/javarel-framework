@@ -29,12 +29,12 @@ class QuartzTaskScheduler : TaskScheduler {
 
     @Bind(aggregate = true)
     fun bindTask(task: Task) {
-        scheduler.scheduleJob(task.getJob(), task.getTrigger())
+        scheduler.scheduleJob(task.job, task.trigger)
     }
 
     @Unbind
     fun unbindTask(task: Task) {
-        scheduler.unscheduleJob(task.getTrigger().key)
+        scheduler.unscheduleJob(task.trigger.key)
     }
 
 }
