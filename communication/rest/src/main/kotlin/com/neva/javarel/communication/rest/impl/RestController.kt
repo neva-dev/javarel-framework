@@ -17,16 +17,22 @@ import javax.ws.rs.core.Response
 @Instantiate
 @Provides
 @Path("/rest")
-class ListResource : RestComponent {
+class RestController : RestComponent {
 
     @Requires
-    private lateinit var restRouter: RestRouter
+    private lateinit var router: RestRouter
 
     @Path("/list")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     fun getList(): Response? {
-        return Response.ok(Gson().toJson(restRouter.routes)).build()
+        val resources = router.routes.fold(mutableListOf<Resource>(), { acc, route ->
+            acc.add(Resource(route.methods, route.uri, route.action)); acc;
+        });
+
+        return Response.ok(Gson().toJson(resources)).build()
     }
+
+    data class Resource(val methods: Collection<String>, val uri: String, val action: String)
 
 }

@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response
 
 @Component(immediate = true)
 @Instantiate
-@Provides(specifications = arrayOf(RestComponent::class))
+@Provides
 @Path("/adm/system")
 class SystemController : RestComponent {
 

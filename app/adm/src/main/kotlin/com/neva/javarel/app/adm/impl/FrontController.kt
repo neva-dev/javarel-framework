@@ -5,6 +5,7 @@ import com.neva.javarel.communication.rest.api.RestComponent
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
+import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.core.Response
 
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response
 class FrontController : RestComponent {
 
     @Path("/")
+    @GET
     fun getHome(): Response? {
         return Redirect.to("/adm/system/home");
     }
