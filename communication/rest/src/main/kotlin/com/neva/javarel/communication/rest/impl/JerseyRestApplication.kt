@@ -1,14 +1,13 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.Lists
+import com.google.common.collect.ImmutableSet
+import com.google.common.collect.Sets
 import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestComponent
 import org.apache.felix.ipojo.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
 import org.ops4j.pax.web.service.WebContainer
-import org.osgi.service.http.HttpContext
 import java.util.*
 
 @Component(immediate = true)
@@ -19,26 +18,26 @@ class JerseyRestApplication : RestApplication {
         val servletPrefix = "/*"
     }
 
-    private val components = Lists.newCopyOnWriteArrayList<RestComponent>()
+    private val registeredComponents = Sets.newConcurrentHashSet<RestComponent>()
 
     @Requires
     lateinit var webContainer: WebContainer
 
     @Bind(aggregate = true)
     fun bindResource(component: RestComponent) {
-        components.add(component)
+        registeredComponents.add(component)
         updateHttpService()
     }
 
     @Unbind
     fun unbindResource(component: RestComponent) {
-        components.remove(component)
+        registeredComponents.remove(component)
         updateHttpService()
     }
 
     override fun updateHttpService() {
         synchronized(this) {
-            if (components.isNotEmpty()) {
+            if (registeredComponents.isNotEmpty()) {
                 try {
                     webContainer.unregister(servletPrefix)
                 } catch (e: Throwable) {
@@ -47,20 +46,18 @@ class JerseyRestApplication : RestApplication {
             }
 
             var config = ResourceConfig()
-            for (resource in components) {
+            for (resource in registeredComponents) {
                 config.register(resource)
             }
             val servletContainer = ServletContainer(config)
             val props = Hashtable<String, String>()
 
-            if (components.isNotEmpty()) {
+            if (registeredComponents.isNotEmpty()) {
                 webContainer.registerServlet(servletPrefix, servletContainer, props, webContainer.defaultSharedHttpContext)
             }
         }
     }
 
-    override fun getComponents(): Collection<RestComponent> {
-        return ImmutableList.copyOf(components);
-    }
-
+    override val components: Set<RestComponent>
+        get() = ImmutableSet.copyOf(registeredComponents)
 }

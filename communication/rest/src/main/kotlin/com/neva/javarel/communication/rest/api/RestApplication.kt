@@ -2,7 +2,7 @@ package com.neva.javarel.communication.rest.api
 
 interface RestApplication {
 
-    fun getComponents(): Collection<RestComponent>
+    val components: Set<RestComponent>
 
     fun updateHttpService()
 }

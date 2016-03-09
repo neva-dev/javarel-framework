@@ -49,7 +49,7 @@ class ContainerExtension {
         config(project.file("osgiContainer/felix/config.properties"))
     }
 
-    def debug(Integer port = 18080, Boolean suspend = false) {
+    def debug(Integer port = 16660, Boolean suspend = false) {
         javaArgs << "-agentlib:jdwp=transport=dt_socket,server=y,suspend=${suspend ? 'y' : 'n'},address=$port".toString()
     }
 

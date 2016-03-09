@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response
 class SystemController : RestComponent {
 
     @Requires
-    lateinit var resourceResolver: ResourceResolver
+    private lateinit var resourceResolver: ResourceResolver
 
     @GET
     @Path("/home")

@@ -35,6 +35,7 @@ subprojects { subProject ->
             osgiBundle 'javax.servlet:javax.servlet-api:3.0.1'
 
             osgiBundle 'com.google.guava:guava:19.0'
+            osgiBundle 'com.google.code.gson:gson:2.6.2'
             osgiBundle 'commons-io:commons-io:2.4'
             osgiBundle 'org.apache.commons:commons-lang3:3.4'
             osgiBundle 'org.slf4j:slf4j-api:1.7.6'
