@@ -1,13 +1,11 @@
 package com.neva.javarel.presentation.view.pebble.functions
 
-import com.mitchellbosecke.pebble.extension.Function
 import com.neva.javarel.communication.rest.api.RestRouter
 
-class RouteFunction(val router: RestRouter) : Function {
+class RouteFunction(val router: RestRouter) : BaseFunction() {
 
     companion object {
         val actionParam = "action"
-
         val nameParam = "name"
     }
 
@@ -16,23 +14,25 @@ class RouteFunction(val router: RestRouter) : Function {
     }
 
     override fun execute(args: MutableMap<String, Any>): Any {
-        if (args.isEmpty()) {
+        val params = getParams(args)
+
+        if (params.isEmpty()) {
             throw IllegalArgumentException("Route function requires 'action' or 'name' argument specified.")
         }
 
-        if (args.containsKey(nameParam)) {
-            val name = args.get(nameParam) as String
-            args.remove(nameParam);
+        if (params.containsKey(nameParam)) {
+            val name = params.get(nameParam) as String
+            params.remove(nameParam);
 
-            return byName(name, args)
-        } else if (args.containsKey(actionParam)) {
-            val action = args.get(actionParam) as String;
-            args.remove(actionParam);
+            return byName(name, params)
+        } else if (params.containsKey(actionParam)) {
+            val action = params.get(actionParam) as String;
+            params.remove(actionParam);
 
             return byAction(action)
         }
 
-        return byAction(args.entries.first().value as String)
+        return byAction(params.entries.first().value as String)
     }
 
     private fun byAction(action: String, params: Map<String, Any> = emptyMap()): String {

@@ -35,6 +35,7 @@ class JerseyRestRouter : RestRouter {
             return routes
         }
 
+    // TODO support 'Route-Action-Alias'
     private fun routeBy(predicate: (RestRoute) -> Boolean, notFoundMessage: String): RestRoute {
         routes.forEach { route ->
             if (predicate.invoke(route)) {

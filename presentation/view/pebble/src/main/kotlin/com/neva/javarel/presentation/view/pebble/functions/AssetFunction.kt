@@ -1,18 +1,34 @@
 package com.neva.javarel.presentation.view.pebble.functions
 
-import com.mitchellbosecke.pebble.extension.Function
+import com.neva.javarel.communication.rest.api.RestRouter
+import com.neva.javarel.presentation.view.api.ViewException
 import com.neva.javarel.resource.api.ResourceMapper
 
-class AssetFunction : Function {
+class AssetFunction(val router: RestRouter) : BaseFunction() {
 
-    override fun execute(args: Map<String, Any>): Any {
-        val path = args["0"].toString()
-        return "/asset/" + ResourceMapper.uriToPath(path)
+    companion object {
+        val routeName = "asset"
+        val pathParam = "path"
+    }
+
+    override fun execute(args: MutableMap<String, Any>): Any {
+        val params = getParams(args)
+
+        val path = if (params.containsKey(pathParam)) {
+            params.get(pathParam) as String
+        } else if (params.size == 1) {
+            params.entries.first().value as String
+        } else {
+            throw ViewException("Asset function should have 'path' argument specified.")
+        }
+
+        params.put(pathParam, ResourceMapper.uriToPath(path))
+
+        return router.routeByName(routeName).assembleUri(params)
     }
 
     override fun getArgumentNames(): MutableList<String>? {
-        return null
+        return mutableListOf(routeName)
     }
-
 
 }

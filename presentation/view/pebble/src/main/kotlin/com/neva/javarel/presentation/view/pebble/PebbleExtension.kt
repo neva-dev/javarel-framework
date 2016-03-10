@@ -24,7 +24,7 @@ class PebbleExtension : AbstractExtension() {
         return mapOf(
                 "now" to NowFunction(),
                 "route" to RouteFunction(router),
-                "asset" to AssetFunction()
+                "asset" to AssetFunction(router)
         )
     }
 }
