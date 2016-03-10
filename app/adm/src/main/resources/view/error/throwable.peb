@@ -1,0 +1,13 @@
+{% extends "bundle://adm/view/layout/master.peb" %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="page-header m-t-1">
+        <h1>Application error!</h1>
+    </div>
+
+    <pre>{{ stackTrace }}</pre>
+</div>
+
+{% endblock %}
