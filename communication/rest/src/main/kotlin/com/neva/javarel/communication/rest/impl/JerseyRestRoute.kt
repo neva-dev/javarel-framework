@@ -3,7 +3,7 @@ package com.neva.javarel.communication.rest.impl
 import com.neva.javarel.communication.rest.api.RestRoute
 import org.glassfish.jersey.server.model.Resource
 
-class JerseyRestRoute(val resource: Resource, val method: Resource) : RestRoute {
+class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: Resource) : RestRoute {
 
     override val methods: Collection<String>
         get() {
