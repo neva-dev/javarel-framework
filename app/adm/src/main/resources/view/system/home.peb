@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<p><img src="{{ asset('bundle://adm/public/layout/logo/png') }}" alt=""></p>
+<p><img src="{{ asset('bundle://adm/public/layout/logo.png') }}" alt=""></p>
 <h1>Hello, I am Javarel!</h1>
 <p><a href="{{ route(name = 'home') }}">Home</a></p>
 

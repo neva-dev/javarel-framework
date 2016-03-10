@@ -2,6 +2,7 @@ package com.neva.javarel.communication.rest.impl
 
 import com.neva.javarel.communication.rest.api.Rest
 import com.neva.javarel.communication.rest.api.RestRoute
+import org.apache.commons.lang3.StringUtils
 import org.glassfish.jersey.server.model.Resource
 import java.lang.reflect.Method
 
@@ -46,7 +47,12 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
     override fun assembleUri(params: Map<String, Any>): String {
         var result = path;
         for ((key, value) in params) {
-            //TODO replace path params in using specified params
+            StringUtils.substringsBetween(path, "{", "}").forEach { variable ->
+                val name = variable.split(":")[0]
+                if (name == key) {
+                    result = StringUtils.replace(result, "{${variable}}", value as String)
+                }
+            }
         }
 
         return result;
