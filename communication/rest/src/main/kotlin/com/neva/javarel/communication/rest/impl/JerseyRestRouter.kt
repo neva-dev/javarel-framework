@@ -49,8 +49,8 @@ class JerseyRestRouter : RestRouter {
         return routeBy({ it.action == action }, "Route cannot be found by action '$action'")
     }
 
-    override fun routeByUri(uri: String): RestRoute {
-        return routeBy({ it.uri == uri }, "Route cannot be found by URI '$uri'")
+    override fun routeByName(name: String): RestRoute {
+        return routeBy({ it.name == name }, "Route cannot be found by name '$name'")
     }
 
 }

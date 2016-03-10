@@ -11,24 +11,36 @@ class RouteFunction(val router: RestRouter) : Function {
         val nameParam = "name"
     }
 
-    override fun execute(args: Map<String, Any>): Any {
+    override fun getArgumentNames(): MutableList<String>? {
+        return mutableListOf(actionParam, nameParam)
+    }
+
+    override fun execute(args: MutableMap<String, Any>): Any {
         if (args.isEmpty()) {
             throw IllegalArgumentException("Route function requires 'action' or 'name' argument specified.")
         }
 
-        if (args.containsKey(actionParam)) {
-            return byAction(args.get(actionParam) as String)
+        if (args.containsKey(nameParam)) {
+            val name = args.get(nameParam) as String
+            args.remove(nameParam);
+
+            return byName(name, args)
+        } else if (args.containsKey(actionParam)) {
+            val action = args.get(actionParam) as String;
+            args.remove(actionParam);
+
+            return byAction(action)
         }
 
         return byAction(args.entries.first().value as String)
     }
 
-    private fun byAction(action: String): String {
-        return router.routeByAction(action).uri
+    private fun byAction(action: String, params: Map<String, Any> = emptyMap()): String {
+        return router.routeByAction(action).assembleUri(params)
     }
 
-    override fun getArgumentNames(): MutableList<String>? {
-        return mutableListOf(actionParam, nameParam)
+    private fun byName(name: String, params: Map<String, Any> = emptyMap()): String {
+        return router.routeByName(name).assembleUri(params)
     }
 
 }

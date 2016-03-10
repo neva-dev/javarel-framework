@@ -6,5 +6,5 @@ interface RestRouter {
 
     fun routeByAction(action: String): RestRoute
 
-    fun routeByUri(uri: String): RestRoute
+    fun routeByName(name: String): RestRoute
 }

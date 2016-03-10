@@ -1,5 +1,6 @@
 package com.neva.javarel.app.core.impl.asset
 
+import com.neva.javarel.communication.rest.api.Rest
 import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.resource.api.ResourceResolver
@@ -23,6 +24,7 @@ class AssetController : RestComponent {
 
     @GET
     @Path("/{path:.+}")
+    @Rest(name = "asset")
     fun getOrigin(@PathParam("path") path: String): Response {
         val asset = resolver.resolve(path).adaptTo(Asset::class)
 
@@ -31,6 +33,7 @@ class AssetController : RestComponent {
 
     @GET
     @Path("/compiled/{path:.+}")
+    @Rest(name = "asset.compiled")
     fun getCompiled(@PathParam("path") path: String): Response {
         val asset = resolver.resolve(path).adaptTo(Asset::class)
 
