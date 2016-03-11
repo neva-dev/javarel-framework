@@ -15,16 +15,24 @@ import javax.ws.rs.core.Response
 @Component(immediate = true)
 @Instantiate
 @Provides
-@Path("/adm")
+@Path("/")
 class FrontController : RestComponent {
 
     @Requires
     private lateinit var redirector: RestRedirector
 
+
     @Path("/")
     @GET
+    @Rest(name = "root")
+    fun getRoot(): Response {
+        return redirector.toAction(FrontController::getHome)
+    }
+
+    @Path("/adm")
+    @GET
     @Rest(name = "home")
-    fun getHome(): Response? {
+    fun getHome(): Response {
         return redirector.toAction(SystemController::getHome)
     }
 

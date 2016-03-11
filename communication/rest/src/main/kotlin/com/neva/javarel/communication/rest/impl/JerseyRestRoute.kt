@@ -8,6 +8,13 @@ import java.lang.reflect.Method
 
 class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: Resource) : RestRoute {
 
+    companion object {
+        val pathSeparator = "/"
+        val paramTypeDelimiter = ":"
+        val paramStart = "{"
+        val paramEnd = "}"
+    }
+
     override val name: String?
         get() {
             var name: String? = null;
@@ -26,7 +33,7 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
             });
         }
     override val path: String
-        get() = "${resource.path}${method.path}"
+        get() = mergePath(resource.path, method.path)
 
     override val action: String
         get() = "$className.$methodName"
@@ -39,18 +46,18 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
 
     override val parameters: Collection<String>
         get() {
-            return method.resourceMethods.first().invocable.parameters.fold(mutableListOf<String>(), { acc, parameter ->
-                acc.add(parameter.sourceName); acc;
+            return method.resourceMethods.first().invocable.parameters.fold(mutableListOf<String>(), { result, parameter ->
+                result.add(parameter.sourceName); result;
             });
         }
 
     override fun assembleUri(params: Map<String, Any>): String {
         var result = path;
         for ((key, value) in params) {
-            StringUtils.substringsBetween(path, "{", "}").forEach { variable ->
-                val name = variable.split(":")[0]
+            StringUtils.substringsBetween(path, paramStart, paramEnd).forEach { variable ->
+                val name = variable.split(paramTypeDelimiter)[0]
                 if (name == key) {
-                    result = StringUtils.replace(result, "{${variable}}", value as String)
+                    result = StringUtils.replace(result, paramStart + variable + paramEnd, value as String)
                 }
             }
         }
@@ -60,5 +67,17 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
 
     private val handlingMethod: Method
         get() = method.resourceMethods.first().invocable.handlingMethod
+
+    private fun mergePath(vararg parts: String): String {
+        val normalized = parts.fold(mutableListOf<String>(), { result, part ->
+            val path = part.removePrefix(pathSeparator).removeSuffix(pathSeparator)
+            if (path.isNotBlank()) {
+                result.add(path);
+            }
+            result;
+        })
+
+        return pathSeparator + normalized.joinToString(pathSeparator)
+    }
 
 }
