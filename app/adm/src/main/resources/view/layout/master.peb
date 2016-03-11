@@ -9,9 +9,9 @@
 
     <title>Javarel</title>
 
-    <link rel="icon" href="{{ asset('bundle://adm/public/layout/favicon.ico') }}">
-    <link href="{{ asset('bundle://adm/public/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundle://adm/public/layout/jumbotron.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ asset('bundle://adm/asset/layout/favicon.ico') }}">
+    <link href="{{ asset('bundle://adm/asset/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundle://adm/asset/layout/jumbotron.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -42,8 +42,8 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{ asset('bundle://adm/public/vendor/jquery/jquery.min.js') }}"><\/script>')</script>
-<script src="{{ asset('bundle://adm/public/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('bundle://adm/public/layout/ie10-viewport-bug-workaround.js') }}"></script>
+<script>window.jQuery || document.write('<script src="{{ asset('bundle://adm/asset/vendor/jquery/jquery.min.js') }}"><\/script>')</script>
+<script src="{{ asset('bundle://adm/asset/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundle://adm/asset/layout/ie10-viewport-bug-workaround.js') }}"></script>
 </body>
 </html>

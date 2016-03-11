@@ -434,7 +434,7 @@ var Button = (function ($) {
     _createClass(Button, [{
       key: 'toggle',
 
-      // public
+      // asset
 
       value: function toggle() {
         var triggerChangeEvent = true;
@@ -643,7 +643,7 @@ var Carousel = (function ($) {
     _createClass(Carousel, [{
       key: 'next',
 
-      // public
+      // asset
 
       value: function next() {
         if (!this._isSliding) {
@@ -1102,7 +1102,7 @@ var Collapse = (function ($) {
     _createClass(Collapse, [{
       key: 'toggle',
 
-      // public
+      // asset
 
       value: function toggle() {
         if ($(this._element).hasClass(ClassName.IN)) {
@@ -1439,7 +1439,7 @@ var Dropdown = (function ($) {
     _createClass(Dropdown, [{
       key: 'toggle',
 
-      // public
+      // asset
 
       value: function toggle() {
         if (this.disabled || $(this).hasClass(ClassName.DISABLED)) {
@@ -1751,7 +1751,7 @@ var Modal = (function ($) {
     _createClass(Modal, [{
       key: 'toggle',
 
-      // public
+      // asset
 
       value: function toggle(relatedTarget) {
         return this._isShown ? this.hide() : this.show(relatedTarget);
@@ -2283,7 +2283,7 @@ var ScrollSpy = (function ($) {
     _createClass(ScrollSpy, [{
       key: 'refresh',
 
-      // public
+      // asset
 
       value: function refresh() {
         var _this14 = this;
@@ -2571,7 +2571,7 @@ var Tab = (function ($) {
     _createClass(Tab, [{
       key: 'show',
 
-      // public
+      // asset
 
       value: function show() {
         var _this15 = this;
@@ -2895,7 +2895,7 @@ var Tooltip = (function ($) {
     _createClass(Tooltip, [{
       key: 'enable',
 
-      // public
+      // asset
 
       value: function enable() {
         this._isEnabled = true;

@@ -26,7 +26,7 @@ class AssetController : RestComponent {
     @Path("/{path:.+}")
     @Rest(name = "asset")
     fun getOrigin(@PathParam("path") path: String): Response {
-        val asset = resolver.resolve(path).adaptTo(Asset::class)
+        val asset = resolveAsset(path)
 
         return Response.ok(asset.read()).type(asset.mimeType).build()
     }
@@ -35,9 +35,13 @@ class AssetController : RestComponent {
     @Path("/compiled/{path:.+}")
     @Rest(name = "asset.compiled")
     fun getCompiled(@PathParam("path") path: String): Response {
-        val asset = resolver.resolve(path).adaptTo(Asset::class)
+        val asset = resolveAsset(path)
 
         return Response.ok(asset.compile()).type(asset.mimeType).build()
+    }
+
+    private fun resolveAsset(path: String): Asset {
+        return resolver.resolve(path).adaptTo(Asset::class)
     }
 
 }
