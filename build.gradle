@@ -48,6 +48,16 @@ subprojects { subProject ->
 
     plugins.withId 'kotlin', {
         // testCompile group: 'junit', name: 'junit', version: '4.11'
+
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+
+        def compileOptions = {
+            options.encoding = "UTF-8"
+        }
+
+        compileJava compileOptions
+        compileTestJava compileOptions
     }
 }
 

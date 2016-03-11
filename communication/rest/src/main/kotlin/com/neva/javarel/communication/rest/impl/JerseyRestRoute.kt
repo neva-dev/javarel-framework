@@ -29,7 +29,7 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
         get() = "${resource.path}${method.path}"
 
     override val action: String
-        get() = "$className@$methodName"
+        get() = "$className.$methodName"
 
     override val methodName: String
         get() = method.resourceMethods.first().invocable.handlingMethod.name

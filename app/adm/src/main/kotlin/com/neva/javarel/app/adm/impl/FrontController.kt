@@ -1,11 +1,13 @@
 package com.neva.javarel.app.adm.impl
 
-import com.neva.javarel.communication.rest.api.Redirect
+import com.neva.javarel.app.adm.impl.system.SystemController
 import com.neva.javarel.communication.rest.api.Rest
 import com.neva.javarel.communication.rest.api.RestComponent
+import com.neva.javarel.communication.rest.api.RestRedirector
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
+import org.apache.felix.ipojo.annotations.Requires
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.core.Response
@@ -16,11 +18,14 @@ import javax.ws.rs.core.Response
 @Path("/adm")
 class FrontController : RestComponent {
 
+    @Requires
+    private lateinit var redirector: RestRedirector
+
     @Path("/")
     @GET
     @Rest(name = "home")
     fun getHome(): Response? {
-        return Redirect.to("/adm/system/home");
+        return redirector.toAction(SystemController::getHome)
     }
 
 }
