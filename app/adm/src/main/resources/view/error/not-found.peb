@@ -1,0 +1,11 @@
+{% extends "bundle://adm/view/layout/master.peb" %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="page-header m-t-1">
+        <h1>Page not found!</h1>
+    </div>
+</div>
+
+{% endblock %}

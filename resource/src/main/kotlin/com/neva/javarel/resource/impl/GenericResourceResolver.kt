@@ -30,12 +30,12 @@ class GenericResourceResolver : ResourceResolver {
         val providers = findProviders(descriptor)
 
         if (providers.isEmpty()) {
-            throw ResourceException("Cannot find any provider for resource: '${descriptor.uri}'")
+            throw ResourceNotFoundException("Cannot find any provider for resource: '${descriptor.uri}'")
         }
 
         val resource = provideResource(descriptor, providers)
         if (resource == null) {
-            throw ResourceException("Resource by URI cannot be found: '${descriptor.uri}'")
+            throw ResourceNotFoundException("Resource by URI cannot be found: '${descriptor.uri}'")
         }
 
         return resource

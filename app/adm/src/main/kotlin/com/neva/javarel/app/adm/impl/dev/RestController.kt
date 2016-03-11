@@ -1,4 +1,4 @@
-package com.neva.javarel.communication.rest.impl
+package com.neva.javarel.app.adm.impl.dev
 
 import com.google.gson.Gson
 import com.neva.javarel.communication.rest.api.RestComponent
@@ -16,13 +16,13 @@ import javax.ws.rs.core.Response
 @Component(immediate = true)
 @Instantiate
 @Provides
-@Path("/rest")
+@Path("/adm/dev")
 class RestController : RestComponent {
 
     @Requires
     private lateinit var router: RestRouter
 
-    @Path("/list")
+    @Path("/rest/list")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     fun getList(): Response? {

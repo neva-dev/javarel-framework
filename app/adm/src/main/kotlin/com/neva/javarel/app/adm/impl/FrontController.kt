@@ -21,8 +21,6 @@ class FrontController : RestComponent {
     @Requires
     private lateinit var redirector: RestRedirector
 
-
-    @Path("/")
     @GET
     @Rest(name = "root")
     fun getRoot(): Response {
