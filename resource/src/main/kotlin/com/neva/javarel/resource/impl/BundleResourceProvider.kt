@@ -11,7 +11,7 @@ import org.apache.felix.scr.annotations.Service
 import org.osgi.framework.Bundle
 import org.osgi.framework.BundleContext
 
-@Component
+@Component(immediate = true)
 @Service
 class BundleResourceProvider : ResourceProvider {
 
@@ -21,7 +21,7 @@ class BundleResourceProvider : ResourceProvider {
 
     private val foundBundles = Maps.newConcurrentMap<String, Bundle>()
 
-    private lateinit var context: BundleContext
+    private var context: BundleContext? = null
 
     @Activate
     protected fun start(context: BundleContext) {
@@ -49,7 +49,7 @@ class BundleResourceProvider : ResourceProvider {
         val namespace = getResourceNamespace(descriptor)
 
         if (!foundBundles.containsKey(namespace)) {
-            for (bundle in context.bundles) {
+            for (bundle in context!!.bundles) {
                 if (namespace.equals(bundle.headers.get(namespaceHeaderName))) {
                     foundBundles.put(namespace, bundle)
                     break

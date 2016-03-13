@@ -3,10 +3,7 @@ package com.neva.javarel.resource.impl
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import com.neva.javarel.resource.api.*
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.ReferenceCardinality
-import org.apache.felix.scr.annotations.Service
+import org.apache.felix.scr.annotations.*
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -14,10 +11,10 @@ import kotlin.reflect.KClass
 @Service
 class GenericResourceResolver : ResourceResolver {
 
-    @Reference(referenceInterface = ResourceProvider::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = ResourceProvider::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private var providers = Sets.newConcurrentHashSet<ResourceProvider>()
 
-    @Reference(referenceInterface = ResourceAdapter::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = ResourceAdapter::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private var adapters = Sets.newConcurrentHashSet<ResourceAdapter<Any>>()
 
     override fun find(uri: String): Resource? {

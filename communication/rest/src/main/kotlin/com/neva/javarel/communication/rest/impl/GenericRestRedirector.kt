@@ -10,7 +10,7 @@ import java.net.URI
 import javax.ws.rs.core.Response
 import kotlin.reflect.KFunction1
 
-@Component(immediate = true)
+@Component
 @Service
 class GenericRestRedirector : RestRedirector {
 

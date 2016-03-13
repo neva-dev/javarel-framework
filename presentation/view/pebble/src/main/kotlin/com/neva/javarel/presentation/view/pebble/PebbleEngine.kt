@@ -8,10 +8,7 @@ import com.neva.javarel.presentation.view.api.ViewEngine
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.resource.api.ResourceResolver
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.ReferenceCardinality
-import org.apache.felix.scr.annotations.Service
+import org.apache.felix.scr.annotations.*
 
 @Component(immediate = true)
 @Service
@@ -24,7 +21,7 @@ class PebbleEngine : ViewEngine {
     @Reference
     private lateinit var resourceResolver: ResourceResolver
 
-    @Reference(referenceInterface = Extension::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = Extension::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private var extensions = Sets.newConcurrentHashSet<Extension>()
 
     val loader: Loader<String>

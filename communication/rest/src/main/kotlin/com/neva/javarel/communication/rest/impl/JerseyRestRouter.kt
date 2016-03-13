@@ -9,7 +9,7 @@ import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
 import org.glassfish.jersey.server.model.Resource
 
-@Component(immediate = true)
+@Component
 @Service
 class JerseyRestRouter : RestRouter {
 

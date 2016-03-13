@@ -5,17 +5,14 @@ import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.presentation.asset.api.AssetFactory
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceAdapter
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.ReferenceCardinality
-import org.apache.felix.scr.annotations.Service
+import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
 @Component
 @Service
 class AssetResourceAdapter : ResourceAdapter<Asset> {
 
-    @Reference(referenceInterface = AssetFactory::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = AssetFactory::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private val factories = Sets.newConcurrentHashSet<AssetFactory>()
 
     override val type: KClass<Asset>

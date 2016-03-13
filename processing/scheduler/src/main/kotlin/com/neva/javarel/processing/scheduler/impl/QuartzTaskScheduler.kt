@@ -10,7 +10,7 @@ import org.quartz.impl.StdSchedulerFactory
 @Service
 class QuartzTaskScheduler : TaskScheduler {
 
-    @Reference(referenceInterface = Task::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = Task::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private lateinit var tasks: Set<Task>
 
     private val scheduler = StdSchedulerFactory().getScheduler();

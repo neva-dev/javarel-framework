@@ -12,7 +12,7 @@ import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.core.Response
 
-@Component(immediate = true)
+@Component
 @Service
 @Path("/asset")
 class AssetController : RestComponent {

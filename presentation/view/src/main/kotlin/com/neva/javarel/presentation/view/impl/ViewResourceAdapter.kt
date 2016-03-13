@@ -6,17 +6,14 @@ import com.neva.javarel.presentation.view.api.ViewEngine
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceAdapter
 import com.neva.javarel.resource.api.ResourceException
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.ReferenceCardinality
-import org.apache.felix.scr.annotations.Service
+import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
 @Component
 @Service
 class ViewResourceAdapter : ResourceAdapter<View> {
 
-    @Reference(referenceInterface = ViewEngine::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = ViewEngine::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private val engines = Sets.newConcurrentHashSet<ViewEngine>()
 
     override val type: KClass<View>

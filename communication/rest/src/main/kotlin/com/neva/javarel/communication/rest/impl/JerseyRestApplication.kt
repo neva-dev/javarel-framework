@@ -22,7 +22,7 @@ class JerseyRestApplication : RestApplication {
         const val servletPrefixProp = "servletPrefix"
     }
 
-    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private val registeredComponents = Sets.newConcurrentHashSet<RestComponent>()
 
     @Reference
@@ -39,25 +39,33 @@ class JerseyRestApplication : RestApplication {
         update()
     }
 
+    @Modified
     override fun update() {
         synchronized(this) {
-            if (registeredComponents.isNotEmpty()) {
-                try {
-                    httpService.unregister(servletPrefix)
-                } catch (e: Throwable) {
-                    // nothing interesting
-                }
-            }
+            stop()
+            start()
+        }
+    }
 
-            var config = ResourceConfig()
-            for (resource in registeredComponents) {
-                config.register(resource)
-            }
-            val servletContainer = ServletContainer(config)
-            val props = Hashtable<String, String>()
+    private fun start() {
+        var config = ResourceConfig()
+        for (resource in registeredComponents) {
+            config.register(resource)
+        }
+        val servletContainer = ServletContainer(config)
+        val props = Hashtable<String, String>()
 
-            if (registeredComponents.isNotEmpty()) {
-                httpService.registerServlet(servletPrefix, servletContainer, props, null)
+        if (registeredComponents.isNotEmpty()) {
+            httpService.registerServlet(servletPrefix, servletContainer, props, null)
+        }
+    }
+
+    private fun stop() {
+        if (registeredComponents.isNotEmpty()) {
+            try {
+                httpService.unregister(servletPrefix)
+            } catch (e: Throwable) {
+                // nothing interesting
             }
         }
     }
@@ -65,11 +73,11 @@ class JerseyRestApplication : RestApplication {
     override val components: Set<RestComponent>
         get() = ImmutableSet.copyOf(registeredComponents)
 
-    protected fun bindRestComponent(component: RestComponent) {
+    private fun bindRestComponent(component: RestComponent) {
         registeredComponents.add(component)
     }
 
-    protected fun unbindRestComponent(component: RestComponent) {
+    private fun unbindRestComponent(component: RestComponent) {
         registeredComponents.remove(component)
     }
 }
