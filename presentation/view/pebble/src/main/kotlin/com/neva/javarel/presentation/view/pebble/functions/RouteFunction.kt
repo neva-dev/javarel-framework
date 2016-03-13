@@ -1,8 +1,8 @@
 package com.neva.javarel.presentation.view.pebble.functions
 
-import com.neva.javarel.communication.rest.api.RestRouter
+import com.neva.javarel.communication.rest.api.RestUrlGenerator
 
-class RouteFunction(val router: RestRouter) : BaseFunction() {
+class RouteFunction(val urlGenerator: RestUrlGenerator) : BaseFunction() {
 
     companion object {
         val actionParam = "action"
@@ -24,23 +24,15 @@ class RouteFunction(val router: RestRouter) : BaseFunction() {
             val name = params.get(nameParam) as String
             params.remove(nameParam);
 
-            return byName(name, params)
+            return urlGenerator.name(name, params)
         } else if (params.containsKey(actionParam)) {
             val action = params.get(actionParam) as String;
             params.remove(actionParam);
 
-            return byAction(action)
+            return urlGenerator.action(action)
         }
 
-        return byAction(params.entries.first().value as String)
-    }
-
-    private fun byAction(action: String, params: Map<String, Any> = emptyMap()): String {
-        return router.routeByAction(action).assembleUri(params)
-    }
-
-    private fun byName(name: String, params: Map<String, Any> = emptyMap()): String {
-        return router.routeByName(name).assembleUri(params)
+        return urlGenerator.action(params.entries.first().value as String)
     }
 
 }

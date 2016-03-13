@@ -2,11 +2,12 @@ buildscript {
     apply from: rootProject.file('buildscript.gradle'), to: buildscript
 }
 
-description = 'Javarel - Communication REST'
+description = 'Javarel :: Communication REST'
 
 apply plugin: 'kotlin'
 apply plugin: 'osgi-module'
 apply plugin: 'com.athaydes.ipojo'
+apply plugin: 'com.twcable.scr'
 
 jar {
     manifest {

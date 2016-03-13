@@ -1,9 +1,10 @@
 package com.neva.javarel.app.adm.impl
 
 import com.neva.javarel.app.adm.impl.system.SystemController
+import com.neva.javarel.communication.rest.api.Redirect
 import com.neva.javarel.communication.rest.api.Rest
 import com.neva.javarel.communication.rest.api.RestComponent
-import com.neva.javarel.communication.rest.api.RestRedirector
+import com.neva.javarel.communication.rest.api.RestUrlGenerator
 import org.apache.felix.ipojo.annotations.Component
 import org.apache.felix.ipojo.annotations.Instantiate
 import org.apache.felix.ipojo.annotations.Provides
@@ -19,19 +20,19 @@ import javax.ws.rs.core.Response
 class FrontController : RestComponent {
 
     @Requires
-    private lateinit var redirector: RestRedirector
+    private lateinit var urlGenerator: RestUrlGenerator
 
     @GET
     @Rest(name = "root")
     fun getRoot(): Response {
-        return redirector.toAction(FrontController::getHome)
+        return Redirect.to(urlGenerator.action(FrontController::getHome))
     }
 
     @Path("/adm")
     @GET
     @Rest(name = "home")
     fun getHome(): Response {
-        return redirector.toAction(SystemController::getHome)
+        return Redirect.to(urlGenerator.action(SystemController::getHome))
     }
 
 }

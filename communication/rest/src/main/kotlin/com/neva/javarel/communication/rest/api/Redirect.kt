@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response
 
 object Redirect {
 
-    fun to(uri: String): Response? {
+    fun to(uri: String): Response {
         return Response.seeOther(URI(uri)).build()
     }
 

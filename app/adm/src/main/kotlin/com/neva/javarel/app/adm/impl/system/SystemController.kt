@@ -9,6 +9,7 @@ import org.apache.felix.ipojo.annotations.Provides
 import org.apache.felix.ipojo.annotations.Requires
 import javax.ws.rs.GET
 import javax.ws.rs.Path
+import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 @Component(immediate = true)
@@ -28,7 +29,7 @@ class SystemController : RestComponent {
                 .render()
 
         return Response.ok(html)
-                .type("text/html")
+                .type(MediaType.TEXT_HTML)
                 .build()
     }
 

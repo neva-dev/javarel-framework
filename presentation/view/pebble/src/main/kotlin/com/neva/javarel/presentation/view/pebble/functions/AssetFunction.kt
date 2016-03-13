@@ -1,10 +1,10 @@
 package com.neva.javarel.presentation.view.pebble.functions
 
-import com.neva.javarel.communication.rest.api.RestRouter
+import com.neva.javarel.communication.rest.api.RestUrlGenerator
 import com.neva.javarel.presentation.view.api.ViewException
 import com.neva.javarel.resource.api.ResourceMapper
 
-class AssetFunction(val router: RestRouter) : BaseFunction() {
+class AssetFunction(val urlGenerator: RestUrlGenerator) : BaseFunction() {
 
     companion object {
         val routeName = "asset"
@@ -24,7 +24,7 @@ class AssetFunction(val router: RestRouter) : BaseFunction() {
 
         params.put(pathParam, ResourceMapper.uriToPath(path))
 
-        return router.routeByName(routeName).assembleUri(params)
+        return urlGenerator.name(routeName, params)
     }
 
     override fun getArgumentNames(): MutableList<String>? {

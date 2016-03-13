@@ -3,7 +3,7 @@ package com.neva.javarel.presentation.view.pebble
 import com.mitchellbosecke.pebble.extension.AbstractExtension
 import com.mitchellbosecke.pebble.extension.Extension
 import com.mitchellbosecke.pebble.extension.Function
-import com.neva.javarel.communication.rest.api.RestRouter
+import com.neva.javarel.communication.rest.api.RestUrlGenerator
 import com.neva.javarel.presentation.view.pebble.functions.AssetFunction
 import com.neva.javarel.presentation.view.pebble.functions.NowFunction
 import com.neva.javarel.presentation.view.pebble.functions.RouteFunction
@@ -18,13 +18,13 @@ import org.apache.felix.ipojo.annotations.Requires
 class PebbleExtension : AbstractExtension() {
 
     @Requires
-    private lateinit var router : RestRouter
+    private lateinit var urlGenerator : RestUrlGenerator
 
     override fun getFunctions(): Map<String, Function> {
         return mapOf(
                 "now" to NowFunction(),
-                "route" to RouteFunction(router),
-                "asset" to AssetFunction(router)
+                "route" to RouteFunction(urlGenerator),
+                "asset" to AssetFunction(urlGenerator)
         )
     }
 }
