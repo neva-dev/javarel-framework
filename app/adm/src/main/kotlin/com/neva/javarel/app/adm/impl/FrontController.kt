@@ -4,7 +4,7 @@ import com.neva.javarel.app.adm.impl.system.SystemController
 import com.neva.javarel.communication.rest.api.Redirect
 import com.neva.javarel.communication.rest.api.Rest
 import com.neva.javarel.communication.rest.api.RestComponent
-import com.neva.javarel.communication.rest.api.RestUrlGenerator
+import com.neva.javarel.communication.rest.api.UrlGenerator
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response
 class FrontController : RestComponent {
 
     @Reference
-    private lateinit var urlGenerator: RestUrlGenerator
+    private lateinit var urlGenerator: UrlGenerator
 
     @GET
     @Rest(name = "root")

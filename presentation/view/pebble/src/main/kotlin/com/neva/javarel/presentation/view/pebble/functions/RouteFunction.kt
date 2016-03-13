@@ -1,8 +1,8 @@
 package com.neva.javarel.presentation.view.pebble.functions
 
-import com.neva.javarel.communication.rest.api.RestUrlGenerator
+import com.neva.javarel.communication.rest.api.UrlGenerator
 
-class RouteFunction(val urlGenerator: RestUrlGenerator) : BaseFunction() {
+class RouteFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
 
     companion object {
         val actionParam = "action"

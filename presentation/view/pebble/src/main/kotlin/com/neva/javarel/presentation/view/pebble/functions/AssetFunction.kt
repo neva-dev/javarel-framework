@@ -1,10 +1,10 @@
 package com.neva.javarel.presentation.view.pebble.functions
 
-import com.neva.javarel.communication.rest.api.RestUrlGenerator
+import com.neva.javarel.communication.rest.api.UrlGenerator
 import com.neva.javarel.presentation.view.api.ViewException
 import com.neva.javarel.resource.api.ResourceMapper
 
-class AssetFunction(val urlGenerator: RestUrlGenerator) : BaseFunction() {
+class AssetFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
 
     companion object {
         val routeName = "asset"

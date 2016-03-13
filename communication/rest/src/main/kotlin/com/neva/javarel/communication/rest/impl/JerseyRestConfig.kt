@@ -6,19 +6,19 @@ import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
 
-@Component(immediate = true, metatype = true, label = "${JavarelConstants.servicePrefix} REST Configuration", description = "")
+@Component(immediate = true, metatype = true, label = "${JavarelConstants.servicePrefix} REST Configuration", description = "Configuration for REST components.")
 @Service(JerseyRestConfig::class)
 class JerseyRestConfig {
 
     companion object {
-        @Property(name = uriPrefixProp, value = "/", label = "URI prefix", description = "")
+        @Property(name = uriPrefixProp, value = "/", label = "URI prefix", description = "Prepends path to resource")
         const val uriPrefixProp = "uriPrefixProp"
     }
 
     private var props: Map<String, Any>? = null
 
     @Activate
-    fun activate(props: Map<String, Any>) {
+    private fun activate(props: Map<String, Any>) {
         this.props = props
     }
 

@@ -7,66 +7,45 @@ import com.neva.javarel.communication.rest.api.RestRouter
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
-import org.osgi.service.component.ComponentContext
 import org.osgi.service.http.HttpService
 import java.util.*
 
-@Component(
-        immediate = true, metatype = true, policy = ConfigurationPolicy.OPTIONAL,
-        label = "REST application", description = "Configure REST components support"
-)
+@Component(immediate = true, policy = ConfigurationPolicy.OPTIONAL)
 @Service
 class JerseyRestApplication : RestApplication {
 
-    companion object {
-        @Property(
-                name = servletPrefixProp, value = "/",
-                label = "URI prefix", description = "Prepends path to resource")
-        const val servletPrefixProp = "servletPrefix"
-    }
-
-    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
     private val components = Sets.newConcurrentHashSet<RestComponent>()
-
-    @Reference
-    private lateinit var router: RestRouter
 
     @Reference
     private lateinit var httpService: HttpService
 
-    private var servletPrefix: String? = null
+    @Reference
+    private lateinit var config: JerseyRestConfig
+
+    @Reference
+    private lateinit var router: RestRouter
 
     @Activate
-    @Modified
-    private fun start(ctx: ComponentContext) {
-        unregister()
-        servletPrefix = ctx.properties.get(servletPrefixProp) as String
-        register()
-    }
-
-    @Deactivate
-    private fun stop() {
-        unregister()
-    }
-
-    private fun register() {
-        var config = ResourceConfig()
+    private fun start() {
+        var resourceConfig = ResourceConfig()
         for (resource in components) {
-            config.register(resource)
+            resourceConfig.register(resource)
         }
-        val servletContainer = ServletContainer(config)
+        val servletContainer = ServletContainer(resourceConfig)
         val props = Hashtable<String, String>()
 
         if (components.isNotEmpty()) {
-            httpService.registerServlet(servletPrefix, servletContainer, props, null)
+            httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
             router.configure(components)
         }
     }
 
-    private fun unregister() {
-        if (servletPrefix != null && components.isNotEmpty()) {
+    @Deactivate
+    private fun stop() {
+        if (components.isNotEmpty()) {
             try {
-                httpService.unregister(servletPrefix)
+                httpService.unregister(config.uriPrefix)
             } catch (e: Throwable) {
                 // nothing interesting
             }

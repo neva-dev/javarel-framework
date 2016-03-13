@@ -3,7 +3,7 @@ package com.neva.javarel.communication.rest.api
 import javax.ws.rs.core.Response
 import kotlin.reflect.KFunction1
 
-interface RestUrlGenerator {
+interface UrlGenerator {
 
     fun action(action: KFunction1<*, Response>, params: Map<String, Any>): String
 
