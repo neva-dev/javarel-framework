@@ -1,15 +1,13 @@
 package com.neva.javarel.app.adm.impl.system.update
 
 import com.neva.javarel.processing.scheduler.api.Task
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Service
 import org.quartz.*
 import org.slf4j.LoggerFactory
 
 @Component(immediate = true)
-@Instantiate
-@Provides
+@Service
 class UpdateTask : Task {
 
     companion object {

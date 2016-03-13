@@ -3,20 +3,18 @@ package com.neva.javarel.communication.rest.impl
 import com.neva.javarel.communication.rest.api.RestRedirector
 import com.neva.javarel.communication.rest.api.RestRouter
 import org.apache.commons.lang3.StringUtils
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Reference
+import org.apache.felix.scr.annotations.Service
 import java.net.URI
 import javax.ws.rs.core.Response
 import kotlin.reflect.KFunction1
 
 @Component(immediate = true)
-@Instantiate
-@Provides
+@Service
 class GenericRestRedirector : RestRedirector {
 
-    @Requires
+    @Reference
     private lateinit var router: RestRouter
 
     override fun toAction(action: KFunction1<*, Response>): Response {

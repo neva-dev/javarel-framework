@@ -7,18 +7,16 @@ import com.neva.javarel.communication.rest.api.RestRouter
 import com.neva.javarel.presentation.view.pebble.functions.AssetFunction
 import com.neva.javarel.presentation.view.pebble.functions.NowFunction
 import com.neva.javarel.presentation.view.pebble.functions.RouteFunction
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Reference
+import org.apache.felix.scr.annotations.Service
 
 @Component(immediate = true)
-@Instantiate
-@Provides(specifications = arrayOf(Extension::class))
+@Service(Extension::class)
 class PebbleExtension : AbstractExtension() {
 
-    @Requires
-    private lateinit var router : RestRouter
+    @Reference
+    private lateinit var router: RestRouter
 
     override fun getFunctions(): Map<String, Function> {
         return mapOf(

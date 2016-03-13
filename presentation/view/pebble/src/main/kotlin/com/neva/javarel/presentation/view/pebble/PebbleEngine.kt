@@ -1,5 +1,6 @@
 package com.neva.javarel.presentation.view.pebble
 
+import com.google.common.collect.Sets
 import com.mitchellbosecke.pebble.extension.Extension
 import com.mitchellbosecke.pebble.loader.Loader
 import com.neva.javarel.presentation.view.api.View
@@ -7,29 +8,29 @@ import com.neva.javarel.presentation.view.api.ViewEngine
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.resource.api.ResourceResolver
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Reference
+import org.apache.felix.scr.annotations.ReferenceCardinality
+import org.apache.felix.scr.annotations.Service
 
 @Component(immediate = true)
-@Instantiate
-@Provides
+@Service
 class PebbleEngine : ViewEngine {
 
     companion object {
         val extension = ".peb"
     }
 
-    @Requires(specification = Extension::class)
-    lateinit var extensions: Set<Extension>
+    @Reference
+    private lateinit var resourceResolver: ResourceResolver
 
-    @Requires
-    lateinit var resourceResolver: ResourceResolver
+    @Reference(referenceInterface = Extension::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    private var extensions = Sets.newConcurrentHashSet<Extension>()
 
-    val loader: Loader<String> by lazy {
-        PebbleLoader(resourceResolver)
-    }
+    val loader: Loader<String>
+        get() {
+            return PebbleLoader(resourceResolver)
+        }
 
     val core: com.mitchellbosecke.pebble.PebbleEngine
         get() {
@@ -45,5 +46,13 @@ class PebbleEngine : ViewEngine {
 
     override fun make(resource: Resource): View {
         return PebbleView(this, resource)
+    }
+
+    private fun bindExtensions(extension: Extension) {
+        extensions.add(extension)
+    }
+
+    private fun unbindExtensions(extension: Extension) {
+        extensions.remove(extension)
     }
 }
