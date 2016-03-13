@@ -1,22 +1,19 @@
 package com.neva.javarel.presentation.asset.impl
 
+import com.google.common.collect.Sets
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.presentation.asset.api.AssetFactory
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceAdapter
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
-@Component(immediate = true)
-@Instantiate
-@Provides
+@Component
+@Service
 class AssetResourceAdapter : ResourceAdapter<Asset> {
 
-    @Requires(specification = AssetFactory::class)
-    lateinit var factories: Set<AssetFactory>
+    @Reference(referenceInterface = AssetFactory::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    private val factories = Sets.newConcurrentHashSet<AssetFactory>()
 
     override val type: KClass<Asset>
         get() = Asset::class
@@ -30,4 +27,13 @@ class AssetResourceAdapter : ResourceAdapter<Asset> {
 
         return FileAsset(resource)
     }
+
+    private fun bindFactories(factory: AssetFactory) {
+        factories.add(factory)
+    }
+
+    private fun unbindFactories(factory: AssetFactory) {
+        factories.remove(factory)
+    }
+
 }

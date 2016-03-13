@@ -1,24 +1,21 @@
 package com.neva.javarel.resource.impl
 
 import com.google.common.collect.Lists
+import com.google.common.collect.Sets
 import com.neva.javarel.resource.api.*
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.*
 import java.util.*
 import kotlin.reflect.KClass
 
-@Component(immediate = true)
-@Provides
-@Instantiate
+@Component
+@Service
 class GenericResourceResolver : ResourceResolver {
 
-    @Requires(specification = ResourceProvider::class)
-    lateinit var providers: List<ResourceProvider>
+    @Reference(referenceInterface = ResourceProvider::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    private var providers = Sets.newConcurrentHashSet<ResourceProvider>()
 
-    @Requires(specification = ResourceAdapter::class)
-    lateinit var adapters: List<ResourceAdapter<Any>>
+    @Reference(referenceInterface = ResourceAdapter::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    private var adapters = Sets.newConcurrentHashSet<ResourceAdapter<Any>>()
 
     override fun find(uri: String): Resource? {
         val descriptor = ResourceDescriptor(uri)
@@ -86,6 +83,22 @@ class GenericResourceResolver : ResourceResolver {
         }
 
         return null
+    }
+
+    private fun bindProviders(provider: ResourceProvider) {
+        providers.add(provider)
+    }
+
+    private fun unbindProviders(provider: ResourceProvider) {
+        providers.remove(provider)
+    }
+
+    private fun bindAdapters(adapter: ResourceAdapter<Any>) {
+        adapters.add(adapter)
+    }
+
+    private fun unbindAdapters(adapter: ResourceAdapter<Any>) {
+        adapters.remove(adapter)
     }
 
 }

@@ -2,14 +2,16 @@ package com.neva.javarel.processing.scheduler.impl
 
 import com.neva.javarel.processing.scheduler.api.Task
 import com.neva.javarel.processing.scheduler.api.TaskScheduler
-import org.apache.felix.ipojo.annotations.*
+import org.apache.felix.scr.annotations.*
 import org.quartz.Scheduler
 import org.quartz.impl.StdSchedulerFactory
 
 @Component(immediate = true)
-@Instantiate
-@Provides
+@Service
 class QuartzTaskScheduler : TaskScheduler {
+
+    @Reference(referenceInterface = Task::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    private lateinit var tasks: Set<Task>
 
     private val scheduler = StdSchedulerFactory().getScheduler();
 
@@ -17,23 +19,21 @@ class QuartzTaskScheduler : TaskScheduler {
         return scheduler
     }
 
-    @Validate
-    fun validate() {
+    @Activate
+    protected fun start() {
         scheduler.start()
     }
 
-    @Invalidate
-    fun invalidate() {
+    @Deactivate
+    protected fun stop() {
         scheduler.shutdown()
     }
 
-    @Bind(aggregate = true)
-    fun bindTask(task: Task) {
+    protected fun bindTask(task: Task) {
         scheduler.scheduleJob(task.job, task.trigger)
     }
 
-    @Unbind
-    fun unbindTask(task: Task) {
+    protected fun unbindTask(task: Task) {
         scheduler.unscheduleJob(task.trigger.key)
     }
 

@@ -6,7 +6,7 @@ description = 'Javarel :: Async Processing Scheduler'
 
 apply plugin: 'kotlin'
 apply plugin: 'osgi-module'
-apply plugin: 'com.athaydes.ipojo'
+apply plugin: 'com.twcable.scr'
 
 jar {
     manifest {

@@ -5,10 +5,10 @@ import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceNotFoundException
 import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Reference
+import org.apache.felix.scr.annotations.ReferenceCardinality
+import org.apache.felix.scr.annotations.Service
 import org.slf4j.LoggerFactory
 import javax.ws.rs.NotFoundException
 import javax.ws.rs.core.MediaType
@@ -17,12 +17,11 @@ import javax.ws.rs.ext.ExceptionMapper
 import javax.ws.rs.ext.Provider
 
 @Component
-@Instantiate
-@Provides(specifications = arrayOf(RestComponent::class))
+@Service(RestComponent::class)
 @Provider
 class ThrowableMapper : ExceptionMapper<Throwable>, RestComponent {
 
-    @Requires(optional = true)
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY)
     private var resolver: ResourceResolver? = null
 
     companion object {

@@ -1,23 +1,20 @@
 package com.neva.javarel.presentation.view.impl
 
+import com.google.common.collect.Sets
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.presentation.view.api.ViewEngine
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceAdapter
 import com.neva.javarel.resource.api.ResourceException
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
-@Component(immediate = true)
-@Provides
-@Instantiate
+@Component
+@Service
 class ViewResourceAdapter : ResourceAdapter<View> {
 
-    @Requires(specification = ViewEngine::class)
-    lateinit var engines: List<ViewEngine>
+    @Reference(referenceInterface = ViewEngine::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    private val engines = Sets.newConcurrentHashSet<ViewEngine>()
 
     override val type: KClass<View>
         get() = View::class
@@ -30,5 +27,13 @@ class ViewResourceAdapter : ResourceAdapter<View> {
         }
 
         throw ResourceException("Cannot find a view engine for resource: '${resource.descriptor}'")
+    }
+
+    protected fun bindViewEngine(engine: ViewEngine) {
+        engines.add(engine)
+    }
+
+    protected fun unbindViewEngine(engine: ViewEngine) {
+        engines.remove(engine)
     }
 }

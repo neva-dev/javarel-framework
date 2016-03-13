@@ -1,16 +1,14 @@
 package com.neva.javarel.presentation.asset.impl.css
 
-import com.neva.javarel.resource.api.Resource
-import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.presentation.asset.api.AssetFactory
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
+import com.neva.javarel.resource.api.Resource
+import com.neva.javarel.resource.api.ResourceDescriptor
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Service
 
-@Component(immediate = true)
-@Instantiate
-@Provides
+@Component
+@Service
 class CssAssetFactory : AssetFactory {
 
     override fun supports(descriptor: ResourceDescriptor): Boolean {

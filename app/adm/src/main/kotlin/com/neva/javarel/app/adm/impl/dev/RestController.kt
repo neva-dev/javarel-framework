@@ -3,23 +3,20 @@ package com.neva.javarel.app.adm.impl.dev
 import com.google.gson.Gson
 import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.communication.rest.api.RestRouter
-import org.apache.felix.ipojo.annotations.Component
-import org.apache.felix.ipojo.annotations.Instantiate
-import org.apache.felix.ipojo.annotations.Provides
-import org.apache.felix.ipojo.annotations.Requires
+import org.apache.felix.scr.annotations.*
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-@Component(immediate = true)
-@Instantiate
-@Provides
+@Component
+@Service
 @Path("/adm/dev")
 class RestController : RestComponent {
 
-    @Requires
+    @Volatile
+    @Reference(policy = ReferencePolicy.DYNAMIC)
     private lateinit var router: RestRouter
 
     @Path("/rest/list")

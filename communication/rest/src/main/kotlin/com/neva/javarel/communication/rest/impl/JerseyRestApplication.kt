@@ -1,68 +1,83 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Sets
 import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestComponent
-import org.apache.felix.ipojo.annotations.*
+import com.neva.javarel.communication.rest.api.RestRouter
+import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
+import org.osgi.service.component.ComponentContext
 import org.osgi.service.http.HttpService
 import java.util.*
 
-@Component(immediate = true)
-@Instantiate
-@Provides
+@Component(
+        immediate = true, metatype = true, policy = ConfigurationPolicy.OPTIONAL,
+        label = "REST application", description = "Configure REST components support"
+)
+@Service
 class JerseyRestApplication : RestApplication {
 
-
-    private val registeredComponents = Sets.newConcurrentHashSet<RestComponent>()
-
-    @Requires
-    lateinit var httpService: HttpService
-
-    @Requires
-    lateinit var config: JerseyRestConfig
-
-    private var usedUriPrefix: String? = null
-
-    @Bind(aggregate = true)
-    fun bindResource(component: RestComponent) {
-        registeredComponents.add(component)
-        update()
+    companion object {
+        @Property(
+                name = servletPrefixProp, value = "/",
+                label = "URI prefix", description = "Prepends path to resource")
+        const val servletPrefixProp = "servletPrefix"
     }
 
-    @Unbind
-    fun unbindResource(component: RestComponent) {
-        registeredComponents.remove(component)
-        update()
+    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    private val components = Sets.newConcurrentHashSet<RestComponent>()
+
+    @Reference
+    private lateinit var router: RestRouter
+
+    @Reference
+    private lateinit var httpService: HttpService
+
+    private var servletPrefix: String? = null
+
+    @Activate
+    @Modified
+    private fun start(ctx: ComponentContext) {
+        unregister()
+        servletPrefix = ctx.properties.get(servletPrefixProp) as String
+        register()
     }
 
-    @Updated
-    override fun update() {
-        synchronized(this) {
-            if (usedUriPrefix != null) {
-                try {
-                    httpService.unregister(usedUriPrefix)
-                } catch (e: Throwable) {
-                    // nothing interesting
-                }
-            }
+    @Deactivate
+    private fun stop() {
+        unregister()
+    }
 
-            var resourceConfig = ResourceConfig()
-            for (resource in registeredComponents) {
-                resourceConfig.register(resource)
-            }
-            val servletContainer = ServletContainer(resourceConfig)
-            val props = Hashtable<String, String>()
+    private fun register() {
+        var config = ResourceConfig()
+        for (resource in components) {
+            config.register(resource)
+        }
+        val servletContainer = ServletContainer(config)
+        val props = Hashtable<String, String>()
 
-            if (registeredComponents.isNotEmpty()) {
-                usedUriPrefix = config.uriPrefix
-                httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
+        if (components.isNotEmpty()) {
+            httpService.registerServlet(servletPrefix, servletContainer, props, null)
+            router.configure(components)
+        }
+    }
+
+    private fun unregister() {
+        if (servletPrefix != null && components.isNotEmpty()) {
+            try {
+                httpService.unregister(servletPrefix)
+            } catch (e: Throwable) {
+                // nothing interesting
             }
         }
     }
 
-    override val components: Set<RestComponent>
-        get() = ImmutableSet.copyOf(registeredComponents)
+    private fun bindRestComponent(component: RestComponent) {
+        components.add(component)
+    }
+
+    private fun unbindRestComponent(component: RestComponent) {
+        components.remove(component)
+    }
 }
