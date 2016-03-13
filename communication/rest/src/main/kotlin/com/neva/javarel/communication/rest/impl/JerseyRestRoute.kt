@@ -13,6 +13,18 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
         val paramTypeDelimiter = ":"
         val paramStart = "{"
         val paramEnd = "}"
+
+        fun mergePath(vararg parts: String): String {
+            val normalized = parts.fold(mutableListOf<String>(), { result, part ->
+                val path = part.removePrefix(pathSeparator).removeSuffix(pathSeparator)
+                if (path.isNotBlank()) {
+                    result.add(path);
+                }
+                result;
+            })
+
+            return pathSeparator + normalized.joinToString(pathSeparator)
+        }
     }
 
     override val name: String?
@@ -67,17 +79,5 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
 
     private val handlingMethod: Method
         get() = method.resourceMethods.first().invocable.handlingMethod
-
-    private fun mergePath(vararg parts: String): String {
-        val normalized = parts.fold(mutableListOf<String>(), { result, part ->
-            val path = part.removePrefix(pathSeparator).removeSuffix(pathSeparator)
-            if (path.isNotBlank()) {
-                result.add(path);
-            }
-            result;
-        })
-
-        return pathSeparator + normalized.joinToString(pathSeparator)
-    }
 
 }

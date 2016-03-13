@@ -48,6 +48,7 @@ subprojects { subProject ->
                 exclude group: 'org.apache.felix', module: 'org.apache.felix.ipojo.annotations'
             }
             osgiBundle 'org.apache.felix:org.apache.felix.scr:2.0.2'
+            compile 'org.apache.felix:org.apache.felix.scr.annotations:1.9.12'
         }
     }
 

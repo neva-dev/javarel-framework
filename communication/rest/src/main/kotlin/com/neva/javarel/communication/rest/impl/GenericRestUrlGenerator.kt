@@ -18,6 +18,9 @@ class GenericRestUrlGenerator : RestUrlGenerator {
     @Requires
     private lateinit var router: RestRouter
 
+    @Requires
+    private lateinit var config: JerseyRestConfig
+
     override fun action(action: KFunction1<*, Response>): String {
         return action(action, emptyMap())
     }
@@ -33,7 +36,7 @@ class GenericRestUrlGenerator : RestUrlGenerator {
     override fun action(action: String, params: Map<String, Any>): String {
         val route = router.routeByAction(action)
 
-        return route.assembleUri(params)
+        return JerseyRestRoute.mergePath(config.uriPrefix, route.assembleUri(params))
     }
 
     override fun name(name: String): String {
@@ -43,7 +46,7 @@ class GenericRestUrlGenerator : RestUrlGenerator {
     override fun name(name: String, params: Map<String, Any>): String {
         val route = router.routeByName(name)
 
-        return route.assembleUri(params)
+        return JerseyRestRoute.mergePath(config.uriPrefix,route.assembleUri(params))
     }
 
 }

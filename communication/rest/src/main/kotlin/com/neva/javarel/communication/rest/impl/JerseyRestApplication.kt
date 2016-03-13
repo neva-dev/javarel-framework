@@ -15,14 +15,16 @@ import java.util.*
 @Provides
 class JerseyRestApplication : RestApplication {
 
-    companion object {
-        val servletPrefix = "/"
-    }
 
     private val registeredComponents = Sets.newConcurrentHashSet<RestComponent>()
 
     @Requires
     lateinit var httpService: HttpService
+
+    @Requires
+    lateinit var config: JerseyRestConfig
+
+    private var usedUriPrefix: String? = null
 
     @Bind(aggregate = true)
     fun bindResource(component: RestComponent) {
@@ -36,25 +38,27 @@ class JerseyRestApplication : RestApplication {
         update()
     }
 
+    @Updated
     override fun update() {
         synchronized(this) {
-            if (registeredComponents.isNotEmpty()) {
+            if (usedUriPrefix != null) {
                 try {
-                    httpService.unregister(servletPrefix)
+                    httpService.unregister(usedUriPrefix)
                 } catch (e: Throwable) {
                     // nothing interesting
                 }
             }
 
-            var config = ResourceConfig()
+            var resourceConfig = ResourceConfig()
             for (resource in registeredComponents) {
-                config.register(resource)
+                resourceConfig.register(resource)
             }
-            val servletContainer = ServletContainer(config)
+            val servletContainer = ServletContainer(resourceConfig)
             val props = Hashtable<String, String>()
 
             if (registeredComponents.isNotEmpty()) {
-                httpService.registerServlet(servletPrefix, servletContainer, props, null)
+                usedUriPrefix = config.uriPrefix
+                httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
             }
         }
     }
