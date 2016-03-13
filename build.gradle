@@ -65,7 +65,9 @@ dependencies {
     osgiMain 'org.apache.felix:org.apache.felix.main:5.4.0'
     osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
     osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.6'
-    osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2'
+    osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2', {
+        transitive = false
+    }
     osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
     osgiBundle 'org.apache.felix:org.apache.felix.ipojo.webconsole:1.7.0', {
         transitive = false
@@ -74,7 +76,9 @@ dependencies {
     osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.8.5'
 
     // TODO switch to pax-web / newest Jersey, but binding need to be fixed
-    osgiBundle 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
+    osgiBundle 'org.apache.felix:org.apache.felix.http.bundle:2.3.2', {
+        exclude group: 'org.apache.felix', module: 'org.apache.felix.http.cometd'
+    }
     // osgiBundle 'org.ops4j.pax.web:pax-web-api:4.2.5'
     // osgiBundle 'org.ops4j.pax.web:pax-web-spi:4.2.5'
     // osgiBundle 'org.ops4j.pax.web:pax-web-runtime:4.2.5'
