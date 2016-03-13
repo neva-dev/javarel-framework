@@ -1,13 +1,13 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Sets
 import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestComponent
+import com.neva.javarel.communication.rest.api.RestRouter
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
-import org.osgi.framework.BundleContext
+import org.osgi.service.component.ComponentContext
 import org.osgi.service.http.HttpService
 import java.util.*
 
@@ -19,49 +19,52 @@ import java.util.*
 class JerseyRestApplication : RestApplication {
 
     companion object {
+        @Property(
+                name = servletPrefixProp, value = "/",
+                label = "URI prefix", description = "Prepends path to resource")
         const val servletPrefixProp = "servletPrefix"
     }
 
     @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-    private val registeredComponents = Sets.newConcurrentHashSet<RestComponent>()
+    private val components = Sets.newConcurrentHashSet<RestComponent>()
+
+    @Reference
+    private lateinit var router: RestRouter
 
     @Reference
     private lateinit var httpService: HttpService
 
-    @Property(
-            name = servletPrefixProp, value = "/",
-            label = "URI prefix", description = "Prepends path to resource")
     private var servletPrefix: String? = null
 
     @Activate
-    protected fun start(ctx: BundleContext, props: Map<String, Any>) {
-        servletPrefix = props.get(servletPrefixProp) as String
-        update()
-    }
-
     @Modified
-    override fun update() {
-        synchronized(this) {
-            stop()
-            start()
-        }
+    private fun start(ctx: ComponentContext) {
+        unregister()
+        servletPrefix = ctx.properties.get(servletPrefixProp) as String
+        register()
     }
 
-    private fun start() {
+    @Deactivate
+    private fun stop() {
+        unregister()
+    }
+
+    private fun register() {
         var config = ResourceConfig()
-        for (resource in registeredComponents) {
+        for (resource in components) {
             config.register(resource)
         }
         val servletContainer = ServletContainer(config)
         val props = Hashtable<String, String>()
 
-        if (registeredComponents.isNotEmpty()) {
+        if (components.isNotEmpty()) {
             httpService.registerServlet(servletPrefix, servletContainer, props, null)
+            router.configure(components)
         }
     }
 
-    private fun stop() {
-        if (registeredComponents.isNotEmpty()) {
+    private fun unregister() {
+        if (servletPrefix != null && components.isNotEmpty()) {
             try {
                 httpService.unregister(servletPrefix)
             } catch (e: Throwable) {
@@ -70,14 +73,11 @@ class JerseyRestApplication : RestApplication {
         }
     }
 
-    override val components: Set<RestComponent>
-        get() = ImmutableSet.copyOf(registeredComponents)
-
     private fun bindRestComponent(component: RestComponent) {
-        registeredComponents.add(component)
+        components.add(component)
     }
 
     private fun unbindRestComponent(component: RestComponent) {
-        registeredComponents.remove(component)
+        components.remove(component)
     }
 }

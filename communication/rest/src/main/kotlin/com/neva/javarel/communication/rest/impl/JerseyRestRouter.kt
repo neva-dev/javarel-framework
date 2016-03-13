@@ -1,11 +1,10 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.neva.javarel.communication.rest.api.RestApplication
+import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.communication.rest.api.RestException
 import com.neva.javarel.communication.rest.api.RestRoute
 import com.neva.javarel.communication.rest.api.RestRouter
 import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
 import org.glassfish.jersey.server.model.Resource
 
@@ -13,14 +12,17 @@ import org.glassfish.jersey.server.model.Resource
 @Service
 class JerseyRestRouter : RestRouter {
 
-    @Reference
-    private lateinit var restApp: RestApplication
+    private var components = emptySet<RestComponent>()
+
+    override fun configure(components: Set<RestComponent>) {
+        this.components = components;
+    }
 
     override val routes: Set<RestRoute>
         get() {
             val routes = mutableSetOf<RestRoute>()
 
-            restApp.components.forEach { component ->
+            components.forEach { component ->
                 val resource = Resource.from(component.javaClass)
 
                 if (resource != null) {
