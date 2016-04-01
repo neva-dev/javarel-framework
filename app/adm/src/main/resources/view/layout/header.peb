@@ -1,14 +1,28 @@
-<nav class="navbar navbar-static-top navbar-dark bg-inverse">
-    <a class="navbar-brand" href="{{ route(name='home') }}">Javarel</a>
-    <ul class="nav navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ route(action='adm.system.SystemController.getHome') }}">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-        </li>
-    </ul>
-</nav>
+<div class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ route(name='home') }}">Javarel</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ route(name='home') }}">Dashboard</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Developer tools <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route(action='adm.dev.RestController.getRoutes') }}">REST routes</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="#">Profile <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>

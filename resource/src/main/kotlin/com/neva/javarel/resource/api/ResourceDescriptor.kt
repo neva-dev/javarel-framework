@@ -32,8 +32,7 @@ class ResourceDescriptor(val uri: String) {
     }
 
     override fun toString(): String {
-        return "Resource descriptor '$uri'"
+        return uri
     }
-
 
 }

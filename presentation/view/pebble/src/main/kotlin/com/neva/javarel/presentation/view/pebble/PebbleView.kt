@@ -22,9 +22,9 @@ class PebbleView(val engine: PebbleEngine, resource: Resource) : ResourceAdaptee
             template.evaluate(writer, context)
             return writer.toString()
         } catch (e: PebbleException) {
-            throw ViewException("Cannot render view for a resource: '${resource.descriptor}'")
+            throw ViewException("Cannot render view for a resource: '${resource.descriptor}'", e)
         } catch (e: IOException) {
-            throw ViewException("Cannot render view for a resource: '${resource.descriptor}'")
+            throw ViewException("Cannot render view for a resource: '${resource.descriptor}'", e)
         }
     }
 

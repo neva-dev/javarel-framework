@@ -1,4 +1,9 @@
-/* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-bottom: 2rem;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.footer .info {
+    margin-top: 20px;
+    display: inline-block;
 }
