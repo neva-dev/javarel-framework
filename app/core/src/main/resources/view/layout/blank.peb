@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+{% block htmlTag %}<html lang="en">{% endblock %}
+<head>
+    {% block metadata %}{% endblock %}
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block header %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block footer %}{% endblock %}
+    {% block body %}{% endblock %}
+</body>
+</html>

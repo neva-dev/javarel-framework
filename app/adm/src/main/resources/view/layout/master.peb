@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% block metadata %}
-        {% include "bundle://adm/view/layout/metadata.peb" %}
-    {% endblock %}
+{% extends "bundle://core/view/layout/blank.peb" %}
 
-    {% block styles %}
-        {% include "bundle://adm/view/layout/styles.peb" %}
-    {% endblock %}
-</head>
+{% block metadata %}
+    {% include "bundle://adm/view/layout/metadata.peb" %}
+{% endblock %}
 
-<body>
+{% block head %}
+    {% include "bundle://adm/view/layout/styles.peb" %}
+{% endblock %}
+
 {% block header %}
     {% include "bundle://adm/view/layout/header.peb" %}
 {% endblock %}
-
-{% block content %}{% endblock %}
 
 {% block footer %}
     {% include "bundle://adm/view/layout/footer.peb" %}
 {% endblock %}
 
-{% block scripts %}
+{% block body %}
     {% include "bundle://adm/view/layout/scripts.peb" %}
 {% endblock %}
-</body>
-</html>
