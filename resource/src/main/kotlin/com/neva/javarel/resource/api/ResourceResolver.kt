@@ -6,7 +6,7 @@ interface ResourceResolver {
 
     fun find(uri: String): Resource?
 
-    fun resolve(uri: String): Resource
+    fun findOrFail(uri: String): Resource
 
     fun <T : Any> adapt(resource: Resource, clazz: KClass<T>): T
 

@@ -1,0 +1,3 @@
+<link rel="icon" href="{{ asset('bundle://adm/asset/layout/favicon.ico') }}">
+<link href="{{ asset('bundle://adm/asset/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ asset('bundle://adm/asset/layout/jumbotron.css') }}" rel="stylesheet">

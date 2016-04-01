@@ -13,7 +13,7 @@ jar {
         name project.description
         instruction 'Export-Package', "com.neva.javarel.app.adm.api.*;version=${project.version}"
         instruction 'Resource-Namespace', 'adm'
-        instruction 'Route-Action-Alias', 'com.neva.javarel.app.adm.impl=adm'
+        instruction 'Rest-Route-Alias', 'adm=com.neva.javarel.app.adm.impl'
     }
 }
 

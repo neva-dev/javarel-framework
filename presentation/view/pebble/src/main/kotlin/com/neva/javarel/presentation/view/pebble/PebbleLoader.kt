@@ -17,7 +17,7 @@ class PebbleLoader(val resourceResolver: ResourceResolver) : Loader<String> {
 
     override fun getReader(template: String): Reader {
         try {
-            val resource = resourceResolver.resolve(template)
+            val resource = resourceResolver.findOrFail(template)
 
             return BufferedReader(InputStreamReader(resource.inputStream, charset))
         } catch (e: ResourceException) {

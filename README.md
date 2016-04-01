@@ -1,14 +1,22 @@
 # Javarel Framework
 
-OSGi based, written in Kotlin, MVC framework for web artisans from Java community.
+Modular - [OSGi](https://www.osgi.org) based, written in [Kotlin](https://kotlinlang.org), MVC framework for web artisans from Java community.
+Inspired by [Laravel](https://laravel.com) Framework.
 
-## Installation
+## Documentation
 
-TODO: Describe the installation process
+### Basics
 
-## Usage
+* [Quickstart](doc/quickstart.md)
+* [Controllers](doc/controllers.md)
+* [Views](doc/views.md)
+* [Models](doc/models.md)
 
-TODO: Write usage instructions
+### Architecture
+
+* [Resources](doc/resources.md)
+* [Routing](doc/routing.md)
+* [Scheduling](doc/scheduling.md)
 
 ## Contributing
 

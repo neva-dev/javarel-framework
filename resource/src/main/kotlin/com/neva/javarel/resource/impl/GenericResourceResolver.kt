@@ -22,7 +22,7 @@ class GenericResourceResolver : ResourceResolver {
         return provideResource(descriptor, findProviders(descriptor))
     }
 
-    override fun resolve(uri: String): Resource {
+    override fun findOrFail(uri: String): Resource {
         val descriptor = ResourceDescriptor(ResourceMapper.fixUri(uri))
         val providers = findProviders(descriptor)
 

@@ -54,7 +54,7 @@ class ThrowableMapper : ExceptionMapper<Throwable>, RestComponent {
     }
 
     private fun respondView(e: Throwable, uri: String): Response {
-        val html = resolver!!.resolve(uri)
+        val html = resolver!!.findOrFail(uri)
                 .adaptTo(View::class)
                 .with("message", ExceptionUtils.getRootCauseMessage(e))
                 .with("stackTrace", ExceptionUtils.getRootCauseStackTrace(e).joinToString("\n"))

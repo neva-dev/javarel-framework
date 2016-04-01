@@ -39,7 +39,7 @@ class AssetController : RestComponent {
     }
 
     private fun resolveAsset(path: String): Asset {
-        return resolver.resolve(path).adaptTo(Asset::class)
+        return resolver.findOrFail(path).adaptTo(Asset::class)
     }
 
 }

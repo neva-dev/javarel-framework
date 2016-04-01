@@ -22,7 +22,7 @@ class SystemController : RestComponent {
     @GET
     @Path("/home")
     fun getHome(): Response {
-        val html = resourceResolver.resolve("bundle://adm/view/system/home.peb")
+        val html = resourceResolver.findOrFail("bundle://adm/view/system/home.peb")
                 .adaptTo(View::class)
                 .render()
 

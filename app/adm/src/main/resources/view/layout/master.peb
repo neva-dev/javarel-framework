@@ -1,49 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    {% block metadata %}
+        {% include "bundle://adm/view/layout/metadata.peb" %}
+    {% endblock %}
 
-    <title>Javarel</title>
-
-    <link rel="icon" href="{{ asset('bundle://adm/asset/layout/favicon.ico') }}">
-    <link href="{{ asset('bundle://adm/asset/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundle://adm/asset/layout/jumbotron.css') }}" rel="stylesheet">
+    {% block styles %}
+        {% include "bundle://adm/view/layout/styles.peb" %}
+    {% endblock %}
 </head>
 
 <body>
-
-<nav class="navbar navbar-static-top navbar-dark bg-inverse">
-    <a class="navbar-brand" href="#">Javarel</a>
-    <ul class="nav navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-        </li>
-    </ul>
-</nav>
+{% block header %}
+    {% include "bundle://adm/view/layout/header.peb" %}
+{% endblock %}
 
 {% block content %}{% endblock %}
 
-<div class="container-fluid">
-    <hr>
+{% block footer %}
+    {% include "bundle://adm/view/layout/footer.peb" %}
+{% endblock %}
 
-    <footer>
-        <p>&copy; Neva Development 2016</p>
-    </footer>
-</div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{ asset('bundle://adm/asset/vendor/jquery/jquery.min.js') }}"><\/script>')</script>
-<script src="{{ asset('bundle://adm/asset/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('bundle://adm/asset/layout/ie10-viewport-bug-workaround.js') }}"></script>
+{% block scripts %}
+    {% include "bundle://adm/view/layout/scripts.peb" %}
+{% endblock %}
 </body>
 </html>
