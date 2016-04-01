@@ -7,3 +7,10 @@ body {
     margin-top: 20px;
     display: inline-block;
 }
+
+.table-clear,
+.table-clear td,
+.table-clear th {
+    border: 0 !important;
+    background: none !important;
+}

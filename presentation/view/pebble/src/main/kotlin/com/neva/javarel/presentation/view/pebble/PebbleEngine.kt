@@ -30,8 +30,12 @@ class PebbleEngine : ViewEngine {
         }
 
     val core: com.mitchellbosecke.pebble.PebbleEngine
+        /**
+         * TODO Make Pebble engine configurable
+         */
         get() {
             return com.mitchellbosecke.pebble.PebbleEngine.Builder()
+                    .strictVariables(true)
                     .loader(loader)
                     .extension(*extensions.toTypedArray())
                     .build()

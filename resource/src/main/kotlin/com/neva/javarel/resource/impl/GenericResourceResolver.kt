@@ -2,20 +2,21 @@ package com.neva.javarel.resource.impl
 
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
+import com.neva.javarel.foundation.api.adapting.Adaptee
+import com.neva.javarel.foundation.api.adapting.AdaptingManager
 import com.neva.javarel.resource.api.*
 import org.apache.felix.scr.annotations.*
-import java.util.*
 import kotlin.reflect.KClass
 
 @Component
 @Service
-class GenericResourceResolver : ResourceResolver {
+class GenericResourceResolver : ResourceResolver, Adaptee {
+
+    @Reference
+    private lateinit var adaptingManager: AdaptingManager
 
     @Reference(referenceInterface = ResourceProvider::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private var providers = Sets.newConcurrentHashSet<ResourceProvider>()
-
-    @Reference(referenceInterface = ResourceAdapter::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-    private var adapters = Sets.newConcurrentHashSet<ResourceAdapter<Any>>()
 
     override fun find(uri: String): Resource? {
         val descriptor = ResourceDescriptor(uri)
@@ -38,18 +39,12 @@ class GenericResourceResolver : ResourceResolver {
         return resource
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun <Target : Any> adapt(adaptable: Resource, clazz: KClass<Target>): Target {
-        val adapter = findAdapter(clazz)
-        if (adapter == null) {
-            throw ResourceException("There is no valid resource adapter for class: '${clazz}'")
-        }
-
-        return adapter.adapt(adaptable) as Target
+        return adaptingManager.adapt(adaptable, clazz)
     }
 
-    override fun isAdaptable(clazz: KClass<Any>): Boolean {
-        return findAdapter(clazz) != null
+    override fun <Target : Any> adaptTo(clazz: KClass<Target>): Target {
+        return adaptingManager.adapt(this, clazz)
     }
 
     private fun provideResource(descriptor: ResourceDescriptor, providers: List<ResourceProvider>): Resource? {
@@ -75,30 +70,12 @@ class GenericResourceResolver : ResourceResolver {
         return result
     }
 
-    private fun <T : Any> findAdapter(clazz: KClass<T>): ResourceAdapter<Any>? {
-        for (adapter in adapters) {
-            if (Objects.equals(clazz, adapter.type)) {
-                return adapter
-            }
-        }
-
-        return null
-    }
-
     private fun bindProviders(provider: ResourceProvider) {
         providers.add(provider)
     }
 
     private fun unbindProviders(provider: ResourceProvider) {
         providers.remove(provider)
-    }
-
-    private fun bindAdapters(adapter: ResourceAdapter<Any>) {
-        adapters.add(adapter)
-    }
-
-    private fun unbindAdapters(adapter: ResourceAdapter<Any>) {
-        adapters.remove(adapter)
     }
 
 }

@@ -1,6 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.neva.javarel.foundation.JavarelConstants
+import com.neva.javarel.foundation.api.JavarelConstants
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property

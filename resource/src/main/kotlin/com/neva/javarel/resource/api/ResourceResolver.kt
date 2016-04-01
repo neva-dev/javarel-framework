@@ -1,8 +1,8 @@
 package com.neva.javarel.resource.api
 
-import com.neva.javarel.foundation.adapting.AdapterFactory
+import com.neva.javarel.foundation.api.adapting.Adapting
 
-interface ResourceResolver : AdapterFactory<Resource> {
+interface ResourceResolver : Adapting<Resource> {
 
     fun find(uri: String): Resource?
 

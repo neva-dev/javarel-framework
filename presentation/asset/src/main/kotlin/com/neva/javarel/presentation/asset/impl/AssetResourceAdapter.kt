@@ -10,22 +10,22 @@ import kotlin.reflect.KClass
 
 @Component
 @Service
-class AssetResourceAdapter : ResourceAdapter<Asset> {
+class AssetResourceAdapter : ResourceAdapter<Asset>() {
 
     @Reference(referenceInterface = AssetFactory::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private val factories = Sets.newConcurrentHashSet<AssetFactory>()
 
-    override val type: KClass<Asset>
+    override val targetType: KClass<Asset>
         get() = Asset::class
 
-    override fun adapt(resource: Resource): Asset {
+    override fun adapt(adaptable: Resource): Asset {
         for (factory in factories) {
-            if (factory.supports(resource.descriptor)) {
-                return factory.make(resource)
+            if (factory.supports(adaptable.descriptor)) {
+                return factory.make(adaptable)
             }
         }
 
-        return FileAsset(resource)
+        return FileAsset(adaptable)
     }
 
     private fun bindFactories(factory: AssetFactory) {

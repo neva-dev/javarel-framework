@@ -1,0 +1,43 @@
+{% extends "bundle://adm/view/layout/master.peb" %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>Adapters</h1>
+    </div>
+
+    {% if adapters is empty %}
+        <p class="bg-info"><i class="fa fa-info-circle"></i> Lack of adapters.</p>
+    {% else %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Source types</th>
+                <th>Target type</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in adapters %}
+                <tr>
+                    <th scope="row">{{ loop.index + 1 }}</th>
+                    <td>
+                        <table class="table table-clear">
+                            {% for adapter in entry.value %}
+                                <tr>
+                                    <th style="width: 50%">{{ adapter.class.name }}</th>
+                                    <td style="width: 50%">{{ adapter.sourceTypes | join('<br>') | raw }}<br></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td>{{ entry.key }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+
+{% endblock %}

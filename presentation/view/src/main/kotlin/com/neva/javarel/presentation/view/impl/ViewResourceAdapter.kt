@@ -11,22 +11,22 @@ import kotlin.reflect.KClass
 
 @Component
 @Service
-class ViewResourceAdapter : ResourceAdapter<View> {
+class ViewResourceAdapter : ResourceAdapter<View>() {
 
     @Reference(referenceInterface = ViewEngine::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private val engines = Sets.newConcurrentHashSet<ViewEngine>()
 
-    override val type: KClass<View>
+    override val targetType: KClass<View>
         get() = View::class
 
-    override fun adapt(resource: Resource): View {
+    override fun adapt(adaptable: Resource): View {
         for (engine in engines) {
-            if (engine.handles(resource.descriptor)) {
-                return engine.make(resource)
+            if (engine.handles(adaptable.descriptor)) {
+                return engine.make(adaptable)
             }
         }
 
-        throw ResourceException("Cannot find a view engine for resource: '${resource.descriptor}'")
+        throw ResourceException("Cannot find a view engine for resource: '${adaptable.descriptor}'")
     }
 
     protected fun bindViewEngine(engine: ViewEngine) {

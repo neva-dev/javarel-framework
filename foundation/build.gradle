@@ -11,6 +11,6 @@ apply plugin: 'com.twcable.scr'
 jar {
     manifest {
         name project.description
-        instruction 'Export-Package', "com.neva.javarel.foundation.*;version=${project.version}"
+        instruction 'Export-Package', "com.neva.javarel.foundation.api.*;version=${project.version}"
     }
 }

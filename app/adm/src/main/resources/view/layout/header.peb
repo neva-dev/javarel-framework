@@ -16,7 +16,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Developer tools <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/system/console">Felix OSGi Console</a></li>
-                        <li><a href="{{ route(action='adm.dev.RestController.getRoutes') }}">REST Routes</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{ route(action='adm.dev.DevController.getRestRoutes') }}">REST Routes</a></li>
+                        <li><a href="{{ route(action='adm.dev.DevController.getAdapters') }}">Adapters</a></li>
                     </ul>
                 </li>
             </ul>

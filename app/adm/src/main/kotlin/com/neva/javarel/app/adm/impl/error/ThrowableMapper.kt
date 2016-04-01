@@ -29,27 +29,27 @@ class ThrowableMapper : ExceptionMapper<Throwable>, RestComponent {
     }
 
     override fun toResponse(causeException: Throwable): Response {
-        when (causeException) {
-            is NotFoundException,
-            is ResourceNotFoundException -> {
-                logger.debug("Resource not found", causeException)
+        try {
+            when (causeException) {
+                is NotFoundException,
+                is ResourceNotFoundException -> {
+                    logger.debug("Resource not found", causeException)
 
-                return respondView(causeException, "bundle://adm/view/error/not-found.peb")
-            }
-            else -> {
-                logger.error("Request error", causeException)
-
-                if (resolver != null) {
-                    try {
-                        return respondView(causeException, "bundle://adm/view/error/throwable.peb")
-                    } catch (internalException: Throwable) {
-                        logger.error("Internal error occurred while rendering request error view", internalException)
-                        return respondFallback(causeException)
-                    }
+                    return respondView(causeException, "bundle://adm/view/error/not-found.peb")
                 }
+                else -> {
+                    logger.error("Request error", causeException)
+                    if (resolver != null) {
+                        return respondView(causeException, "bundle://adm/view/error/throwable.peb")
 
-                return respondFallback(causeException)
+                    }
+
+                    return respondFallback(causeException)
+                }
             }
+        } catch (internalException: Throwable) {
+            logger.error("Internal error occurred while rendering request error view", internalException)
+            return respondFallback(causeException)
         }
     }
 

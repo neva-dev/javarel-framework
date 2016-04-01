@@ -1,4 +1,4 @@
-package com.neva.javarel.foundation
+package com.neva.javarel.foundation.api
 
 object JavarelConstants {
 
@@ -6,6 +6,6 @@ object JavarelConstants {
 
     const val productName = "Javarel"
 
-    const val servicePrefix = "$productName "
+    const val servicePrefix = "${productName} "
 
 }
