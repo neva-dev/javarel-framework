@@ -1,10 +1,5 @@
 package com.neva.javarel.resource.api
 
-import kotlin.reflect.KClass
+import com.neva.javarel.foundation.adapting.Adapter
 
-interface ResourceAdapter<T : Any> {
-
-    val type: KClass<T>
-
-    fun adapt(resource: Resource): T
-}
+interface ResourceAdapter<Target : Any> : Adapter<Resource, Target>

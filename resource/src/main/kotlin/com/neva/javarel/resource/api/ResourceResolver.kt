@@ -1,14 +1,10 @@
 package com.neva.javarel.resource.api
 
-import kotlin.reflect.KClass
+import com.neva.javarel.foundation.adapting.AdapterFactory
 
-interface ResourceResolver {
+interface ResourceResolver : AdapterFactory<Resource> {
 
     fun find(uri: String): Resource?
 
     fun findOrFail(uri: String): Resource
-
-    fun <T : Any> adapt(resource: Resource, clazz: KClass<T>): T
-
-    fun isAdaptable(clazz: KClass<Any>): Boolean
 }

@@ -14,3 +14,7 @@ jar {
         instruction 'Export-Package', "com.neva.javarel.resource.api.*;version=${project.version}"
     }
 }
+
+dependencies {
+    compile project(':foundation')
+}

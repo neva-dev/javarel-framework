@@ -39,13 +39,13 @@ class GenericResourceResolver : ResourceResolver {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> adapt(resource: Resource, clazz: KClass<T>): T {
+    override fun <Target : Any> adapt(adaptable: Resource, clazz: KClass<Target>): Target {
         val adapter = findAdapter(clazz)
         if (adapter == null) {
             throw ResourceException("There is no valid resource adapter for class: '${clazz}'")
         }
 
-        return adapter.adapt(resource) as T
+        return adapter.adapt(adaptable) as Target
     }
 
     override fun isAdaptable(clazz: KClass<Any>): Boolean {
