@@ -1,4 +1,8 @@
 <link rel="icon" href="{{ asset('bundle://adm/asset/layout/favicon.ico') }}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('bundle://adm/asset/layout/favicon-96x96.png') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('bundle://adm/asset/layout/favicon-32x32.png') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('bundle://adm/asset/layout/favicon-16x16.png') }}">
+
 <link href="{{ asset('bundle://adm/asset/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 <link href="{{ asset('bundle://adm/asset/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 <link href="{{ asset('bundle://adm/asset/vendor/bootstrap/css/bootstrap-theme.min.css') }}" rel="stylesheet">
