@@ -17,4 +17,5 @@ interface UrlGenerator {
 
     fun name(name: String): String
 
+    fun assemble(route: RestRoute, params: Map<String, Any>): String
 }

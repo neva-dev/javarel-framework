@@ -9,26 +9,26 @@ class AssetFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
     companion object {
         val routeName = "asset"
         val pathParam = "path"
+        val paramsParam = "params"
+    }
+
+    override fun getArgumentNames(): MutableList<String>? {
+        return mutableListOf(pathParam, paramsParam)
     }
 
     override fun execute(args: MutableMap<String, Any>): Any {
-        val params = getParams(args)
-
-        val path = if (params.containsKey(pathParam)) {
-            params.get(pathParam) as String
-        } else if (params.size == 1) {
-            params.entries.first().value as String
+        val path = if (args.containsKey(pathParam)) {
+            args.get(pathParam) as String
+        } else if (args.size == 1) {
+            args.entries.first().value as String
         } else {
             throw ViewException("Asset function should have 'path' argument specified.")
         }
 
+        val params = FunctionUtils.copyParams(paramsParam, args)
         params.put(pathParam, ResourceMapper.uriToPath(path))
 
         return urlGenerator.name(routeName, params)
-    }
-
-    override fun getArgumentNames(): MutableList<String>? {
-        return mutableListOf(routeName)
     }
 
 }

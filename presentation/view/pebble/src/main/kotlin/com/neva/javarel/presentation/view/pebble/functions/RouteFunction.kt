@@ -7,32 +7,28 @@ class RouteFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
     companion object {
         val actionParam = "action"
         val nameParam = "name"
+        val paramsParam = "params"
     }
 
     override fun getArgumentNames(): MutableList<String>? {
-        return mutableListOf(actionParam, nameParam)
+        return mutableListOf(actionParam, nameParam, paramsParam)
     }
 
     override fun execute(args: MutableMap<String, Any>): Any {
-        val params = getParams(args)
-
-        if (params.isEmpty()) {
+        if (args.isEmpty()) {
             throw IllegalArgumentException("Route function requires 'action' or 'name' argument specified.")
         }
 
-        if (params.containsKey(nameParam)) {
-            val name = params.get(nameParam) as String
-            params.remove(nameParam);
+        val params = FunctionUtils.copyParams(paramsParam, args)
 
-            return urlGenerator.name(name, params)
-        } else if (params.containsKey(actionParam)) {
-            val action = params.get(actionParam) as String;
-            params.remove(actionParam);
-
-            return urlGenerator.action(action)
+        if (args.containsKey(nameParam)) {
+            return urlGenerator.name(args.get(nameParam) as String, params)
+        } else if (args.containsKey(actionParam)) {
+            return urlGenerator.action(args.get(actionParam) as String, params)
         }
 
-        return urlGenerator.action(params.entries.first().value as String)
+        return urlGenerator.action(args.entries.first().value as String, params)
     }
+
 
 }

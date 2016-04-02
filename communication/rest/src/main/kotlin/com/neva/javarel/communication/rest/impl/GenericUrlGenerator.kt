@@ -1,5 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
+import com.neva.javarel.communication.rest.api.RestRoute
 import com.neva.javarel.communication.rest.api.RestRouter
 import com.neva.javarel.communication.rest.api.UrlGenerator
 import org.apache.commons.lang3.StringUtils
@@ -10,9 +11,13 @@ import org.apache.felix.scr.annotations.Service
 import javax.ws.rs.core.Response
 import kotlin.reflect.KFunction1
 
-@Component(immediate = true)
+@Component
 @Service
 class GenericUrlGenerator : UrlGenerator {
+
+    companion object {
+        val hashParam = "#"
+    }
 
     @Reference
     private lateinit var router: RestRouter
@@ -33,9 +38,7 @@ class GenericUrlGenerator : UrlGenerator {
     }
 
     override fun action(action: String, params: Map<String, Any>): String {
-        val route = router.routeByAction(action)
-
-        return JerseyRestRoute.mergePath(config.uriPrefix, route.assembleUri(params))
+        return assemble(router.routeByAction(action), params)
     }
 
     override fun name(name: String): String {
@@ -43,9 +46,21 @@ class GenericUrlGenerator : UrlGenerator {
     }
 
     override fun name(name: String, params: Map<String, Any>): String {
-        val route = router.routeByName(name)
+        return assemble(router.routeByName(name), params)
+    }
 
-        return JerseyRestRoute.mergePath(config.uriPrefix, route.assembleUri(params))
+    override fun assemble(route: RestRoute, params: Map<String, Any>): String {
+        val paramsWithoutHash = mutableMapOf<String, Any>()
+        paramsWithoutHash.putAll(params)
+
+        val hash = paramsWithoutHash.remove(hashParam) as String?
+        var url = JerseyRestRoute.mergePath(config.uriPrefix, route.assembleUri(paramsWithoutHash))
+
+        if (StringUtils.isNotBlank(hash)) {
+            url += "#$hash"
+        }
+
+        return url
     }
 
 }

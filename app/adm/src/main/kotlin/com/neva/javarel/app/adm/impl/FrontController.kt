@@ -31,7 +31,7 @@ class FrontController : RestComponent {
     @GET
     @Rest(name = "home")
     fun getHome(): Response {
-        return Redirect.to(urlGenerator.action(SystemController::getHome))
+        return Redirect.to(urlGenerator.action(SystemController::getDashboard))
     }
 
 }

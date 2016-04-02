@@ -21,8 +21,20 @@ class SystemController : RestComponent {
 
     @GET
     @Path("/home")
-    fun getHome(): Response {
-        val html = resourceResolver.findOrFail("bundle://adm/view/system/home.peb")
+    fun getDashboard(): Response {
+        val html = resourceResolver.findOrFail("bundle://adm/view/system/dashboard.peb")
+                .adaptTo(View::class)
+                .render()
+
+        return Response.ok(html)
+                .type(MediaType.TEXT_HTML)
+                .build()
+    }
+
+    @GET
+    @Path("/frame")
+    fun getFrame(): Response {
+        val html = resourceResolver.findOrFail("bundle://adm/view/system/frame.peb")
                 .adaptTo(View::class)
                 .render()
 
