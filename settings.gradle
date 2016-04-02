@@ -1,7 +1,5 @@
 rootProject.name = 'framework'
 
-include ':fragment:felix-webconsole'
-
 include ':foundation'
 include ':resource'
 include ':communication:rest'

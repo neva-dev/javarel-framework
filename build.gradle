@@ -82,8 +82,6 @@ dependencies {
         exclude group: 'org.apache.felix', module: 'org.apache.felix.http.cometd'
     }
 
-    osgiModule project(':fragment:felix-webconsole')
-
     osgiModule project(':foundation')
     osgiModule project(':resource')
     osgiModule project(':communication:rest')

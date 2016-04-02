@@ -15,10 +15,10 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Developer tools <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route(action='adm.system.SystemController.getFrame', params={'#': '/system/console'}) }}"><i class="fa fa-cogs"></i> Felix OSGi Console</a></li>
+                        <li><a href="{{ route(action='adm.system.SystemController.getFrame', params={'#': '/system/console'}) }}"><i class="fa fa-cogs"></i> OSGi Console</a></li>
                         <li class="divider"></li>
-                        <li><a href="{{ route(action='adm.dev.DevController.getRestRoutes') }}"> REST Routes</a></li>
-                        <li><a href="{{ route(action='adm.dev.DevController.getAdapters') }}">Adapters</a></li>
+                        <li><a href="{{ route(action='adm.dev.DevController.getRestRoutes') }}"><i class="fa fa-road"></i> REST Routes</a></li>
+                        <li><a href="{{ route(action='adm.dev.DevController.getAdapters') }}"><i class="fa fa-refresh"></i> Adapters</a></li>
                     </ul>
                 </li>
             </ul>
