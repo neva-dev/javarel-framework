@@ -1,10 +1,11 @@
-{% extends "bundle://core/view/layout/blank.peb" %}
+{% extends "bundle://core/view/layout/master.peb" %}
 
 {% block metadata %}
     {% include "bundle://adm/view/layout/metadata.peb" %}
 {% endblock %}
 
 {% block head %}
+    {{ parent() }}
     {% include "bundle://adm/view/layout/styles.peb" %}
 {% endblock %}
 
@@ -17,5 +18,6 @@
 {% endblock %}
 
 {% block body %}
+    {{ parent() }}
     {% include "bundle://adm/view/layout/scripts.peb" %}
 {% endblock %}

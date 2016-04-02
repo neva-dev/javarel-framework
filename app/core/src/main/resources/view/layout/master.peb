@@ -1,0 +1,15 @@
+{% extends "bundle://core/view/layout/blank.peb" %}
+
+{% block head %}
+    <link href="{{ asset('bundle://core/asset/vendor/jquery/jquery-ui.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <script src="{{ asset('bundle://core/asset/vendor/lodash/lodash.min.js') }}"></script>
+
+    <script src="{{ asset('bundle://core/asset/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('bundle://core/asset/vendor/jquery/jquery-ui.min.js') }}"></script>
+
+    <script src="{{ asset('bundle://core/asset/layout/j-framework.js') }}"></script>
+    <script src="{{ asset('bundle://core/asset/layout/event-dispatcher.js') }}"></script>
+{% endblock %}
