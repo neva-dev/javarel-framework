@@ -18,6 +18,9 @@ jar {
 dependencies {
     compile project(':foundation')
 
-//    osgiBundle 'org.hibernate:hibernate-osgi:5.1.0.Final'
-//    osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.dom4j:1.6.1_4'
+    osgiBundle 'org.apache.openjpa:openjpa:2.4.1'
+    osgiBundle 'org.apache.servicemix.transaction:org.apache.servicemix.transaction:1.2.0', {
+        transitive = false
+    }
+    osgiBundle 'commons-dbcp:commons-dbcp:1.4'
 }

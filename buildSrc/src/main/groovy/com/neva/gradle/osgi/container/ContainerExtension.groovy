@@ -28,10 +28,12 @@ class ContainerExtension {
 
     List<String> programArgs = []
 
-    List<String> exclusions = ['org.osgi.*']
+    List<String> exclusions = []
 
     ContainerExtension(Project project) {
         this.project = project
+
+        exclude(['org.osgi.*', 'junit*'])
     }
 
     def config(File file) {

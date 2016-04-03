@@ -101,6 +101,6 @@ osgiContainer {
             'antlr',
             'animal-sniffer-annotations',
             'kxml2',
-            'xmlpull'
+            'xmlpull',
     ])
 }
