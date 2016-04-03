@@ -8,7 +8,7 @@
     </div>
 
     {% if adapters is empty %}
-        <p class="bg-info"><i class="fa fa-info-circle"></i> Lack of adapters.</p>
+        <p class="msg bg-info"><i class="fa fa-info-circle"></i> Lack of adapters.</p>
     {% else %}
         <table class="table table-striped">
             <thead>

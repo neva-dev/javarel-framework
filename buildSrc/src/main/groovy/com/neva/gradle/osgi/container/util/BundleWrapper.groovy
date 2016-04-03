@@ -1,10 +1,7 @@
 package com.neva.gradle.osgi.container.util
 
-
 import aQute.bnd.osgi.Analyzer
 import aQute.bnd.osgi.Jar
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
 
 import java.util.jar.Manifest
 import java.util.zip.ZipEntry
@@ -13,23 +10,15 @@ import java.util.zip.ZipOutputStream
 
 class BundleWrapper {
 
-    static final Logger log = Logging.getLogger(BundleWrapper)
-
     static void wrapNonBundle(File jarFile, String bundlesDir) {
-        log.info "Wrapping non-bundle: {}", jarFile.name
-
         def newJar = new Jar(jarFile)
         def currentManifest = newJar.manifest
 
-        Map<Object, Object[]> config = [:] // getWrapConfig(wrapInstructions, jarFile)
+        Map<Object, Object[]> config = [:]
         def consumeValue = { String key ->
             Object[] items = config.remove(key)
             if (items) items.join(',')
             else null
-        }
-
-        if (!config) {
-            log.info "No instructions provided to wrap bundle {}, will use defaults", jarFile.name
         }
 
         String implVersion = consumeValue('Bundle-Version') ?:
@@ -54,12 +43,6 @@ class BundleWrapper {
         }
 
         Manifest manifest = analyzer.calcManifest()
-
-/*        if (wrapInstructions.printManifests) {
-            println " Manifest for ${jarFile.name} ".center(100, '-')
-            manifest.write(System.out)
-            println '-' * 100
-        }*/
 
         def bundle = new File("$bundlesDir/${jarFile.name}")
 
@@ -96,22 +79,6 @@ class BundleWrapper {
             }
         }
     }
-/*
-    private static Map<String, Object[]> getWrapConfig(
-            WrapInstructionsConfig wrapInstructions, File jarFile) {
-        Map<String, Object[]> config = wrapInstructions.manifests.find { regx, _ ->
-            try {
-                def match = jarFile.name ==~ regx
-                if (match) log.debug('Regex {} matched jar file {}', regx, jarFile.name)
-                return match
-            } catch (e) {
-                log.warn('Invalid regex in wrapInstructions Map: {}', e as String)
-                return false
-            }
-        }?.value
-
-        config ?: [:]
-    }*/
 
     static String removeExtensionFrom(String name) {
         def dot = name.lastIndexOf('.')

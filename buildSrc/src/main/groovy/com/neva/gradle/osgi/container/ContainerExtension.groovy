@@ -28,6 +28,8 @@ class ContainerExtension {
 
     List<String> programArgs = []
 
+    List<String> exclusions = ['org.osgi.*']
+
     ContainerExtension(Project project) {
         this.project = project
     }
@@ -59,6 +61,29 @@ class ContainerExtension {
 
     String getProgramArgs() {
         return programArgs.join(' ')
+    }
+
+    def exclude(List<String> exclusions) {
+        exclusions.each {
+            exclude(it)
+        }
+    }
+
+    def exclude(String exclusion) {
+        if (exclusion.endsWith("*") || exclusion.endsWith(".jar")) {
+            this.exclusions += "*/$exclusion"
+        } else {
+            this.exclusions += "*/$exclusion/*"
+        }
+    }
+
+    def exclude(String group, String name, String version = null) {
+        String exclusion = "$group/$name"
+        if (version != null) {
+            exclusion += "/*/$name-$version*"
+        }
+
+        exclude(exclusion)
     }
 
 }

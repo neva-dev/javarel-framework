@@ -8,7 +8,7 @@
     </div>
 
     {% if routes is empty %}
-        <p class="bg-info"><i class="fa fa-info-circle"></i> Lack of routes.</p>
+        <p class="msg bg-info"><i class="fa fa-info-circle"></i> Lack of routes.</p>
     {% else %}
         <table class="table table-striped">
             <thead>

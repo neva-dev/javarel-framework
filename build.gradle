@@ -72,9 +72,7 @@ dependencies {
     osgiMain 'org.apache.felix:org.apache.felix.main:5.4.0'
     osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
     osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.6'
-    osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2', {
-        transitive = false
-    }
+    osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2'
     osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
     osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.8.5'
 
@@ -88,8 +86,7 @@ dependencies {
     osgiModule project(':presentation:asset')
     osgiModule project(':presentation:view')
     osgiModule project(':presentation:view:pebble')
-    osgiModule project(':storage:database')
-    osgiModule project(':storage:repository')
+    osgiModule project(':storage')
     osgiModule project(':processing:scheduler')
 
     osgiModule project(':app:core')
@@ -99,4 +96,11 @@ dependencies {
 osgiContainer {
     felix()
     debug()
+    exclude([
+            'slf4j-api-1.7.7*',
+            'antlr',
+            'animal-sniffer-annotations',
+            'kxml2',
+            'xmlpull'
+    ])
 }

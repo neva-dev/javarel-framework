@@ -8,6 +8,8 @@ import com.neva.gradle.osgi.container.util.BundleWrapper
 import com.neva.gradle.osgi.container.util.DependencyResolver
 import com.neva.gradle.osgi.container.util.MapStringifier
 import groovy.text.SimpleTemplateEngine
+import org.apache.commons.io.FilenameUtils
+import org.apache.commons.io.IOCase
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.file.FileTreeElement
@@ -59,9 +61,19 @@ class AbstractBuilder implements ContainerBuilder {
 
     def copyBundles(Collection<File> files) {
         def nonBundles = []
+        def excluded = files.findAll { file ->
+            extension.exclusions.any { exclusion ->
+                FilenameUtils.wildcardMatch(file.path, exclusion, IOCase.INSENSITIVE)
+            }
+        }
+        def included = files - excluded
+
+        if (!excluded.empty) {
+            project.logger.info "Excluding dependencies: ${excluded.collect { it.name }}"
+        }
 
         project.copy {
-            from files
+            from included
             into bundleDir
             exclude { FileTreeElement element ->
                 def nonBundle = !BundleDetector.isBundle(element.file)
@@ -73,8 +85,11 @@ class AbstractBuilder implements ContainerBuilder {
             }
         }
 
-        nonBundles.each { File file ->
-            BundleWrapper.wrapNonBundle(file, bundleDir)
+        if (!nonBundles.empty) {
+            project.logger.info "Wrapping dependencies: ${nonBundles.collect { it.name }}"
+            nonBundles.each { File file ->
+                BundleWrapper.wrapNonBundle(file, bundleDir)
+            }
         }
     }
 
