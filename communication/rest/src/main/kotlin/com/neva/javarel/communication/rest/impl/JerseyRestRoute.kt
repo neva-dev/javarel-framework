@@ -80,4 +80,8 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
     private val handlingMethod: Method
         get() = method.resourceMethods.first().invocable.handlingMethod
 
+    override fun toString(): String {
+        return "REST Route (path=$path, methods=$methods, action=$action, name=$name)"
+    }
+
 }

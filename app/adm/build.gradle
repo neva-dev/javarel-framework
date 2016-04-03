@@ -11,12 +11,13 @@ apply plugin: 'com.twcable.scr'
 jar {
     manifest {
         name project.description
-        instruction 'Export-Package', "com.neva.javarel.app.adm.api.*;version=${project.version}"
+        instruction 'Export-Package', "com.neva.javarel.app.adm.*;version=${project.version}"
         instruction 'Resource-Namespace', 'adm'
-        instruction 'Rest-Route-Alias', 'adm=com.neva.javarel.app.adm.impl'
+        instruction 'Rest-Route-Alias', 'adm=com.neva.javarel.app.adm'
     }
 }
 
 dependencies {
     compile project(':app:core')
+    compile project(':storage')
 }

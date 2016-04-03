@@ -1,4 +1,4 @@
-package com.neva.javarel.app.core.impl.asset
+package com.neva.javarel.app.core.asset
 
 import com.neva.javarel.communication.rest.api.Rest
 import com.neva.javarel.communication.rest.api.RestComponent

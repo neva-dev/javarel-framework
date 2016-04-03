@@ -1,4 +1,4 @@
-package com.neva.javarel.app.adm.impl.system.update
+package com.neva.javarel.app.adm.system.update
 
 import com.neva.javarel.processing.scheduler.api.Task
 import org.apache.felix.scr.annotations.Component

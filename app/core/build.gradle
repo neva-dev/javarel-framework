@@ -11,9 +11,9 @@ apply plugin: 'com.twcable.scr'
 jar {
     manifest {
         name project.description
-        instruction 'Export-Package', "com.neva.javarel.app.core.api.*;version=${project.version}"
+        instruction 'Export-Package', "com.neva.javarel.app.core.*;version=${project.version}"
         instruction 'Resource-Namespace', 'core'
-        instruction 'Rest-Route-Alias', 'core=com.neva.javarel.app.core.impl'
+        instruction 'Rest-Route-Alias', 'core=com.neva.javarel.app.core'
     }
 }
 

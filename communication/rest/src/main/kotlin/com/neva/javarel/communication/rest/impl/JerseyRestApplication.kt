@@ -26,8 +26,11 @@ class JerseyRestApplication : RestApplication {
     @Reference
     private lateinit var router: RestRouter
 
+    private var needUpdate = true
+
     @Activate
-    private fun start() {
+    @Synchronized
+    override fun start() {
         var resourceConfig = ResourceConfig()
         for (resource in components) {
             resourceConfig.register(resource)
@@ -35,28 +38,37 @@ class JerseyRestApplication : RestApplication {
         val servletContainer = ServletContainer(resourceConfig)
         val props = Hashtable<String, String>()
 
-        if (components.isNotEmpty()) {
-            httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
-            router.configure(components)
-        }
+
+        httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
+        router.configure(components)
+        needUpdate = false
     }
 
     @Deactivate
-    private fun stop() {
-        if (components.isNotEmpty()) {
-            try {
-                httpService.unregister(config.uriPrefix)
-            } catch (e: Throwable) {
-                // nothing interesting
-            }
+    @Synchronized
+    override fun stop() {
+        try {
+            httpService.unregister(config.uriPrefix)
+        } catch (e: Throwable) {
+            // nothing interesting
+        }
+    }
+
+    @Synchronized
+    override fun update() {
+        if (needUpdate) {
+            stop()
+            start()
         }
     }
 
     private fun bindRestComponent(component: RestComponent) {
         components.add(component)
+        needUpdate = true
     }
 
     private fun unbindRestComponent(component: RestComponent) {
         components.remove(component)
+        needUpdate = true
     }
 }

@@ -1,8 +1,6 @@
-package com.neva.javarel.app.adm.impl.dev
+package com.neva.javarel.app.adm.system
 
 import com.neva.javarel.communication.rest.api.RestComponent
-import com.neva.javarel.communication.rest.api.RestRouter
-import com.neva.javarel.foundation.api.adapting.AdaptingManager
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.felix.scr.annotations.Component
@@ -10,31 +8,22 @@ import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
 import javax.ws.rs.GET
 import javax.ws.rs.Path
-import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 @Component
 @Service
-@Path("/adm/dev")
-class DevController : RestComponent {
+@Path("/adm/system")
+class SystemController : RestComponent {
 
     @Reference
     private lateinit var resourceResolver: ResourceResolver
 
-    @Reference
-    private lateinit var router: RestRouter
-
-    @Reference
-    private lateinit var adaptingManager: AdaptingManager
-
-    @Path("/rest-routes")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    fun getRestRoutes(): Response? {
-        val html = resourceResolver.findOrFail("bundle://adm/view/dev/rest-routes.peb")
+    @Path("/home")
+    fun getDashboard(): Response {
+        val html = resourceResolver.findOrFail("bundle://adm/view/system/dashboard.peb")
                 .adaptTo(View::class)
-                .with("routes", router.routes)
                 .render()
 
         return Response.ok(html)
@@ -42,14 +31,11 @@ class DevController : RestComponent {
                 .build()
     }
 
-
-    @Path("/adapters")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    fun getAdapters(): Response? {
-        val html = resourceResolver.findOrFail("bundle://adm/view/dev/adapters.peb")
+    @Path("/frame")
+    fun getFrame(): Response {
+        val html = resourceResolver.findOrFail("bundle://adm/view/system/frame.peb")
                 .adaptTo(View::class)
-                .with("adapters", adaptingManager.adapters)
                 .render()
 
         return Response.ok(html)

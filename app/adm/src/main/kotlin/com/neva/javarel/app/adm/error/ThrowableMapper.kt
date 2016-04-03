@@ -1,4 +1,4 @@
-package com.neva.javarel.app.adm.impl.error
+package com.neva.javarel.app.adm.error
 
 import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.presentation.view.api.View

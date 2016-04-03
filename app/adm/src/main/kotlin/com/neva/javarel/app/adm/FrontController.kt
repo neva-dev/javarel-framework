@@ -1,6 +1,6 @@
-package com.neva.javarel.app.adm.impl
+package com.neva.javarel.app.adm
 
-import com.neva.javarel.app.adm.impl.system.SystemController
+import com.neva.javarel.app.adm.system.SystemController
 import com.neva.javarel.communication.rest.api.Redirect
 import com.neva.javarel.communication.rest.api.Rest
 import com.neva.javarel.communication.rest.api.RestComponent
