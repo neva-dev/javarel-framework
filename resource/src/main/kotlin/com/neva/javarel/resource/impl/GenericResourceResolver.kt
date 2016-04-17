@@ -39,11 +39,11 @@ class GenericResourceResolver : ResourceResolver, Adaptee {
         return resource
     }
 
-    override fun <Target : Any> adapt(adaptable: Resource, clazz: KClass<Target>): Target {
+    override fun <T : Any> adapt(adaptable: Resource, clazz: KClass<T>): T {
         return adaptingManager.adapt(adaptable, clazz)
     }
 
-    override fun <Target : Any> adaptTo(clazz: KClass<Target>): Target {
+    override fun <T : Any> adaptTo(clazz: KClass<T>): T {
         return adaptingManager.adapt(this, clazz)
     }
 

@@ -3,7 +3,7 @@
 
     <footer class="footer">
         <p class="text-center">
-            <a href="http://javarel.neva.zone"><img class="pull-left" src="{{ asset('bundle://adm/asset/layout/javarel-logo.jpg') }}" alt=""></a>
+            <a href="http://javarel.neva.zone"><img class="pull-left" src="{{ asset('bundle://adm/asset/layout/javarel-logo.png') }}" alt=""></a>
             <a href="http://neva.zone"><img class="pull-right" src="{{ asset('bundle://adm/asset/layout/neva-logo.png') }}" alt=""></a>
             <span class="info text-muted">
                 &reg; Neva Development 2015 &mdash; {{ now() | date('yyyy') }}<br>
