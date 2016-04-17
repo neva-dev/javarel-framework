@@ -79,10 +79,7 @@ dependencies {
     osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2'
     osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
     osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.8.5'
-
-    osgiBundle 'org.apache.felix:org.apache.felix.http.bundle:2.3.2', {
-        exclude group: 'org.apache.felix', module: 'org.apache.felix.http.cometd'
-    }
+    osgiBundle 'org.glassfish.grizzly.osgi:grizzly-httpservice-bundle:2.3.24'
 
     osgiModule project(':foundation')
     osgiModule project(':resource')
@@ -106,6 +103,7 @@ osgiContainer {
             'xml-apis-1.3*',
             'antlr',
             'animal-sniffer-annotations',
+            'grizzly-httpservice-bundle*',
             'kxml2',
             'xmlpull',
     ])
