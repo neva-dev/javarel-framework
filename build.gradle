@@ -91,6 +91,7 @@ dependencies {
     osgiModule project(':presentation:view')
     osgiModule project(':presentation:view:pebble')
     osgiModule project(':storage')
+ //   osgiModule project(':storage:openjpa')
     osgiModule project(':processing:scheduler')
 
     osgiModule project(':app:core')

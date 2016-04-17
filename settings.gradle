@@ -8,6 +8,8 @@ include ':presentation:view'
 include ':presentation:view:pebble'
 include ':processing:scheduler'
 include ':storage'
+include ':storage:openjpa'
 
 include ':app:core'
 include ':app:adm'
+

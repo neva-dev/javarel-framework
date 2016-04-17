@@ -14,7 +14,7 @@ import java.util.*
 @Service
 class JerseyRestApplication : RestApplication {
 
-    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE)
+    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private val components = Sets.newConcurrentHashSet<RestComponent>()
 
     @Reference
@@ -29,8 +29,16 @@ class JerseyRestApplication : RestApplication {
     private var started = false
 
     @Activate
-    @Synchronized
-    override fun start() {
+    fun activate() {
+        toggle(true)
+    }
+
+    @Deactivate
+    fun deactivate() {
+        toggle(false)
+    }
+
+    private fun start() {
         var resourceConfig = ResourceConfig()
         for (resource in components) {
             resourceConfig.register(resource)
@@ -38,15 +46,12 @@ class JerseyRestApplication : RestApplication {
         val servletContainer = ServletContainer(resourceConfig)
         val props = Hashtable<String, String>()
 
-
         httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
         router.configure(components)
         started = true
     }
 
-    @Deactivate
-    @Synchronized
-    override fun stop() {
+    private fun stop() {
         try {
             httpService.unregister(config.uriPrefix)
         } catch (e: Throwable) {
@@ -54,20 +59,24 @@ class JerseyRestApplication : RestApplication {
         }
     }
 
-    private fun update() {
+    @Synchronized
+    override fun toggle(start: Boolean) {
         if (started) {
             stop()
+        }
+
+        if (start) {
             start()
         }
     }
 
     private fun bindRestComponent(component: RestComponent) {
         components.add(component)
-        update()
+        toggle(true)
     }
 
     private fun unbindRestComponent(component: RestComponent) {
         components.remove(component)
-        update()
+        toggle(true)
     }
 }
