@@ -3,12 +3,14 @@ package com.neva.gradle.osgi.container
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.osgi.OsgiPlugin
 
 class ModulePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        project.plugins.apply(BasePlugin)
         project.plugins.apply(OsgiPlugin)
 
         createConfig(project, ContainerConfig.BUNDLE)
