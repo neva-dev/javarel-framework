@@ -30,6 +30,10 @@ class ContainerExtension {
 
     List<String> exclusions = []
 
+    List<String> fileInstallFilters = []
+
+    String fileInstallPath = 'load'
+
     ContainerExtension(Project project) {
         this.project = project
 
@@ -72,11 +76,7 @@ class ContainerExtension {
     }
 
     def exclude(String exclusion) {
-        if (exclusion.endsWith("*") || exclusion.endsWith(".jar")) {
-            this.exclusions += "*/$exclusion"
-        } else {
-            this.exclusions += "*/$exclusion/*"
-        }
+        addFilter(exclusions, exclusion)
     }
 
     def exclude(String group, String name, String version = null) {
@@ -86,6 +86,24 @@ class ContainerExtension {
         }
 
         exclude(exclusion)
+    }
+
+    def later(String pattern) {
+        addFilter(fileInstallFilters, pattern)
+    }
+
+    def later(List<String> patterns) {
+        patterns.each {
+            later(it)
+        }
+    }
+
+    private addFilter(List<String> filters, String exclusion) {
+        if (exclusion.endsWith("*") || exclusion.endsWith(".jar")) {
+            filters.add("*/$exclusion")
+        } else {
+            filters.add("*/$exclusion/*")
+        }
     }
 
 }

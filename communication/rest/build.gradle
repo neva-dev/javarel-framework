@@ -12,6 +12,7 @@ jar {
     manifest {
         name project.description
         instruction 'Export-Package', "com.neva.javarel.communication.rest.api.*;version=${project.version}"
+        instruction 'Import-Package', "org.glassfish.hk2.*,*"
     }
 }
 

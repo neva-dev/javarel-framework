@@ -66,35 +66,54 @@ class AbstractBuilder implements ContainerBuilder {
                 FilenameUtils.wildcardMatch(file.path, exclusion, IOCase.INSENSITIVE)
             }
         }
-        def included = files - excluded
-
-        if (!included.empty) {
-            project.logger.info "Including dependencies: ${included.collect { it.name }}"
-        }
 
         if (!excluded.empty) {
             project.logger.info "Excluding dependencies: ${excluded.collect { it.name }}"
         }
 
-        project.copy {
-            from included
-            into bundleDir
-            exclude { FileTreeElement element ->
-                def nonBundle = !BundleDetector.isBundle(element.file)
-                if (nonBundle) {
-                    nonBundles += element.file
-                }
-
-                return nonBundle
+        def included = files - excluded
+        def installables = included.findAll { file ->
+            extension.fileInstallFilters.any { filter ->
+                FilenameUtils.wildcardMatch(file.path, filter, IOCase.INSENSITIVE)
             }
         }
+        def deployables = included - installables
 
+        if (!deployables.empty) {
+            project.logger.info "Including framework dependencies: ${deployables.collect { it.name }}"
+        }
+        nonBundles += copyAndExcludeBundles(deployables, bundleDir)
+
+        if (!installables.empty) {
+            project.logger.info "Including installable dependencies : ${installables.collect { it.name }}"
+        }
+        nonBundles += copyAndExcludeBundles(installables, fileInstallDir)
+
+        // TODO Wrap and decide where to copy (deploy dir or file install dir)
         if (!nonBundles.empty) {
             project.logger.info "Wrapping dependencies: ${nonBundles.collect { it.name }}"
             nonBundles.each { File file ->
                 BundleWrapper.wrapNonBundle(file, bundleDir)
             }
         }
+    }
+
+    def Collection<File> copyAndExcludeBundles(Collection<File> files, String dir) {
+        Collection<File> excluded = []
+        project.copy {
+            from files
+            into dir
+            exclude { FileTreeElement element ->
+                def nonBundle = !BundleDetector.isBundle(element.file)
+                if (nonBundle) {
+                    excluded += element.file
+                }
+
+                return nonBundle
+            }
+        }
+
+        return excluded
     }
 
     @Override
@@ -128,6 +147,10 @@ class AbstractBuilder implements ContainerBuilder {
 
     String getBundleDir() {
         "${extension.containerDir}/${extension.bundlePath}"
+    }
+
+    String getFileInstallDir() {
+        "${extension.containerDir}/${extension.fileInstallPath}"
     }
 
     File getConfigFile() {
