@@ -2,6 +2,8 @@ buildscript {
     apply from: project.rootProject.relativePath('buildscript.gradle'), to: buildscript
 }
 
+defaultTasks 'createOsgiContainer'
+
 apply plugin: 'osgi-container'
 
 allprojects {
