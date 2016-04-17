@@ -6,6 +6,4 @@ interface RestApplication {
 
     fun stop()
 
-    fun update()
-
 }

@@ -5,7 +5,7 @@ import org.gradle.api.tasks.TaskAction
 
 class BuildTask extends ContainerTask {
 
-    static final NAME = "buildOsgiContainer"
+    static final NAME = "createOsgiContainer"
 
     BuildTask() {
         inputs.files(extension.runners)

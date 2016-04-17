@@ -68,6 +68,10 @@ class AbstractBuilder implements ContainerBuilder {
         }
         def included = files - excluded
 
+        if (!included.empty) {
+            project.logger.info "Including dependencies: ${included.collect { it.name }}"
+        }
+
         if (!excluded.empty) {
             project.logger.info "Excluding dependencies: ${excluded.collect { it.name }}"
         }

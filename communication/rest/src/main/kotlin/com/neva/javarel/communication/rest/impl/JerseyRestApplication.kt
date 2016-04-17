@@ -26,7 +26,7 @@ class JerseyRestApplication : RestApplication {
     @Reference
     private lateinit var router: RestRouter
 
-    private var needUpdate = true
+    private var started = false
 
     @Activate
     @Synchronized
@@ -41,7 +41,7 @@ class JerseyRestApplication : RestApplication {
 
         httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
         router.configure(components)
-        needUpdate = false
+        started = true
     }
 
     @Deactivate
@@ -54,9 +54,8 @@ class JerseyRestApplication : RestApplication {
         }
     }
 
-    @Synchronized
-    override fun update() {
-        if (needUpdate) {
+    private fun update() {
+        if (started) {
             stop()
             start()
         }
@@ -64,11 +63,11 @@ class JerseyRestApplication : RestApplication {
 
     private fun bindRestComponent(component: RestComponent) {
         components.add(component)
-        needUpdate = true
+        update()
     }
 
     private fun unbindRestComponent(component: RestComponent) {
         components.remove(component)
-        needUpdate = true
+        update()
     }
 }
