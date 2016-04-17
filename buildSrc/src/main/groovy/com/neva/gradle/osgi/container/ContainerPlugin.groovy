@@ -1,6 +1,6 @@
 package com.neva.gradle.osgi.container
 
-import com.neva.gradle.osgi.container.task.BuildTask
+import com.neva.gradle.osgi.container.task.CreateContainerTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -20,6 +20,6 @@ class ContainerPlugin implements Plugin<Project> {
 
         project.dependencies.add(ContainerConfig.MODULE, project)
 
-        project.task(BuildTask.NAME, type: BuildTask)
+        project.task(CreateContainerTask.NAME, type: CreateContainerTask)
     }
 }

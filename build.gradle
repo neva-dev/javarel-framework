@@ -104,3 +104,5 @@ osgiContainer {
             'xmlpull',
     ])
 }
+
+createOsgiContainer.dependsOn getTasksByName("assemble", true)

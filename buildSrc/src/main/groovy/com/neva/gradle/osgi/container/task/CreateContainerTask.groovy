@@ -3,11 +3,11 @@ package com.neva.gradle.osgi.container.task
 import com.neva.gradle.osgi.container.ContainerException
 import org.gradle.api.tasks.TaskAction
 
-class BuildTask extends ContainerTask {
+class CreateContainerTask extends ContainerTask {
 
     static final NAME = "createOsgiContainer"
 
-    BuildTask() {
+    CreateContainerTask() {
         inputs.files(extension.runners)
         outputs.dir(extension.containerDir)
 
