@@ -20,5 +20,6 @@ dependencies {
     compile project(':communication:rest')
 
     osgiBundle 'org.apache.tika:tika-core:1.11'
-
+    osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.xerces:2.11.0_1'
+    osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.xmlresolver:1.2_5'
 }
