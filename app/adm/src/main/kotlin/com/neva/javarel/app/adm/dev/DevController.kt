@@ -34,7 +34,7 @@ class DevController : RestComponent {
     fun getRestRoutes(): Response? {
         val html = resourceResolver.findOrFail("bundle://adm/view/dev/rest-routes.peb")
                 .adaptTo(View::class)
-                .with("routes", router.routes)
+                .with("routes", router.routes.sortedBy { it.path })
                 .render()
 
         return Response.ok(html)
