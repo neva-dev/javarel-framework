@@ -10,6 +10,7 @@ import com.neva.gradle.osgi.container.util.MapStringifier
 import groovy.text.SimpleTemplateEngine
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.IOCase
+import org.apache.commons.lang3.StringUtils
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.file.FileTreeElement
@@ -63,7 +64,7 @@ class AbstractBuilder implements ContainerBuilder {
         def nonBundles = []
         def excluded = files.findAll { file ->
             extension.exclusions.any { exclusion ->
-                FilenameUtils.wildcardMatch(file.path, exclusion, IOCase.INSENSITIVE)
+                FilenameUtils.wildcardMatch(file.path, StringUtils.replace(exclusion, "/", File.separator), IOCase.INSENSITIVE)
             }
         }
 
@@ -74,7 +75,7 @@ class AbstractBuilder implements ContainerBuilder {
         def included = files - excluded
         def installables = included.findAll { file ->
             extension.fileInstallFilters.any { filter ->
-                FilenameUtils.wildcardMatch(file.path, filter, IOCase.INSENSITIVE)
+                FilenameUtils.wildcardMatch(file.path, StringUtils.replace(filter, "/", File.separator), IOCase.INSENSITIVE)
             }
         }
         def deployables = included - installables
