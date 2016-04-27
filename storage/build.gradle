@@ -23,4 +23,7 @@ dependencies {
         transitive = false
     }
     osgiBundle 'commons-dbcp:commons-dbcp:1.4'
+  //  osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.derby:10.12.1.1_1'
+   // osgiBundle 'org.apache.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.3:2.6.0'
+
 }
