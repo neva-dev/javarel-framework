@@ -27,10 +27,13 @@ class UserController : RestComponent {
         val emf = persister.getEntityManagerFactory("storage")
         val em = emf.createEntityManager()
 
-        val user = User(RandomStringUtils.random(8), Date())
+        em.transaction.begin()
 
+        val user = User(RandomStringUtils.random(8), Date())
         em.persist(user)
         em.flush()
+
+        em.transaction.commit()
 
         return Response.ok("User '${user.name}' created with ID: ${user.id}")
                 .type(MediaType.TEXT_PLAIN)

@@ -23,4 +23,8 @@ class User {
         this.birthDate = birth
     }
 
+    constructor() {
+
+    }
+
 }

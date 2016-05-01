@@ -22,17 +22,17 @@ class GenericPersister : Persister {
     override fun getEntityManagerFactory(persistenceUnitName: String): EntityManagerFactory {
         val properties = Properties();
 
-        // TODO put data source object directly into property ...Factory
-
 
         properties.put("openjpa.ConnectionFactory", mysqlDataSource())
 
+        properties.put("exclude-unlisted-classes", "false")
+
         properties.put("javax.persistence.provider", "org.apache.openjpa.persistence.PersistenceProviderImpl");
         properties.put("javax.persistence.transactionType", "RESOURCE_LOCAL");
-//        properties.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.EmbeddedDriver")
-//        properties.put("javax.persistence.jdbc.url", "jdbc:derby:target/derbydb3;create=true")
+
         properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema")
-        properties.put("openjpa.RuntimeUnenhancedClasses",  RuntimeUnenhancedClassesModes.UNSUPPORTED)
+        properties.put("openjpa.DynamicEnhancementAgent", "true")
+        properties.put("openjpa.RuntimeUnenhancedClasses",  RuntimeUnenhancedClassesModes.SUPPORTED)
 
         return provider.createEntityManagerFactory(persistenceUnitName, properties)
     }
@@ -47,8 +47,8 @@ class GenericPersister : Persister {
 
     private fun mysqlDataSource() : DataSource {
         val dataSource = MysqlDataSource();
-        dataSource.setURL("jdbc:mysql://localhost:3306");
-        dataSource.databaseName = "javarel"
+        dataSource.setURL("jdbc:mysql://localhost:3306/javarel");
+      //  dataSource.databaseName = "javarel"
         dataSource.user = "root"
         dataSource.setPassword("toor")
 
