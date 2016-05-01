@@ -1,6 +1,5 @@
 package com.neva.javarel.storage.impl
 
-import com.google.common.collect.Maps
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import com.neva.javarel.storage.api.Persister
 import org.apache.derby.jdbc.EmbeddedDataSource
@@ -23,7 +22,7 @@ class GenericPersister : Persister {
 
     private var context: BundleContext? = null
 
-    private val factories = Maps.newConcurrentMap<String, EntityManagerFactory>()
+    private val factories: MutableMap<String, EntityManagerFactory> = mutableMapOf()
 
     @Activate
     protected fun start(context: BundleContext) {
@@ -34,13 +33,13 @@ class GenericPersister : Persister {
     private lateinit var provider: PersistenceProvider
 
     override fun getEntityManagerFactory(persistenceUnitName: String): EntityManagerFactory {
-        if (factories.contains(persistenceUnitName)) {
-            return factories.get(persistenceUnitName)!!
-        } else {
-            val emf = makeEntityManagerFactory(persistenceUnitName)
+        var emf = factories.get(persistenceUnitName)
+        if (emf == null || !emf.isOpen) {
+            emf = makeEntityManagerFactory(persistenceUnitName)
             factories.put(persistenceUnitName, emf)
-            return emf
         }
+
+        return emf
     }
 
     private fun makeEntityManagerFactory(persistenceUnitName: String): EntityManagerFactory {
@@ -58,7 +57,7 @@ class GenericPersister : Persister {
         info.persistenceProviderClassName = PersistenceProviderImpl::class.java.canonicalName
         info.persistenceUnitName = persistenceUnitName
         info.transactionType = PersistenceUnitTransactionType.RESOURCE_LOCAL
-        info.addManagedClassName("com.neva.javarel.app.adm.auth.User")
+        info.addManagedClassName("com.neva.javarel.app.adm.auth.User") // TODO scan bundles for such entries sep. with ';'
         info.setExcludeUnlistedClasses(false)
 
         return provider.createContainerEntityManagerFactory(info, properties)
@@ -75,7 +74,6 @@ class GenericPersister : Persister {
     private fun mysqlDataSource(): DataSource {
         val dataSource = MysqlDataSource();
         dataSource.setURL("jdbc:mysql://localhost:3306/javarel");
-        //  dataSource.databaseName = "javarel"
         dataSource.user = "root"
         dataSource.setPassword("toor")
 
