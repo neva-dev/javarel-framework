@@ -29,7 +29,7 @@ subprojects { subProject ->
         }
 
         dependencies {
-            osgiBundle 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.0'
+            osgiBundle 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.1-2'
 
             osgiBundle 'org.osgi:org.osgi.enterprise:5.0.0'
             osgiBundle 'org.osgi:org.osgi.core:5.0.0'
@@ -88,7 +88,6 @@ dependencies {
     osgiModule project(':presentation:view')
     osgiModule project(':presentation:view:pebble')
     osgiModule project(':storage')
-    osgiModule project(':storage:openjpa')
     osgiModule project(':processing:scheduler')
 
     osgiModule project(':app:core')
