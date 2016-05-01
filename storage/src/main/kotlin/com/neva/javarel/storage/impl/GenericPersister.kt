@@ -1,14 +1,16 @@
 package com.neva.javarel.storage.impl
 
+import com.google.common.collect.Maps
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import com.neva.javarel.storage.api.Persister
 import org.apache.derby.jdbc.EmbeddedDataSource
+import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
 import org.apache.openjpa.enhance.RuntimeUnenhancedClassesModes
 import org.apache.openjpa.persistence.PersistenceProviderImpl
-import org.apache.openjpa.persistence.PersistenceUnitInfoImpl
+import org.osgi.framework.BundleContext
 import java.util.*
 import javax.persistence.EntityManagerFactory
 import javax.persistence.spi.PersistenceProvider
@@ -19,24 +21,45 @@ import javax.sql.DataSource
 @Component(immediate = true)
 class GenericPersister : Persister {
 
+    private var context: BundleContext? = null
+
+    private val factories = Maps.newConcurrentMap<String, EntityManagerFactory>()
+
+    @Activate
+    protected fun start(context: BundleContext) {
+        this.context = context
+    }
+
     @Reference
     private lateinit var provider: PersistenceProvider
 
     override fun getEntityManagerFactory(persistenceUnitName: String): EntityManagerFactory {
+        if (factories.contains(persistenceUnitName)) {
+            return factories.get(persistenceUnitName)!!
+        } else {
+            val emf = makeEntityManagerFactory(persistenceUnitName)
+            factories.put(persistenceUnitName, emf)
+            return emf
+        }
+    }
+
+    private fun makeEntityManagerFactory(persistenceUnitName: String): EntityManagerFactory {
         val properties = Properties();
 
-        properties.put("openjpa.ConnectionFactory", derbyDataSource())
+        properties.put("openjpa.ConnectionFactory", mysqlDataSource())
         properties.put("openjpa.DynamicEnhancementAgent", "true")
         properties.put("openjpa.RuntimeUnenhancedClasses", RuntimeUnenhancedClassesModes.SUPPORTED)
-        properties.put("openjpa.MetaDataFactory", "jpa(Types=com.neva.javarel.app.adm.auth.User)")
+        // properties.put("openjpa.MetaDataFactory", "jpa(Types=)")
 
-        properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true,schemaAction='dropDB,add')")
+        properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true')")
         properties.put("openjpa.jdbc.MappingDefaults", "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict")
 
-        val info = PersistenceUnitInfoImpl()
+        val info = BundlePersistenceInfo(context!!)
         info.persistenceProviderClassName = PersistenceProviderImpl::class.java.canonicalName
         info.persistenceUnitName = persistenceUnitName
         info.transactionType = PersistenceUnitTransactionType.RESOURCE_LOCAL
+        info.addManagedClassName("com.neva.javarel.app.adm.auth.User")
+        info.setExcludeUnlistedClasses(false)
 
         return provider.createContainerEntityManagerFactory(info, properties)
     }
