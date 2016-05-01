@@ -7,9 +7,12 @@ import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
 import org.apache.openjpa.enhance.RuntimeUnenhancedClassesModes
+import org.apache.openjpa.persistence.PersistenceProviderImpl
+import org.apache.openjpa.persistence.PersistenceUnitInfoImpl
 import java.util.*
 import javax.persistence.EntityManagerFactory
 import javax.persistence.spi.PersistenceProvider
+import javax.persistence.spi.PersistenceUnitTransactionType
 import javax.sql.DataSource
 
 @Service
@@ -22,22 +25,20 @@ class GenericPersister : Persister {
     override fun getEntityManagerFactory(persistenceUnitName: String): EntityManagerFactory {
         val properties = Properties();
 
-
-        properties.put("openjpa.ConnectionFactory", mysqlDataSource())
-
-        properties.put("exclude-unlisted-classes", "false")
-
-        properties.put("javax.persistence.provider", "org.apache.openjpa.persistence.PersistenceProviderImpl");
-        properties.put("javax.persistence.transactionType", "RESOURCE_LOCAL");
-
+        properties.put("openjpa.ConnectionFactory", derbyDataSource())
         properties.put("openjpa.DynamicEnhancementAgent", "true")
         properties.put("openjpa.RuntimeUnenhancedClasses", RuntimeUnenhancedClassesModes.SUPPORTED)
+        properties.put("openjpa.MetaDataFactory", "jpa(Types=com.neva.javarel.app.adm.auth.User)")
 
         properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true,schemaAction='dropDB,add')")
-        properties.put("openjpa.jdbc.SchemaFactory", "native(foreignKeys=true)")
         properties.put("openjpa.jdbc.MappingDefaults", "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict")
 
-        return provider.createEntityManagerFactory(persistenceUnitName, properties)
+        val info = PersistenceUnitInfoImpl()
+        info.persistenceProviderClassName = PersistenceProviderImpl::class.java.canonicalName
+        info.persistenceUnitName = persistenceUnitName
+        info.transactionType = PersistenceUnitTransactionType.RESOURCE_LOCAL
+
+        return provider.createContainerEntityManagerFactory(info, properties)
     }
 
     private fun derbyDataSource(): EmbeddedDataSource {
