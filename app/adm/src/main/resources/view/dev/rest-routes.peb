@@ -25,7 +25,13 @@
             {% for route in routes %}
                 <tr>
                     <th scope="row">{{ loop.index + 1 }}</th>
-                    <td>{{ route.path }}</td>
+                    <td>
+                        {% if (route.parameters is empty) and (route.methods contains "GET") %}
+                            <a href="{{ route.path }}">{{ route.path }}</a>
+                        {% else %}
+                            {{ route.path }}
+                        {% endif %}
+                    </td>
                     <td>{{ route.parameters | join(', ') }}</td>
                     <td>{{ route.methods | join(', ') }}</td>
                     <td>
