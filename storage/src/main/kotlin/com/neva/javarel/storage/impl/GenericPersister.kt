@@ -30,9 +30,12 @@ class GenericPersister : Persister {
         properties.put("javax.persistence.provider", "org.apache.openjpa.persistence.PersistenceProviderImpl");
         properties.put("javax.persistence.transactionType", "RESOURCE_LOCAL");
 
-        properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema")
         properties.put("openjpa.DynamicEnhancementAgent", "true")
-        properties.put("openjpa.RuntimeUnenhancedClasses",  RuntimeUnenhancedClassesModes.SUPPORTED)
+        properties.put("openjpa.RuntimeUnenhancedClasses", RuntimeUnenhancedClassesModes.SUPPORTED)
+
+        properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true,schemaAction='dropDB,add')")
+        properties.put("openjpa.jdbc.SchemaFactory", "native(foreignKeys=true)")
+        properties.put("openjpa.jdbc.MappingDefaults", "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict")
 
         return provider.createEntityManagerFactory(persistenceUnitName, properties)
     }
@@ -45,10 +48,10 @@ class GenericPersister : Persister {
         return derbyDatasource
     }
 
-    private fun mysqlDataSource() : DataSource {
+    private fun mysqlDataSource(): DataSource {
         val dataSource = MysqlDataSource();
         dataSource.setURL("jdbc:mysql://localhost:3306/javarel");
-      //  dataSource.databaseName = "javarel"
+        //  dataSource.databaseName = "javarel"
         dataSource.user = "root"
         dataSource.setPassword("toor")
 

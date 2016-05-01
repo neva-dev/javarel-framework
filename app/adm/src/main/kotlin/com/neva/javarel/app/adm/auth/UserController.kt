@@ -29,7 +29,7 @@ class UserController : RestComponent {
 
         em.transaction.begin()
 
-        val user = User(RandomStringUtils.random(8), Date())
+        val user = User(RandomStringUtils.randomAscii(8), Date())
         em.persist(user)
         em.flush()
 
