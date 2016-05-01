@@ -2,6 +2,7 @@ package com.neva.gradle.osgi.container.util
 
 import aQute.bnd.osgi.Analyzer
 import aQute.bnd.osgi.Jar
+import org.apache.commons.lang3.StringUtils
 
 import java.util.jar.Manifest
 import java.util.zip.ZipEntry
@@ -92,11 +93,11 @@ class BundleWrapper {
         name = removeExtensionFrom(name)
         def digitsAfterDash = name.find(/\-\d+.*/)
         if (digitsAfterDash) {
-            return digitsAfterDash[1..-1] // without the dash
+            return StringUtils.substringBefore(digitsAfterDash[1..-1], "-")
         }
         int digit = name.findIndexOf { it.number }
         if (digit > 0) {
-            return name[digit..-1]
+            return StringUtils.substringBefore(name[digit..-1], "-")
         }
         '1.0.0'
     }

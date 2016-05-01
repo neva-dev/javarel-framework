@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
+import java.util.*
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.core.MediaType
@@ -26,13 +27,12 @@ class UserController : RestComponent {
         val emf = persister.getEntityManagerFactory("storage")
         val em = emf.createEntityManager()
 
-        val user = User()
-        user.setName(RandomStringUtils.random(8))
+        val user = User(RandomStringUtils.random(8), Date())
 
         em.persist(user)
         em.flush()
 
-        return Response.ok("User '${user.getName()}' created with ID: ${user.getId()}")
+        return Response.ok("User '${user.name}' created with ID: ${user.id}")
                 .type(MediaType.TEXT_PLAIN)
                 .build()
     }

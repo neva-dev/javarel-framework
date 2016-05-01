@@ -5,10 +5,7 @@ import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceNotFoundException
 import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.ReferenceCardinality
-import org.apache.felix.scr.annotations.Service
+import org.apache.felix.scr.annotations.*
 import org.slf4j.LoggerFactory
 import javax.ws.rs.NotFoundException
 import javax.ws.rs.core.MediaType
@@ -21,7 +18,8 @@ import javax.ws.rs.ext.Provider
 @Provider
 class ThrowableMapper : ExceptionMapper<Throwable>, RestComponent {
 
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY)
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY, policy = ReferencePolicy.DYNAMIC)
+    @Volatile
     private var resolver: ResourceResolver? = null
 
     companion object {

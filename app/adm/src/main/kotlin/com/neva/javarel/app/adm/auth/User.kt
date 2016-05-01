@@ -1,30 +1,26 @@
 package com.neva.javarel.app.adm.auth
 
-import java.io.Serializable
+import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "adm_user")
-class User : Serializable {
+class User {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private var id: Integer? = null;
+    lateinit var id: Integer
 
     @Column(name = "name")
-    private var name: String? = null
+    lateinit var name: String
 
-    fun getId(): Integer? {
-        return id
-    }
+    @Column(name = "birth_date")
+    lateinit var birthDate: Date
 
-    fun setName(name: String) {
+    constructor(name: String, birth: Date) {
         this.name = name
-    }
-
-    fun getName(): String? {
-        return name
+        this.birthDate = birth
     }
 
 }
