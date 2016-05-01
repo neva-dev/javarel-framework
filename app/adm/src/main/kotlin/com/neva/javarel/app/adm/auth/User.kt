@@ -8,7 +8,7 @@ import javax.persistence.*
 class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     lateinit var id: Integer
 
@@ -21,6 +21,10 @@ class User {
     constructor(name: String, birth: Date) {
         this.name = name
         this.birthDate = birth
+    }
+
+    constructor() {
+
     }
 
 }
