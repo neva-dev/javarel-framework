@@ -1,7 +1,7 @@
 package com.neva.javarel.storage.impl.connection
 
 import com.neva.javarel.foundation.api.JavarelConstants
-import com.neva.javarel.storage.api.Connection
+import com.neva.javarel.storage.api.DatabaseConnection
 import org.apache.derby.jdbc.EmbeddedDataSource
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
@@ -11,11 +11,17 @@ import javax.sql.DataSource
 
 @Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - Derby Connection")
 @Service
-class DerbyConnection : Connection {
+class DerbyDatabaseConnection : DatabaseConnection {
 
     companion object {
         @Property(name = nameProp, value = "derby", label = "Connection name", description = "Unique identifier")
         const val nameProp = "name"
+
+        @Property(name = userProp, value = "root", label = "Username")
+        const val userProp = "userProp"
+
+        @Property(name = dbNameProp, value = "javarel", label = "Database name")
+        const val dbNameProp = "dbNameProp"
     }
 
     private var props: Map<String, Any>? = null
@@ -25,14 +31,20 @@ class DerbyConnection : Connection {
         this.props = props
     }
 
+    private val user: String
+        get() = props!![userProp] as String
+
+    private val dbName: String
+        get() = props!![dbNameProp] as String
+
     override val name: String
-        get() = props!![MySqlConnection.nameProp] as String
+        get() = props!![nameProp] as String
 
     override val source: DataSource
         get() {
             val ds = EmbeddedDataSource()
-            ds.setDatabaseName("target/testDB");
-            ds.setUser("test");
+            ds.setDatabaseName(dbName);
+            ds.setUser(user);
             ds.setCreateDatabase("create");
 
             return ds

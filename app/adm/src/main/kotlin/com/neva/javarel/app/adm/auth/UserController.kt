@@ -2,7 +2,7 @@ package com.neva.javarel.app.adm.system
 
 import com.neva.javarel.app.adm.auth.User
 import com.neva.javarel.communication.rest.api.RestComponent
-import com.neva.javarel.storage.api.Storage
+import com.neva.javarel.storage.api.DatabaseAdmin
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
@@ -19,12 +19,12 @@ import javax.ws.rs.core.Response
 class UserController : RestComponent {
 
     @Reference
-    private lateinit var storage: Storage
+    private lateinit var dbAdmin: DatabaseAdmin
 
     @GET
     @Path("/create")
     fun getCreate(): Response {
-        val user = storage.db("mysql").session { em ->
+        val user = dbAdmin.database().session { em ->
             val user = User(RandomStringUtils.randomAscii(8), Date())
             em.persist(user)
             em.flush()

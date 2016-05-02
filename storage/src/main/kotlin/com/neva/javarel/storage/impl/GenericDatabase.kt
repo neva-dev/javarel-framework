@@ -1,12 +1,12 @@
 package com.neva.javarel.storage.impl
 
-import com.neva.javarel.storage.api.Connection
 import com.neva.javarel.storage.api.Database
+import com.neva.javarel.storage.api.DatabaseConnection
 import com.neva.javarel.storage.api.DatabaseException
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 
-class GenericDatabase(override val connection: Connection, val emf: EntityManagerFactory) : Database {
+class GenericDatabase(override val connection: DatabaseConnection, val emf: EntityManagerFactory) : Database {
 
     override val connected: Boolean
         get() = emf.isOpen

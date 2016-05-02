@@ -7,7 +7,7 @@ import javax.persistence.EntityManager
  */
 interface Database {
 
-    val connection: Connection
+    val connection: DatabaseConnection
 
     val connected: Boolean
 

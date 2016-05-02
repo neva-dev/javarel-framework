@@ -5,7 +5,7 @@ import javax.sql.DataSource
 /**
  * Represents inactive database connection
  */
-interface Connection {
+interface DatabaseConnection {
 
     val name: String
 

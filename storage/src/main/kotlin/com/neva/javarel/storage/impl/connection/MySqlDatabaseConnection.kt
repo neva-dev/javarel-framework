@@ -2,7 +2,7 @@ package com.neva.javarel.storage.impl.connection
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import com.neva.javarel.foundation.api.JavarelConstants
-import com.neva.javarel.storage.api.Connection
+import com.neva.javarel.storage.api.DatabaseConnection
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
@@ -11,13 +11,13 @@ import javax.sql.DataSource
 
 @Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - MySQL Connection")
 @Service
-class MySqlConnection : Connection {
+class MySqlDatabaseConnection : DatabaseConnection {
 
     companion object {
         @Property(name = nameProp, value = "mysql", label = "Connection name", description = "Unique identifier")
         const val nameProp = "name"
 
-        @Property(name = urlProp, value = "jdbc:mysql://localhost:3306/javarel", label = "JDBC url", description = "Should starts with jdbc:mysql://")
+        @Property(name = urlProp, value = "localhost:3306/javarel", label = "Url", description = "Syntax: [host]:[port]/[database]")
         const val urlProp = "urlProp"
 
         @Property(name = userProp, value = "root", label = "Username")
@@ -49,7 +49,7 @@ class MySqlConnection : Connection {
     override val source: DataSource
         get() {
             val ds = MysqlDataSource();
-            ds.setURL(url);
+            ds.setURL("jdbc:mysql://" + url);
             ds.user = user
             ds.setPassword(password)
 
