@@ -11,6 +11,7 @@ import org.apache.openjpa.persistence.PersistenceProviderImpl
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import java.util.Properties
+import javax.persistence.EntityManager
 import javax.persistence.spi.PersistenceProvider
 import javax.persistence.spi.PersistenceUnitTransactionType
 
@@ -113,6 +114,10 @@ class GenericDatabaseAdmin : DatabaseAdmin {
     private fun unbindConnection(connection: DatabaseConnection) {
         disconnect(connection)
         _connections.remove(connection.name)
+    }
+
+    override fun <R> session(callback: (EntityManager) -> R): R {
+        return database().session(callback)
     }
 
 }

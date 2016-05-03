@@ -3,6 +3,7 @@ package com.neva.javarel.communication.rest.impl
 import com.google.common.collect.Sets
 import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestComponent
+import com.neva.javarel.communication.rest.api.RestRegistrar
 import com.neva.javarel.communication.rest.api.RestRouter
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.server.ResourceConfig
@@ -17,6 +18,9 @@ class JerseyRestApplication : RestApplication {
     @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
     private val components = Sets.newConcurrentHashSet<RestComponent>()
 
+    @Reference(referenceInterface = RestRegistrar::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    private val registrars = Sets.newConcurrentHashSet<RestRegistrar>()
+
     @Reference
     private lateinit var httpService: HttpService
 
@@ -26,10 +30,13 @@ class JerseyRestApplication : RestApplication {
     @Reference
     private lateinit var router: RestRouter
 
+    private var ready = false
+
     private var started = false
 
     @Activate
     fun activate() {
+        ready = true
         toggle(true)
     }
 
@@ -40,9 +47,14 @@ class JerseyRestApplication : RestApplication {
 
     private fun start() {
         var resourceConfig = ResourceConfig()
+
+        for (registrar in registrars) {
+            registrar.register(resourceConfig)
+        }
         for (resource in components) {
             resourceConfig.register(resource)
         }
+
         val servletContainer = ServletContainer(resourceConfig)
         val props = Hashtable<String, String>()
 
@@ -61,12 +73,14 @@ class JerseyRestApplication : RestApplication {
 
     @Synchronized
     override fun toggle(start: Boolean) {
-        if (started) {
-            stop()
-        }
+        if (ready) {
+            if (started) {
+                stop()
+            }
 
-        if (start) {
-            start()
+            if (start) {
+                start()
+            }
         }
     }
 
@@ -77,6 +91,16 @@ class JerseyRestApplication : RestApplication {
 
     private fun unbindRestComponent(component: RestComponent) {
         components.remove(component)
+        toggle(true)
+    }
+
+    private fun bindRestRegistrar(registrar: RestRegistrar) {
+        registrars.add(registrar)
+        toggle(true)
+    }
+
+    private fun unbindRestRegistrar(registrar: RestRegistrar) {
+        registrars.remove(registrar)
         toggle(true)
     }
 }

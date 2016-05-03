@@ -1,4 +1,6 @@
 package com.neva.javarel.communication.rest.api
 
-interface RestComponent {
-}
+/**
+ * Represents REST component which is an OSGi component.
+ */
+interface RestComponent

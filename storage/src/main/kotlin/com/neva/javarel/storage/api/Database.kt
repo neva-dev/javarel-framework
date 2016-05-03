@@ -7,10 +7,19 @@ import javax.persistence.EntityManager
  */
 interface Database {
 
+    /**
+     * Used connection
+     */
     val connection: DatabaseConnection
 
+    /**
+     * Check if database connection is estabilished
+     */
     val connected: Boolean
 
+    /**
+     * Perform operations on database during transaction
+     */
     fun <R> session(callback: (em: EntityManager) -> R): R
 
 }
