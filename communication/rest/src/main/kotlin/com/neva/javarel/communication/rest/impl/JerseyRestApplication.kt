@@ -11,6 +11,9 @@ import org.glassfish.jersey.servlet.ServletContainer
 import org.osgi.service.http.HttpService
 import java.util.*
 
+/**
+ * TODO update HTTP server using batch of component changes between e.g 1 sec / postpone
+ */
 @Component(immediate = true, policy = ConfigurationPolicy.OPTIONAL)
 @Service
 class JerseyRestApplication : RestApplication {

@@ -1,6 +1,7 @@
 package com.neva.javarel.storage.impl
 
 import com.neva.javarel.foundation.api.JavarelConstants
+import com.neva.javarel.foundation.api.osgi.BundleClassRegistry
 import com.neva.javarel.storage.api.Database
 import com.neva.javarel.storage.api.DatabaseAdmin
 import com.neva.javarel.storage.api.DatabaseConnection
@@ -11,6 +12,7 @@ import org.apache.openjpa.persistence.PersistenceProviderImpl
 import org.osgi.framework.BundleContext
 import org.slf4j.LoggerFactory
 import java.util.Properties
+import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.spi.PersistenceProvider
 import javax.persistence.spi.PersistenceUnitTransactionType
@@ -24,6 +26,8 @@ class GenericDatabaseAdmin : DatabaseAdmin {
 
         @Property(name = nameDefaultProp, value = "derby", label = "Default connection name")
         const val nameDefaultProp = "nameDefault"
+
+        const val bundleHeader = "Database-Entity"
     }
 
     @Reference
@@ -38,10 +42,19 @@ class GenericDatabaseAdmin : DatabaseAdmin {
 
     private var props: Map<String, Any>? = null
 
+    private var entityRegistry: BundleClassRegistry? = null
+
     @Activate
     protected fun start(context: BundleContext, props: Map<String, Any>) {
         this.context = context
         this.props = props
+
+        this.entityRegistry = BundleClassRegistry(context, bundleHeader, Entity::class.java);
+        this.entityRegistry?.open();
+    }
+
+    protected fun stop() {
+        this.entityRegistry?.close()
     }
 
     private val nameDefault: String
@@ -72,6 +85,14 @@ class GenericDatabaseAdmin : DatabaseAdmin {
         return _connections.get(name) ?: throw DatabaseException("Database connection named '$name' is not defined.")
     }
 
+    private val managedClassNames: Collection<String>
+        get() {
+            return entityRegistry?.getClasses()?.fold(mutableListOf<String>(), {
+                names, clazz ->
+                names.add(clazz.canonicalName); names;
+            }) ?: listOf<String>()
+        }
+
     private fun connect(connection: DatabaseConnection): Database {
         val properties = Properties();
 
@@ -85,7 +106,7 @@ class GenericDatabaseAdmin : DatabaseAdmin {
         info.persistenceProviderClassName = PersistenceProviderImpl::class.java.canonicalName
         info.persistenceUnitName = connection.name
         info.transactionType = PersistenceUnitTransactionType.RESOURCE_LOCAL
-        info.addManagedClassName("com.neva.javarel.app.adm.auth.User") // TODO scan bundles for such entries sep. with ';'
+        info.managedClassNames.addAll(managedClassNames)
         info.setExcludeUnlistedClasses(false)
 
         val emf = provider.createContainerEntityManagerFactory(info, properties)
