@@ -61,8 +61,16 @@ class ContainerExtension {
         javaArgs << "-agentlib:jdwp=transport=dt_socket,server=y,suspend=${suspend ? 'y' : 'n'},address=$port".toString()
     }
 
+    def javaArg(String arg) {
+        javaArgs += arg
+    }
+
     String getJavaArgs() {
         return javaArgs.join(' ')
+    }
+
+    def programArg(String arg) {
+        programArgs += arg
     }
 
     String getProgramArgs() {
