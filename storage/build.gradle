@@ -31,5 +31,7 @@ dependencies {
     // MySQL
     osgiBundle 'mysql:mysql-connector-java:5.1.38'
 
+    // PostgreSQL
+    osgiBundle 'org.postgresql:postgresql:9.4.1208.jre7'
 
 }

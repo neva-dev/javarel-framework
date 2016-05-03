@@ -1,6 +1,5 @@
 package com.neva.javarel.storage.impl.connection
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import com.neva.javarel.foundation.api.JavarelConstants
 import com.neva.javarel.storage.api.DatabaseConnection
 import org.apache.commons.lang3.StringUtils
@@ -8,14 +7,15 @@ import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
+import org.postgresql.ds.PGSimpleDataSource
 import javax.sql.DataSource
 
-@Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - MySQL Connection")
+@Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - PostgreSQL Connection")
 @Service
-class MySqlDatabaseConnection : DatabaseConnection {
+class PgSqlDatabaseConnection : DatabaseConnection {
 
     companion object {
-        @Property(name = nameProp, value = "mysql", label = "Connection name", description = "Unique identifier")
+        @Property(name = nameProp, value = "pgsql", label = "Connection name", description = "Unique identifier")
         const val nameProp = "name"
 
         @Property(name = hostProp, value = "localhost", label = "Host", description = "Hostname or IP address to server")
@@ -61,14 +61,17 @@ class MySqlDatabaseConnection : DatabaseConnection {
 
     override val source: DataSource
         get() {
-            val ds = MysqlDataSource();
-            ds.setURL("jdbc:mysql://$host:$port:$dbName");
+            val ds = PGSimpleDataSource()
 
-            if (StringUtils.isNotBlank(user)) {
-                ds.user = user
+            ds.setServerName(host);
+            ds.setDatabaseName(dbName);
+            ds.setPortNumber(port);
+
+            if (!StringUtils.isBlank(user)) {
+                ds.user = user;
             }
-            if (StringUtils.isNotBlank(password)) {
-                ds.setPassword(password)
+            if (!StringUtils.isBlank(password)) {
+                ds.password = password;
             }
 
             return ds

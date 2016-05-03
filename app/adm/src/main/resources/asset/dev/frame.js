@@ -10,16 +10,21 @@ J.module("adm.dev.frame", function () {
             $('#system-frame', context).each(function () {
                 var $frame = $(this),
                     $window = $(window),
-                    offset = $frame.offset(),
-                    path = window.location.hash;
+                    offset = $frame.offset();
 
                 // Load page using path specified in hash
-                if (path) {
-                    $frame.attr('src', path.substr(1));
+                function updateSource() {
+                    var path = window.location.hash;
+                    if (path) {
+                        $frame.attr('src', path.substr(1));
+                    }
                 }
 
+                $window.on('hashchange', updateSource);
+                updateSource();
+
                 // Dynamically recalculate frame size on window resizing
-                function updatePageFrame() {
+                function updateDimensions() {
                     $frame.css({
                         display: 'block',
                         position: 'fixed',
@@ -29,8 +34,8 @@ J.module("adm.dev.frame", function () {
                     });
                 }
 
-                $window.on('resize', updatePageFrame);
-                updatePageFrame();
+                $window.on('resize', updateDimensions);
+                updateDimensions();
             });
 
         }

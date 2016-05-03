@@ -5,6 +5,7 @@ import com.neva.javarel.storage.api.DatabaseConnection
 import com.neva.javarel.storage.api.DatabaseException
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
+import javax.persistence.PersistenceException
 
 class GenericDatabase(override val connection: DatabaseConnection, val emf: EntityManagerFactory) : Database {
 
@@ -12,7 +13,11 @@ class GenericDatabase(override val connection: DatabaseConnection, val emf: Enti
         get() = emf.isOpen
 
     override fun <R> session(callback: (em: EntityManager) -> R): R {
-        val em = emf.createEntityManager()
+        val em = try {
+            emf.createEntityManager()
+        } catch (e: PersistenceException) {
+            throw DatabaseException("Database connection error.", e)
+        }
 
         try {
             em.transaction.begin()
