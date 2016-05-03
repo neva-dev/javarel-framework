@@ -92,15 +92,26 @@ class GenericDatabaseAdmin : DatabaseAdmin {
         return GenericDatabase(connection, emf)
     }
 
-    private fun bindConnection(connection: DatabaseConnection) {
+    private fun check(connection: DatabaseConnection) {
         if (_connections.contains(connection.name)) {
-            log.warn("Connection named '${connection.name}' of type '${connection.javaClass.canonicalName}' overrides '${_connections[connection.name]!!.javaClass}'")
+            log.warn("Connection named '${connection.name}' of type '${connection.javaClass.canonicalName}' overrides '${_connections[connection.name]!!.javaClass}'.")
         }
+    }
 
+    private fun disconnect(connection: DatabaseConnection) {
+        if (_connectedDatabases.contains(connection.name)) {
+            log.info("Connection named '${connection.name}' is being disconnected.")
+            _connectedDatabases.remove(connection.name)
+        }
+    }
+
+    private fun bindConnection(connection: DatabaseConnection) {
+        check(connection)
         _connections.put(connection.name, connection)
     }
 
     private fun unbindConnection(connection: DatabaseConnection) {
+        disconnect(connection)
         _connections.remove(connection.name)
     }
 

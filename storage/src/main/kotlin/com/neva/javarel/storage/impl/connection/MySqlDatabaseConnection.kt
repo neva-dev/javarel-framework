@@ -21,7 +21,7 @@ class MySqlDatabaseConnection : DatabaseConnection {
         @Property(name = hostProp, value = "localhost", label = "Host", description = "Hostname or IP address to server")
         const val hostProp = "hostProp"
 
-        @Property(name = portProp, value = "5432", label = "Port", description = "Port number")
+        @Property(name = portProp, value = "3306", label = "Port", description = "Port number")
         const val portProp = "portProp"
 
         @Property(name = dbNameProp, value = "javarel", label = "Database name")
@@ -62,7 +62,8 @@ class MySqlDatabaseConnection : DatabaseConnection {
     override val source: DataSource
         get() {
             val ds = MysqlDataSource();
-            ds.setURL("jdbc:mysql://$host:$port:$dbName");
+
+            ds.setURL("jdbc:mysql://$host:$port/$dbName");
 
             if (StringUtils.isNotBlank(user)) {
                 ds.user = user
