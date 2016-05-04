@@ -15,7 +15,7 @@ jar {
         instruction 'Export-Package', "com.neva.javarel.app.adm.*;version=${project.version}"
         instruction 'Resource-Namespace', 'adm'
         instruction 'Rest-Route-Alias', 'adm=com.neva.javarel.app.adm'
-        instruction 'Database-Entity', 'com.neva.javarel.app.adm'
+        instruction 'Database-Entity', 'com.neva.javarel.app.adm.*'
     }
 }
 
