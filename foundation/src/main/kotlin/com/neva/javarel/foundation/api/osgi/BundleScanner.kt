@@ -2,6 +2,6 @@ package com.neva.javarel.foundation.api.osgi
 
 interface BundleScanner {
 
-    fun scan()
+    fun scan(filter: BundleFilter): Collection<Class<*>>
 
 }

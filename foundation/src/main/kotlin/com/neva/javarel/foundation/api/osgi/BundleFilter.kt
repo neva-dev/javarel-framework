@@ -5,10 +5,8 @@ import org.osgi.framework.Bundle
 
 interface BundleFilter {
 
-    fun checkBundle(bundle: Bundle): Boolean
+    fun filterBundle(bundle: Bundle): Boolean
 
-    fun checkClass(bundle: Bundle, classReader: ClassReader): Boolean
-
-    fun updateClasses(bundle: Bundle, classes: Collection<Class<*>>)
+    fun filterClass(bundle: Bundle, classReader: ClassReader): Boolean
 
 }

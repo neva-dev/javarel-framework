@@ -1,6 +1,7 @@
 package com.neva.javarel.storage.impl
 
 import com.neva.javarel.foundation.api.JavarelConstants
+import com.neva.javarel.foundation.api.osgi.BundleScanner
 import com.neva.javarel.storage.api.Database
 import com.neva.javarel.storage.api.DatabaseAdmin
 import com.neva.javarel.storage.api.DatabaseConnection
@@ -24,13 +25,15 @@ class GenericDatabaseAdmin : DatabaseAdmin {
 
         @Property(name = nameDefaultProp, value = "derby", label = "Default connection name")
         const val nameDefaultProp = "nameDefault"
+
+        val entityFilter = EntityBundleFilter()
     }
 
     @Reference
     private lateinit var provider: PersistenceProvider
 
     @Reference
-    private lateinit var entityFilter: EntityBundleFilter
+    private lateinit var bundleScanner: BundleScanner
 
     @Reference(referenceInterface = DatabaseConnection::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindConnection", unbind = "unbindConnection")
     private var _connections: MutableMap<String, DatabaseConnection> = mutableMapOf()
@@ -90,7 +93,8 @@ class GenericDatabaseAdmin : DatabaseAdmin {
         info.transactionType = PersistenceUnitTransactionType.RESOURCE_LOCAL
         info.setExcludeUnlistedClasses(false)
 
-        for (clazz in entityFilter.entityClasses) {
+        val classes = bundleScanner.scan(entityFilter)
+        for (clazz in classes) {
             info.addManagedClassName(clazz.canonicalName)
         }
 
