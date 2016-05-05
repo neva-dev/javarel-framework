@@ -7,6 +7,10 @@
         <h1>REST Routes</h1>
     </div>
 
+    <div class="page-actions">
+        <a class="btn btn-primary" href="/application.wadl"><i class="fa fa-file-code-o"></i> Application WADL</a>
+    </div>
+
     {% if routes is empty %}
         <p class="msg bg-info"><i class="fa fa-info-circle"></i> Lack of routes.</p>
     {% else %}
