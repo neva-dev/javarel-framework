@@ -1,7 +1,6 @@
 package com.neva.javarel.storage.impl.connection
 
 import com.neva.javarel.foundation.api.JavarelConstants
-import com.neva.javarel.storage.api.DatabaseConnection
 import org.apache.derby.jdbc.EmbeddedDataSource
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
@@ -11,7 +10,7 @@ import javax.sql.DataSource
 
 @Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - Derby Connection")
 @Service
-class DerbyDatabaseConnection : DatabaseConnection {
+class DerbyDatabaseConnection : AbstractDatabaseConnection() {
 
     companion object {
         @Property(name = nameProp, value = "derby", label = "Connection name", description = "Unique identifier")

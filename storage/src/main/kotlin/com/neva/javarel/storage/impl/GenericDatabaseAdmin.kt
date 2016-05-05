@@ -8,7 +8,6 @@ import com.neva.javarel.storage.api.DatabaseAdmin
 import com.neva.javarel.storage.api.DatabaseConnection
 import com.neva.javarel.storage.api.DatabaseException
 import org.apache.felix.scr.annotations.*
-import org.apache.openjpa.enhance.RuntimeUnenhancedClassesModes
 import org.apache.openjpa.persistence.PersistenceProviderImpl
 import org.osgi.framework.BundleContext
 import org.osgi.framework.BundleEvent
@@ -29,6 +28,13 @@ class GenericDatabaseAdmin : DatabaseAdmin, BundleWatcher {
         const val nameDefaultProp = "nameDefault"
 
         val entityFilter = EntityBundleFilter()
+
+        val entityManagerProps = mapOf<String, Any>(
+                "openjpa.DynamicEnhancementAgent" to "true",
+                "openjpa.RuntimeUnenhancedClasses" to "supported",
+                "openjpa.jdbc.SynchronizeMappings" to "buildSchema(foreignKeys=true')",
+                "openjpa.jdbc.MappingDefaults" to "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict"
+        )
     }
 
     @Reference
@@ -81,13 +87,9 @@ class GenericDatabaseAdmin : DatabaseAdmin, BundleWatcher {
     }
 
     private fun connect(connection: DatabaseConnection): Database {
-        val properties = Properties();
-
-        properties.put("openjpa.ConnectionFactory", connection.source)
-        properties.put("openjpa.DynamicEnhancementAgent", "true")
-        properties.put("openjpa.RuntimeUnenhancedClasses", RuntimeUnenhancedClassesModes.SUPPORTED)
-        properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true')")
-        properties.put("openjpa.jdbc.MappingDefaults", "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict")
+        val props = Properties();
+        props.put("openjpa.ConnectionFactory", connection.source)
+        props.putAll(entityManagerProps)
 
         val info = BundlePersistenceInfo(context!!)
         info.persistenceProviderClassName = PersistenceProviderImpl::class.java.canonicalName
@@ -100,7 +102,9 @@ class GenericDatabaseAdmin : DatabaseAdmin, BundleWatcher {
             info.addManagedClassName(clazz.canonicalName)
         }
 
-        val emf = provider.createContainerEntityManagerFactory(info, properties)
+        connection.configure(info, props)
+
+        val emf = provider.createContainerEntityManagerFactory(info, props)
 
         return ConnectedDatabase(connection, emf)
     }

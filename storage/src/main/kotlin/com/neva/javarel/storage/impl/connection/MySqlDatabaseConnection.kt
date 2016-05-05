@@ -2,7 +2,6 @@ package com.neva.javarel.storage.impl.connection
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import com.neva.javarel.foundation.api.JavarelConstants
-import com.neva.javarel.storage.api.DatabaseConnection
 import org.apache.commons.lang3.StringUtils
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
@@ -12,7 +11,7 @@ import javax.sql.DataSource
 
 @Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - MySQL Connection")
 @Service
-class MySqlDatabaseConnection : DatabaseConnection {
+class MySqlDatabaseConnection : AbstractDatabaseConnection() {
 
     companion object {
         @Property(name = nameProp, value = "mysql", label = "Connection name", description = "Unique identifier")
