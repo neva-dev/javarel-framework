@@ -7,7 +7,7 @@ import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.PersistenceException
 
-class GenericDatabase(override val connection: DatabaseConnection, val emf: EntityManagerFactory) : Database {
+class ConnectedDatabase(override val connection: DatabaseConnection, val emf: EntityManagerFactory) : Database {
 
     override val connected: Boolean
         get() = emf.isOpen

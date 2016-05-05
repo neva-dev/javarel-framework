@@ -16,10 +16,10 @@ import java.net.URL
 
 @Service(BundleScanner::class)
 @Component(immediate = true)
-class GenericBundleScanner : BundleScanner {
+class OnDemandBundleScanner : BundleScanner {
 
     companion object {
-        val log = LoggerFactory.getLogger(GenericBundleScanner::class.java)
+        val log = LoggerFactory.getLogger(OnDemandBundleScanner::class.java)
     }
 
     private var context: BundleContext? = null

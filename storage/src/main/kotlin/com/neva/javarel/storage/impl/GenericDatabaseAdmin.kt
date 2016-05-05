@@ -2,6 +2,7 @@ package com.neva.javarel.storage.impl
 
 import com.neva.javarel.foundation.api.JavarelConstants
 import com.neva.javarel.foundation.api.osgi.BundleScanner
+import com.neva.javarel.foundation.api.osgi.BundleWatcher
 import com.neva.javarel.storage.api.Database
 import com.neva.javarel.storage.api.DatabaseAdmin
 import com.neva.javarel.storage.api.DatabaseConnection
@@ -10,6 +11,7 @@ import org.apache.felix.scr.annotations.*
 import org.apache.openjpa.enhance.RuntimeUnenhancedClassesModes
 import org.apache.openjpa.persistence.PersistenceProviderImpl
 import org.osgi.framework.BundleContext
+import org.osgi.framework.BundleEvent
 import org.slf4j.LoggerFactory
 import java.util.Properties
 import javax.persistence.EntityManager
@@ -17,8 +19,8 @@ import javax.persistence.spi.PersistenceProvider
 import javax.persistence.spi.PersistenceUnitTransactionType
 
 @Component(immediate = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - Database Admin")
-@Service
-class GenericDatabaseAdmin : DatabaseAdmin {
+@Service(DatabaseAdmin::class, BundleWatcher::class)
+class GenericDatabaseAdmin : DatabaseAdmin, BundleWatcher {
 
     companion object {
         val log = LoggerFactory.getLogger(GenericDatabaseAdmin::class.java)
@@ -100,7 +102,7 @@ class GenericDatabaseAdmin : DatabaseAdmin {
 
         val emf = provider.createContainerEntityManagerFactory(info, properties)
 
-        return GenericDatabase(connection, emf)
+        return ConnectedDatabase(connection, emf)
     }
 
     private fun check(connection: DatabaseConnection) {
@@ -128,6 +130,12 @@ class GenericDatabaseAdmin : DatabaseAdmin {
 
     override fun <R> session(callback: (EntityManager) -> R): R {
         return database().session(callback)
+    }
+
+    override fun watch(event: BundleEvent) {
+        if (entityFilter.filterBundle(event.bundle)) {
+            _connectedDatabases.clear()
+        }
     }
 
 }
