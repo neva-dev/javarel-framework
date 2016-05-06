@@ -37,7 +37,7 @@ class ContainerExtension {
     ContainerExtension(Project project) {
         this.project = project
 
-        exclude(['org.osgi.*', 'junit*'])
+        exclude(['junit*'])
     }
 
     def config(File file) {

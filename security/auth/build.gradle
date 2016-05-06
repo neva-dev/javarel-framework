@@ -1,0 +1,20 @@
+buildscript {
+    apply from: rootProject.file('buildscript.gradle'), to: buildscript
+}
+
+description = 'Javarel :: Security :: Authentization'
+
+apply plugin: 'kotlin'
+apply plugin: 'osgi-module'
+apply plugin: 'com.twcable.scr'
+
+jar {
+    manifest {
+        name project.description
+        instruction 'Export-Package', "com.neva.javarel.security.auth.api.*;version=${project.version}"
+    }
+}
+
+dependencies {
+    compile project(':communication:rest')
+}

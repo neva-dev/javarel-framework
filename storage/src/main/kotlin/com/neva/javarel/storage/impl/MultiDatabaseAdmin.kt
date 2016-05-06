@@ -19,10 +19,10 @@ import javax.persistence.spi.PersistenceUnitTransactionType
 
 @Component(immediate = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - Database Admin")
 @Service(DatabaseAdmin::class, BundleWatcher::class)
-class GenericDatabaseAdmin : DatabaseAdmin, BundleWatcher {
+class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
 
     companion object {
-        val log = LoggerFactory.getLogger(GenericDatabaseAdmin::class.java)
+        val log = LoggerFactory.getLogger(MultiDatabaseAdmin::class.java)
 
         @Property(name = nameDefaultProp, value = "derby", label = "Default connection name")
         const val nameDefaultProp = "nameDefault"

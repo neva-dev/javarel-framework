@@ -2,6 +2,7 @@ package com.neva.javarel.app.adm.system
 
 import com.neva.javarel.app.adm.auth.User
 import com.neva.javarel.communication.rest.api.RestComponent
+import com.neva.javarel.resource.api.ResourceResolver
 import com.neva.javarel.storage.api.DatabaseAdmin
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.felix.scr.annotations.Component
@@ -37,7 +38,7 @@ class UserController : RestComponent {
     @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    fun getList(): List<User> {
+    fun getList(resolver: ResourceResolver): List<User> {
         return db.session { em ->
             return@session em.createQuery("SELECT u FROM User u", User::class.java).getResultList();
         }
