@@ -24,6 +24,4 @@ dependencies {
     osgiBundle 'org.glassfish.jersey.core:jersey-server:2.22.2'
     osgiBundle 'org.glassfish.jersey.media:jersey-media-json-jackson:2.22.2'
     osgiBundle 'org.glassfish.jersey.media:jersey-media-jaxb:2.22.2'
-  //  osgiBundle 'org.glassfish.hk2:osgi-resource-locator:2.4.0'
-
 }

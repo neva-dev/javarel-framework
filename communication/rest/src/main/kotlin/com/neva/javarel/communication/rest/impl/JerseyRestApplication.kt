@@ -6,7 +6,6 @@ import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.communication.rest.api.RestRegistrar
 import com.neva.javarel.communication.rest.api.RestRouter
 import org.apache.felix.scr.annotations.*
-import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
 import org.osgi.service.http.HttpService
 import java.util.*
@@ -48,16 +47,9 @@ class JerseyRestApplication : RestApplication {
         toggle(false)
     }
 
+    @Synchronized
     private fun start() {
-        var resourceConfig = ResourceConfig()
-
-        for (registrar in registrars) {
-            registrar.register(resourceConfig)
-        }
-        for (resource in components) {
-            resourceConfig.register(resource)
-        }
-
+        var resourceConfig = OsgiResourceConfig(registrars, components)
         val servletContainer = ServletContainer(resourceConfig)
         val props = Hashtable<String, String>()
 
