@@ -1,29 +1,26 @@
 package com.neva.javarel.communication.rest.impl
 
 import com.neva.javarel.communication.rest.api.OsgiService
+import com.neva.javarel.foundation.api.osgi.OsgiUtils
 import org.glassfish.hk2.api.Injectee
 import org.glassfish.hk2.api.InjectionResolver
 import org.glassfish.hk2.api.ServiceHandle
-import org.osgi.framework.FrameworkUtil
 import javax.inject.Inject
 import javax.inject.Named
 
 class OsgiInjectionResolver : InjectionResolver<OsgiService> {
 
-    @Inject @Named(InjectionResolver.SYSTEM_RESOLVER_NAME)
+    @Inject
+    @Named(InjectionResolver.SYSTEM_RESOLVER_NAME)
     private lateinit var systemResolver: InjectionResolver<Inject>
 
     override fun resolve(injectee: Injectee, root: ServiceHandle<*>?): Any? {
-        val bundleContext = FrameworkUtil.getBundle(javaClass).bundleContext
-        val reference = bundleContext.getServiceReference(injectee.requiredType.typeName)
-        if (reference != null) {
-            val service = bundleContext.getService(reference)
-            if (service != null) {
-                return service
-            }
+        var service = OsgiUtils(javaClass).serviceOf<Any>(injectee.requiredType.typeName)
+        if (service == null) {
+            service = systemResolver.resolve(injectee, root)
         }
 
-        return systemResolver.resolve(injectee, root)
+        return service
     }
 
     override fun isMethodParameterIndicator(): Boolean {
@@ -31,6 +28,6 @@ class OsgiInjectionResolver : InjectionResolver<OsgiService> {
     }
 
     override fun isConstructorParameterIndicator(): Boolean {
-        return false
+        return true
     }
 }
