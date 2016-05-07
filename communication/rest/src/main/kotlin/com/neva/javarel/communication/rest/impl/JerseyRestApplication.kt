@@ -2,23 +2,20 @@ package com.neva.javarel.communication.rest.impl
 
 import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestRouter
-import com.neva.javarel.foundation.api.osgi.BundleScanner
-import com.neva.javarel.foundation.api.osgi.BundleWatcher
+import com.neva.javarel.foundation.api.scanning.BundleScanner
+import com.neva.javarel.foundation.api.scanning.BundleWatcher
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.servlet.ServletContainer
 import org.osgi.framework.BundleEvent
 import org.osgi.service.http.HttpService
 import java.util.*
 
-/**
- * TODO update HTTP server using batch of component changes between e.g 1 sec / postpone
- */
 @Component(immediate = true, policy = ConfigurationPolicy.OPTIONAL)
 @Service
 class JerseyRestApplication : RestApplication, BundleWatcher {
 
     companion object {
-        val componentFilter = ComponentFilter()
+        val componentFilter = ComponentBundleFilter()
     }
 
     @Reference

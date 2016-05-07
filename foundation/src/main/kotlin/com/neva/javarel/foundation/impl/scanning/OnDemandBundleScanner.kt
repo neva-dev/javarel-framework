@@ -1,9 +1,9 @@
-package com.neva.javarel.foundation.impl.osgi
+package com.neva.javarel.foundation.impl.scanning
 
 import com.google.common.collect.Lists
-import com.neva.javarel.foundation.api.osgi.BundleFilter
-import com.neva.javarel.foundation.api.osgi.BundleScanner
-import com.neva.javarel.foundation.api.osgi.BundleUtils
+import com.neva.javarel.foundation.api.osgi.ClassUtils
+import com.neva.javarel.foundation.api.scanning.BundleFilter
+import com.neva.javarel.foundation.api.scanning.BundleScanner
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Service
@@ -42,7 +42,7 @@ class OnDemandBundleScanner : BundleScanner {
                 try {
                     val classReader = ClassReader(url.openStream())
                     if (filter.filterClass(bundle, classReader)) {
-                        val className = BundleUtils.toClassName(url)
+                        val className = ClassUtils.toClassName(url)
                         classes.add(bundle.loadClass(className))
                     }
                 } catch (e: IOException) {

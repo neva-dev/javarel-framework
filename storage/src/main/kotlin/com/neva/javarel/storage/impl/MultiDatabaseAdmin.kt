@@ -1,8 +1,8 @@
 package com.neva.javarel.storage.impl
 
 import com.neva.javarel.foundation.api.JavarelConstants
-import com.neva.javarel.foundation.api.osgi.BundleScanner
-import com.neva.javarel.foundation.api.osgi.BundleWatcher
+import com.neva.javarel.foundation.api.scanning.BundleScanner
+import com.neva.javarel.foundation.api.scanning.BundleWatcher
 import com.neva.javarel.storage.api.Database
 import com.neva.javarel.storage.api.DatabaseAdmin
 import com.neva.javarel.storage.api.DatabaseConnection

@@ -1,4 +1,4 @@
-package com.neva.javarel.foundation.api.osgi
+package com.neva.javarel.foundation.api.scanning
 
 import org.objectweb.asm.ClassReader
 import org.osgi.framework.Bundle
