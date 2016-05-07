@@ -1,6 +1,6 @@
 package com.neva.javarel.app.adm.auth
 
-import com.neva.javarel.communication.rest.api.OsgiService
+import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.storage.api.DatabaseAdmin
 import org.apache.commons.lang3.RandomStringUtils
 import java.util.*
@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType
 @Path("/adm/auth/user")
 class UserController {
 
-    @OsgiService
+    @Uses
     private lateinit var db: DatabaseAdmin
 
     @GET

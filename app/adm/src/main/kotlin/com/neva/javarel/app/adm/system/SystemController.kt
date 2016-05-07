@@ -1,6 +1,6 @@
 package com.neva.javarel.app.adm.system
 
-import com.neva.javarel.communication.rest.api.OsgiService
+import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
 import javax.ws.rs.GET
@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response
 @Path("/adm/system")
 class SystemController {
 
-    @OsgiService
+    @Uses
     private lateinit var resourceResolver: ResourceResolver
 
     @GET

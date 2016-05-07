@@ -1,6 +1,6 @@
 package com.neva.javarel.app.adm.dev
 
-import com.neva.javarel.communication.rest.api.OsgiService
+import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.communication.rest.api.RestRouter
 import com.neva.javarel.foundation.api.adapting.AdaptingManager
 import com.neva.javarel.presentation.view.api.View
@@ -14,13 +14,13 @@ import javax.ws.rs.core.Response
 @Path("/adm/dev")
 class DevController {
 
-    @OsgiService
+    @Uses
     private lateinit var resourceResolver: ResourceResolver
 
-    @OsgiService
+    @Uses
     private lateinit var router: RestRouter
 
-    @OsgiService
+    @Uses
     private lateinit var adaptingManager: AdaptingManager
 
     @Path("/rest-routes")

@@ -8,4 +8,5 @@ import javax.inject.Qualifier
 @Qualifier
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Rest(val name: String)
+@Target(AnnotationTarget.FUNCTION)
+annotation class Route(val name: String)

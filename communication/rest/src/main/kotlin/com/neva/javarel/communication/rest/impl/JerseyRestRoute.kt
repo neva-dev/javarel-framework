@@ -1,6 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.neva.javarel.communication.rest.api.Rest
+import com.neva.javarel.communication.rest.api.Route
 import com.neva.javarel.communication.rest.api.RestRoute
 import org.apache.commons.lang3.StringUtils
 import org.glassfish.jersey.server.model.Resource
@@ -30,9 +30,9 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
     override val name: String?
         get() {
             var name: String? = null;
-            val ann = handlingMethod.declaredAnnotations.find { it is Rest }
-            if (ann != null) {
-                name = (ann as Rest).name
+            val routeAnnotation = handlingMethod.declaredAnnotations.find { it is Route }
+            if (routeAnnotation != null) {
+                name = (routeAnnotation as Route).name
             }
 
             return name

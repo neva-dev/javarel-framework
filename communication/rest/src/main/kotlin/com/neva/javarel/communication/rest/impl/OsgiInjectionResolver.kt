@@ -1,6 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.neva.javarel.communication.rest.api.OsgiService
+import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.foundation.api.osgi.OsgiUtils
 import org.glassfish.hk2.api.Injectee
 import org.glassfish.hk2.api.InjectionResolver
@@ -8,7 +8,7 @@ import org.glassfish.hk2.api.ServiceHandle
 import javax.inject.Inject
 import javax.inject.Named
 
-class OsgiInjectionResolver : InjectionResolver<OsgiService> {
+class OsgiInjectionResolver : InjectionResolver<Uses> {
 
     @Inject
     @Named(InjectionResolver.SYSTEM_RESOLVER_NAME)

@@ -1,7 +1,7 @@
 package com.neva.javarel.app.core.asset
 
-import com.neva.javarel.communication.rest.api.OsgiService
-import com.neva.javarel.communication.rest.api.Rest
+import com.neva.javarel.communication.rest.api.Uses
+import com.neva.javarel.communication.rest.api.Route
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.resource.api.ResourceResolver
 import javax.ws.rs.GET
@@ -12,12 +12,12 @@ import javax.ws.rs.core.Response
 @Path("/asset")
 class AssetController {
 
-    @OsgiService
+    @Uses
     private lateinit var resolver: ResourceResolver
 
     @GET
     @Path("/{path:.+}")
-    @Rest(name = "asset")
+    @Route(name = "asset")
     fun getOrigin(@PathParam("path") path: String): Response {
         val asset = resolveAsset(path)
 
@@ -26,7 +26,7 @@ class AssetController {
 
     @GET
     @Path("/compiled/{path:.+}")
-    @Rest(name = "asset.compiled")
+    @Route(name = "asset.compiled")
     fun getCompiled(@PathParam("path") path: String): Response {
         val asset = resolveAsset(path)
 
