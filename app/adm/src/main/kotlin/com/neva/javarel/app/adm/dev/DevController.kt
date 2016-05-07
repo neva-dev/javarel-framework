@@ -1,31 +1,26 @@
 package com.neva.javarel.app.adm.dev
 
-import com.neva.javarel.communication.rest.api.RestComponent
+import com.neva.javarel.communication.rest.api.OsgiService
 import com.neva.javarel.communication.rest.api.RestRouter
 import com.neva.javarel.foundation.api.adapting.AdaptingManager
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.Service
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-@Component
-@Service
 @Path("/adm/dev")
-class DevController : RestComponent {
+class DevController {
 
-    @Reference
+    @OsgiService
     private lateinit var resourceResolver: ResourceResolver
 
-    @Reference
+    @OsgiService
     private lateinit var router: RestRouter
 
-    @Reference
+    @OsgiService
     private lateinit var adaptingManager: AdaptingManager
 
     @Path("/rest-routes")
@@ -41,7 +36,6 @@ class DevController : RestComponent {
                 .type(MediaType.TEXT_HTML)
                 .build()
     }
-
 
     @Path("/adapters")
     @GET

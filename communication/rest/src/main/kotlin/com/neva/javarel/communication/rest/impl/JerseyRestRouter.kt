@@ -1,7 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
 import com.google.common.base.Splitter
-import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.communication.rest.api.RestException
 import com.neva.javarel.communication.rest.api.RestRoute
 import com.neva.javarel.communication.rest.api.RestRouter
@@ -22,11 +21,11 @@ class JerseyRestRouter : RestRouter {
         val aliasPartDelimiter = "."
     }
 
-    private var components = emptySet<RestComponent>()
+    private var components = emptySet<Class<*>>()
 
     private var aliases = emptyMap<String, String>()
 
-    override fun configure(components: Set<RestComponent>) {
+    override fun configure(components: Set<Class<*>>) {
         this.components = components;
     }
 
@@ -35,7 +34,7 @@ class JerseyRestRouter : RestRouter {
             val routes = mutableSetOf<RestRoute>()
 
             components.forEach { component ->
-                val resource = Resource.from(component.javaClass)
+                val resource = Resource.from(component)
                 if (resource != null) {
                     resource.childResources.forEach { method ->
                         routes.add(JerseyRestRoute(resource, method))

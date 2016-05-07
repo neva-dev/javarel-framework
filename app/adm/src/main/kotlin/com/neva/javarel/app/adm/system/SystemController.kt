@@ -1,22 +1,17 @@
 package com.neva.javarel.app.adm.system
 
-import com.neva.javarel.communication.rest.api.RestComponent
+import com.neva.javarel.communication.rest.api.OsgiService
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.Service
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-@Component
-@Service
 @Path("/adm/system")
-class SystemController : RestComponent {
+class SystemController {
 
-    @Reference
+    @OsgiService
     private lateinit var resourceResolver: ResourceResolver
 
     @GET

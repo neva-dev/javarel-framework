@@ -1,24 +1,18 @@
 package com.neva.javarel.app.adm
 
 import com.neva.javarel.app.adm.system.SystemController
+import com.neva.javarel.communication.rest.api.OsgiService
 import com.neva.javarel.communication.rest.api.Redirect
 import com.neva.javarel.communication.rest.api.Rest
-import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.communication.rest.api.UrlGenerator
-import org.apache.felix.scr.annotations.Component
-import org.apache.felix.scr.annotations.Reference
-import org.apache.felix.scr.annotations.Service
 import javax.ws.rs.GET
-
 import javax.ws.rs.Path
 import javax.ws.rs.core.Response
 
-@Component
-@Service
 @Path("/")
-class FrontController : RestComponent {
+class FrontController {
 
-    @Reference
+    @OsgiService
     private lateinit var urlGenerator: UrlGenerator
 
     @GET

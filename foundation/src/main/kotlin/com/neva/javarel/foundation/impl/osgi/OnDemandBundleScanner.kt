@@ -29,7 +29,7 @@ class OnDemandBundleScanner : BundleScanner {
         this.context = context
     }
 
-    override fun scan(filter: BundleFilter): Collection<Class<*>> {
+    override fun scan(filter: BundleFilter): Set<Class<*>> {
         val classes = mutableListOf<Class<*>>()
 
         for (bundle in context!!.bundles) {
@@ -53,7 +53,7 @@ class OnDemandBundleScanner : BundleScanner {
             }
         }
 
-        return classes.toList()
+        return classes.toSet()
     }
 
     private fun collectUrls(bundle: Bundle): List<URL> {

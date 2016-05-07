@@ -14,6 +14,7 @@ jar {
         instruction 'Export-Package', "com.neva.javarel.app.core.*;version=${project.version}"
         instruction 'Resource-Namespace', 'core'
         instruction 'Rest-Route-Alias', 'core=com.neva.javarel.app.core'
+        instruction 'Database-Entity', 'com.neva.javarel.app.core.*'
     }
 }
 

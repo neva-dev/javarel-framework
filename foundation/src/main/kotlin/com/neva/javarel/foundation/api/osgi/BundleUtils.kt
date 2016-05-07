@@ -37,34 +37,36 @@ object BundleUtils {
     }
 
     fun isAnnotated(classReader: ClassReader, annotation: Class<out Annotation>): Boolean {
+        return isAnnotated(classReader, setOf(annotation))
+    }
+
+    fun isAnnotated(classReader: ClassReader, annotations: Set<Class<out Annotation>>): Boolean {
         val annotationReader = AnnotationReader();
         classReader.accept(annotationReader, ClassReader.SKIP_DEBUG);
 
-        return annotationReader.isAnnotationPresent(annotation);
+        return annotationReader.isAnnotationPresent(annotations);
     }
 
     class AnnotationReader : ClassVisitor(Opcodes.ASM5) {
 
-        private val annotations = ArrayList<String>()
+        private val visited = ArrayList<String>()
 
         override fun visit(paramInt1: Int, paramInt2: Int, paramString1: String?, paramString2: String?,
                            paramString3: String?, paramArrayOfString: Array<String?>) {
-            annotations.clear()
+            visited.clear()
         }
 
         override fun visitAnnotation(paramString: String?, paramBoolean: Boolean): AnnotationVisitor? {
             if (paramString != null) {
                 val annotationClassName = getAnnotationClassName(paramString)
-                annotations.add(annotationClassName)
+                visited.add(annotationClassName)
             }
 
             return super.visitAnnotation(paramString, paramBoolean)
         }
 
-        fun isAnnotationPresent(annotation: Class<out Annotation>): Boolean {
-            val name = annotation.name
-
-            return annotations.contains(name)
+        fun isAnnotationPresent(annotations: Set<Class<out Annotation>>): Boolean {
+            return annotations.any { annotation -> visited.contains(annotation.name) }
         }
 
         private fun getAnnotationClassName(rawName: String): String {

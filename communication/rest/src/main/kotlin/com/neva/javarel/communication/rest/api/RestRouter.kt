@@ -2,7 +2,7 @@ package com.neva.javarel.communication.rest.api
 
 interface RestRouter {
 
-    fun configure(components: Set<RestComponent>)
+    fun configure(components: Set<Class<*>>)
 
     val routes: Set<RestRoute>
 

@@ -1,11 +1,10 @@
 package com.neva.javarel.app.adm.error
 
-import com.neva.javarel.communication.rest.api.RestComponent
+import com.neva.javarel.communication.rest.api.OsgiService
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceNotFoundException
 import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.apache.felix.scr.annotations.*
 import org.slf4j.LoggerFactory
 import javax.ws.rs.NotFoundException
 import javax.ws.rs.core.MediaType
@@ -13,13 +12,10 @@ import javax.ws.rs.core.Response
 import javax.ws.rs.ext.ExceptionMapper
 import javax.ws.rs.ext.Provider
 
-@Component
-@Service(RestComponent::class)
 @Provider
-class ThrowableMapper : ExceptionMapper<Throwable>, RestComponent {
+class ThrowableMapper : ExceptionMapper<Throwable> {
 
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY, policy = ReferencePolicy.DYNAMIC)
-    @Volatile
+    @OsgiService
     private var resolver: ResourceResolver? = null
 
     companion object {
