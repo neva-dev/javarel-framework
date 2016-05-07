@@ -6,4 +6,6 @@ interface AuthenticableProvider {
 
     fun byCredentials(credentials: Map<String, Any>): Authenticable?
 
+    val guest: Authenticable
+
 }

@@ -1,22 +1,35 @@
 package com.neva.javarel.security.auth.impl
 
 import com.neva.javarel.security.auth.api.Authenticable
-import com.neva.javarel.security.auth.api.Credentials
-import com.neva.javarel.security.auth.api.Guard
+import com.neva.javarel.security.auth.api.AuthenticableProvider
+import com.neva.javarel.security.auth.api.BasicGuard
 import javax.servlet.http.HttpServletRequest
 
-class RequestGuard(request: HttpServletRequest) : Guard {
+/**
+ * TODO Encode session and make session abstract (create drivers)
+ */
+class RequestGuard(val request: HttpServletRequest, authenticableProvider: AuthenticableProvider) : BasicGuard(authenticableProvider) {
 
-    override val authenticated: Boolean
-        get() = throw UnsupportedOperationException()
-    override val authenticable: Authenticable
-        get() = throw UnsupportedOperationException()
-
-    override fun authenticate(authenticable: Authenticable) {
-        throw UnsupportedOperationException()
+    companion object {
+        val sessionIdentifier = "authentication"
     }
 
-    override fun canAuthenticate(credentials: Credentials): Boolean {
-        throw UnsupportedOperationException()
+    init {
+        readFromSession()
+    }
+
+    override fun authenticate(authenticable: Authenticable) {
+        writeToSession(authenticable)
+
+        super.authenticate(authenticable)
+    }
+
+    private fun readFromSession() {
+        val identifier = (request.session.getAttribute(sessionIdentifier) as String).orEmpty()
+        this.authenticated = authenticableProvider.byIdentifier(identifier) ?: authenticableProvider.guest
+    }
+
+    private fun writeToSession(authenticable: Authenticable) {
+        request.session.setAttribute(sessionIdentifier, authenticable.authIdentifier)
     }
 }

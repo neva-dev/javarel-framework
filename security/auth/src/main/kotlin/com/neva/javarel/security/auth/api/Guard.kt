@@ -5,10 +5,10 @@ interface Guard {
     /**
      * Determine if the current user is authenticated.
      */
-    val authenticated: Boolean
+    val isAuthenticated: Boolean
 
     /**
-     * Get the currently authenticated user.
+     * Get the currently authenticated user or guest account
      */
     val authenticable: Authenticable
 
@@ -20,6 +20,6 @@ interface Guard {
     /**
      * Validate if there is some user which can use following credentials to authenticate.
      */
-    fun canAuthenticate(credentials: Credentials): Boolean;
+    fun attempt(credentials: Credentials): Boolean;
 
 }

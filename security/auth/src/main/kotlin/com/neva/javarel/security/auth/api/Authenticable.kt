@@ -2,8 +2,8 @@ package com.neva.javarel.security.auth.api
 
 interface Authenticable {
 
-    fun getAuthIdentifier();
+    val authIdentifier: String
 
-    fun getAuthPassword();
+    val authPassword: String
 
 }
