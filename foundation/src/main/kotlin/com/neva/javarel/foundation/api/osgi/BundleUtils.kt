@@ -19,4 +19,12 @@ object BundleUtils {
         return null
     }
 
+    fun isActive(bundle: Bundle): Boolean {
+        if (isFragment(bundle)) {
+            return bundle.state == Bundle.RESOLVED
+        } else {
+            return bundle.state == Bundle.ACTIVE
+        }
+    }
+
 }

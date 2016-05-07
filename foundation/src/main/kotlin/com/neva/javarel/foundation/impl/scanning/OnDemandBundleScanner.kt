@@ -1,6 +1,7 @@
 package com.neva.javarel.foundation.impl.scanning
 
 import com.google.common.collect.Lists
+import com.neva.javarel.foundation.api.osgi.BundleUtils
 import com.neva.javarel.foundation.api.osgi.ClassUtils
 import com.neva.javarel.foundation.api.scanning.BundleFilter
 import com.neva.javarel.foundation.api.scanning.BundleScanner
@@ -33,7 +34,7 @@ class OnDemandBundleScanner : BundleScanner {
         val classes = mutableListOf<Class<*>>()
 
         for (bundle in context!!.bundles) {
-            if (!filter.filterBundle(bundle)) {
+            if (!filter.filterBundle(bundle) || !BundleUtils.isActive(bundle)) {
                 continue
             }
 

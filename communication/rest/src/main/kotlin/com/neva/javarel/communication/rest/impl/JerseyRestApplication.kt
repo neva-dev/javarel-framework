@@ -8,6 +8,7 @@ import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.servlet.ServletContainer
 import org.osgi.framework.BundleEvent
 import org.osgi.service.http.HttpService
+import org.slf4j.LoggerFactory
 import java.util.*
 
 @Component(immediate = true, policy = ConfigurationPolicy.OPTIONAL)
@@ -15,6 +16,7 @@ import java.util.*
 class JerseyRestApplication : RestApplication, BundleWatcher {
 
     companion object {
+        val log = LoggerFactory.getLogger(JerseyRestApplication::class.java)
         val componentFilter = ComponentBundleFilter()
     }
 
@@ -45,23 +47,27 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
         toggle(false)
     }
 
-    @Synchronized
     private fun start() {
-        val components = bundleScanner.scan(componentFilter)
-        var resourceConfig = OsgiResourceConfig(components)
-        val servletContainer = ServletContainer(resourceConfig)
-        val props = Hashtable<String, String>()
+        try {
+            val components = bundleScanner.scan(componentFilter)
+            var resourceConfig = OsgiResourceConfig(components)
+            val servletContainer = ServletContainer(resourceConfig)
+            val props = Hashtable<String, String>()
 
-        httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
-        router.configure(components)
-        started = true
+            httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
+            router.configure(components)
+            started = true
+        } catch (e: Throwable) {
+            log.debug("REST application cannot be started properly.", e)
+        }
+
     }
 
     private fun stop() {
         try {
             httpService.unregister(config.uriPrefix)
         } catch (e: Throwable) {
-            // nothing interesting
+            log.debug("REST application cannot be stopped properly.", e)
         }
     }
 

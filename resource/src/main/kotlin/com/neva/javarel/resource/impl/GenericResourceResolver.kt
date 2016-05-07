@@ -9,7 +9,7 @@ import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
 @Component
-@Service
+@Service(ResourceResolver::class)
 class GenericResourceResolver : ResourceResolver, Adaptee {
 
     @Reference
