@@ -18,10 +18,16 @@ class RequestGuard(val request: HttpServletRequest, authenticableProvider: Authe
         readFromSession()
     }
 
-    override fun authenticate(authenticable: Authenticable) {
+    override fun login(authenticable: Authenticable) {
         writeToSession(authenticable)
 
-        super.authenticate(authenticable)
+        super.login(authenticable)
+    }
+
+    override fun logout() {
+        writeToSession(null)
+
+        super.logout()
     }
 
     private fun readFromSession() {
@@ -29,7 +35,7 @@ class RequestGuard(val request: HttpServletRequest, authenticableProvider: Authe
         this.authenticated = authenticableProvider.byIdentifier(identifier) ?: authenticableProvider.guest
     }
 
-    private fun writeToSession(authenticable: Authenticable) {
-        request.session.setAttribute(sessionIdentifier, authenticable.authIdentifier)
+    private fun writeToSession(authenticable: Authenticable?) {
+        request.session.setAttribute(sessionIdentifier, authenticable?.authIdentifier ?: null)
     }
 }

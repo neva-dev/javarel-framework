@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "adm_user")
-class User {
+open class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ class User {
     }
 
     constructor() {
-
+        // default constructor
     }
 
 }

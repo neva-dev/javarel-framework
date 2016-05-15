@@ -15,11 +15,21 @@ interface Guard {
     /**
      * Set the current user.
      */
-    fun authenticate(authenticable: Authenticable);
+    fun login(authenticable: Authenticable);
 
     /**
-     * Validate if there is some user which can use following credentials to authenticate.
+     * Unset current user.
+     */
+    fun logout();
+
+    /**
+     * Attempt to authenticate using specified credentials.
      */
     fun attempt(credentials: Credentials): Boolean;
+
+    /**
+     * Validate only that specified credentials allows to authenticate.
+     */
+    fun validate(credentials: Credentials): Boolean;
 
 }
