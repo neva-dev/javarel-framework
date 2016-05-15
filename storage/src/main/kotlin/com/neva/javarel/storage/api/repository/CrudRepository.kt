@@ -6,13 +6,13 @@ interface CrudRepository<T, ID : Serializable> : Repository<T, ID> {
 
     fun <S : T> save(entity: S): S
 
-    fun <S : T> save(entities: Iterable<S>)
+    fun <S : T> save(entities: Iterable<S>): Iterable<S>
 
-    fun findOne(id: ID): T
+    fun findOne(id: ID): T?
 
     fun findAll(): Iterable<T>
 
-    fun findAll(ids: Iterable<ID>)
+    fun findAll(ids: Iterable<ID>): Iterable<T>
 
     fun count(): Long
 
@@ -24,4 +24,5 @@ interface CrudRepository<T, ID : Serializable> : Repository<T, ID> {
 
     fun exists(id: ID): Boolean
 
+    fun findBy(props: Map<String, Any>): Iterable<T>
 }
