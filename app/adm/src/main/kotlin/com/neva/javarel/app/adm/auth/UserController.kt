@@ -31,7 +31,6 @@ class UserController {
             val user = User("ciapunek@gmail.com", "test123", RandomStringUtils.randomAscii(8), Date())
 
             repo.save(user)
-            em.flush()
 
             return@session user
         }

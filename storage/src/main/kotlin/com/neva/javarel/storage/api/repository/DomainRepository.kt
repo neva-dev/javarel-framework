@@ -19,6 +19,7 @@ abstract class DomainRepository<T : Any, ID : Serializable>(val em: EntityManage
 
     override fun <S : T> save(entity: S): S {
         em.persist(entity);
+        em.flush()
 
         return entity;
     }
@@ -29,6 +30,7 @@ abstract class DomainRepository<T : Any, ID : Serializable>(val em: EntityManage
         for (entity in entities) {
             results.add(save(entity))
         }
+        em.flush()
 
         return results
     }
@@ -75,18 +77,21 @@ abstract class DomainRepository<T : Any, ID : Serializable>(val em: EntityManage
 
     override fun delete(entity: T) {
         em.remove(if (em.contains(entity)) entity else em.merge(entity));
+        em.flush()
     }
 
     override fun delete(entities: Iterable<T>) {
         for (entity in entities) {
             delete(entity)
         }
+        em.flush()
     }
 
     override fun deleteAll() {
         for (entity in findAll()) {
             delete(entity)
         }
+        em.flush()
     }
 
     override fun exists(id: ID): Boolean {
