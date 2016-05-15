@@ -9,7 +9,7 @@ import javax.persistence.criteria.Path
 import javax.persistence.criteria.Root
 import kotlin.reflect.KClass
 
-abstract class DomainRepository<T : Any, ID : Serializable>(val em: EntityManager) : CrudRepository<T, ID> {
+abstract class DomainRepository<T : Any, ID : Serializable>(protected val em: EntityManager, protected val flushOnChange: Boolean = true) : CrudRepository<T, ID> {
 
     protected abstract val domainClass: KClass<T>
 
@@ -19,7 +19,7 @@ abstract class DomainRepository<T : Any, ID : Serializable>(val em: EntityManage
 
     override fun <S : T> save(entity: S): S {
         em.persist(entity);
-        em.flush()
+        flush()
 
         return entity;
     }
@@ -30,7 +30,7 @@ abstract class DomainRepository<T : Any, ID : Serializable>(val em: EntityManage
         for (entity in entities) {
             results.add(save(entity))
         }
-        em.flush()
+        flush()
 
         return results
     }
@@ -77,25 +77,31 @@ abstract class DomainRepository<T : Any, ID : Serializable>(val em: EntityManage
 
     override fun delete(entity: T) {
         em.remove(if (em.contains(entity)) entity else em.merge(entity));
-        em.flush()
+        flush()
     }
 
     override fun delete(entities: Iterable<T>) {
         for (entity in entities) {
             delete(entity)
         }
-        em.flush()
+        flush()
     }
 
     override fun deleteAll() {
         for (entity in findAll()) {
             delete(entity)
         }
-        em.flush()
+        flush()
     }
 
     override fun exists(id: ID): Boolean {
         return findOne(id) != null
+    }
+
+    protected fun flush() {
+        if (flushOnChange) {
+            flush()
+        }
     }
 
     protected fun createQuery(): TypedQuery<T> {
