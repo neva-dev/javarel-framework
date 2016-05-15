@@ -100,7 +100,7 @@ abstract class DomainRepository<T : Any, ID : Serializable>(protected val em: En
 
     protected fun flush() {
         if (flushOnChange) {
-            flush()
+            em.flush()
         }
     }
 
