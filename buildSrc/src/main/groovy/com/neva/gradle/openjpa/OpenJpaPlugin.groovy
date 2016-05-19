@@ -13,6 +13,8 @@ class OpenJpaPlugin implements Plugin<Project> {
         target.extensions.create("openjpa", OpenJpaExtension)
         def task = target.tasks.create("openjpaEnhance")
 
+        task.outputs.upToDateWhen { false }
+
         task.doLast {
             URL[] urls = collectURLs(target)
             def oldClassLoader = Thread.currentThread().getContextClassLoader()
@@ -39,9 +41,13 @@ class OpenJpaPlugin implements Plugin<Project> {
     }
 
     private static URL[] collectURLs(target) {
-        def compileClassPathURLs = target.configurations["compile"].files.collect {
-            it.toURI().toURL();
-        }
+        Set<URL> compileClassPathURLs = []
+        target.configurations.all({ config ->
+            compileClassPathURLs.addAll(config.files.collect {
+                it.toURI().toURL();
+            })
+        })
+
         def resourceUrls = target.sourceSets.main.resources.srcDirs.collect {
             return target.file(it).toURI().toURL()
         }

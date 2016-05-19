@@ -2,7 +2,7 @@ package com.neva.javarel.app.adm.auth
 
 import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.security.auth.api.Guard
-import com.neva.javarel.security.auth.impl.RequestGuard
+import com.neva.javarel.security.auth.api.guard.RequestGuard
 import org.glassfish.hk2.api.Factory
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Context
@@ -14,14 +14,14 @@ class GuardProvider : Factory<Guard> {
     @Uses
     private lateinit var userProvider: UserProvider
 
- //   @Context
- //   private lateinit var request: HttpServletRequest
+    @Context
+    private lateinit var request: HttpServletRequest
 
-    override fun provide(): Guard? {
-        return null // RequestGuard(request, userProvider)
+    override fun provide(): Guard {
+        return RequestGuard(request, userProvider)
     }
 
-    override fun dispose(instance: Guard?) {
+    override fun dispose(instance: Guard) {
         // nothing to do
     }
 
