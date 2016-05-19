@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Context
 import javax.ws.rs.ext.Provider
 
+// TODO https://codahale.com/what-makes-jersey-interesting-injection-providers/ fix UserController
 @Provider
 class GuardProvider : Factory<Guard> {
 
