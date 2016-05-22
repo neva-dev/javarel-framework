@@ -15,7 +15,7 @@ import org.apache.felix.scr.annotations.*
 class PebbleEngine : ViewEngine {
 
     companion object {
-        val extension = ".peb"
+        val EXTENSION = ".peb"
     }
 
     @Reference
@@ -42,7 +42,7 @@ class PebbleEngine : ViewEngine {
         }
 
     override fun handles(descriptor: ResourceDescriptor): Boolean {
-        return descriptor.path.endsWith(extension)
+        return descriptor.path.endsWith(EXTENSION)
     }
 
     override fun make(resource: Resource): View {

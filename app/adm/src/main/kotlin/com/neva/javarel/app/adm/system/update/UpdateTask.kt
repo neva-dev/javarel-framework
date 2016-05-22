@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 class UpdateTask : Task {
 
     companion object {
-        val logger = LoggerFactory.getLogger(UpdateTask::class.java)
+        val LOG = LoggerFactory.getLogger(UpdateTask::class.java)
     }
 
     override val trigger: Trigger
@@ -30,7 +30,7 @@ class UpdateTask : Task {
 
     class UpdateJob : Job {
         override fun execute(context: JobExecutionContext?) {
-            logger.info("Checking for system update...")
+            LOG.info("Checking for system update...")
         }
     }
 }

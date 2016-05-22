@@ -15,7 +15,7 @@ import javax.ws.rs.core.Context
 class GuardProvider : AbstractBinder(), Factory<Guard> {
 
     @Uses
-    private lateinit var userProvider: AuthenticableProvider
+    private lateinit var auth: AuthenticableProvider
 
     @Context
     private lateinit var request: HttpServletRequest
@@ -25,7 +25,7 @@ class GuardProvider : AbstractBinder(), Factory<Guard> {
     }
 
     override fun provide(): Guard {
-        return RequestGuard(request, userProvider)
+        return RequestGuard(request, auth)
     }
 
     override fun dispose(instance: Guard) {

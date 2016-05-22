@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 class RequestGuard(val request: HttpServletRequest, authenticableProvider: AuthenticableProvider) : BasicGuard(authenticableProvider) {
 
     companion object {
-        val sessionIdentifier = "authentication"
+        val SESSION_IDENTIFIER = "authentication"
     }
 
     init {
@@ -31,11 +31,11 @@ class RequestGuard(val request: HttpServletRequest, authenticableProvider: Authe
     }
 
     private fun readFromSession() {
-        val identifier = (request.session.getAttribute(sessionIdentifier) as String?).orEmpty()
+        val identifier = (request.session.getAttribute(SESSION_IDENTIFIER) as String?).orEmpty()
         this.authenticated = authenticableProvider.byIdentifier(identifier) ?: authenticableProvider.guest
     }
 
     private fun writeToSession(authenticable: Authenticable?) {
-        request.session.setAttribute(sessionIdentifier, authenticable?.authIdentifier ?: null)
+        request.session.setAttribute(SESSION_IDENTIFIER, authenticable?.authIdentifier ?: null)
     }
 }

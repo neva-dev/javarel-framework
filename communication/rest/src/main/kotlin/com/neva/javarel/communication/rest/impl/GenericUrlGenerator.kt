@@ -16,7 +16,7 @@ import kotlin.reflect.KFunction1
 class GenericUrlGenerator : UrlGenerator {
 
     companion object {
-        val hashParam = "#"
+        val HASH_PARAM = "#"
     }
 
     @Reference
@@ -53,7 +53,7 @@ class GenericUrlGenerator : UrlGenerator {
         val paramsWithoutHash = mutableMapOf<String, Any>()
         paramsWithoutHash.putAll(params)
 
-        val hash = paramsWithoutHash.remove(hashParam) as String?
+        val hash = paramsWithoutHash.remove(HASH_PARAM) as String?
         var url = JerseyRestRoute.mergePath(config.uriPrefix, route.assembleUri(paramsWithoutHash))
 
         if (StringUtils.isNotBlank(hash)) {

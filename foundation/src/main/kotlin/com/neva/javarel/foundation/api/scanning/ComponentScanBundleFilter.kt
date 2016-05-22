@@ -9,7 +9,7 @@ import org.osgi.framework.Bundle
 abstract class ComponentScanBundleFilter : BundleFilter {
 
     companion object {
-        const val bundleHeader = "Component-Scan"
+        const val BUNDLE_HEADER = "Component-Scan"
     }
 
     private val classes = mutableMapOf<Long, Collection<Class<*>>>()
@@ -18,7 +18,7 @@ abstract class ComponentScanBundleFilter : BundleFilter {
         return !getHeader(bundle).isNullOrBlank()
     }
 
-    private fun getHeader(bundle: Bundle) = bundle.headers.get(bundleHeader)
+    private fun getHeader(bundle: Bundle) = bundle.headers.get(BUNDLE_HEADER)
 
     override fun filterClass(bundle: Bundle, classReader: ClassReader): Boolean {
         return isValidPackage(bundle, classReader) && isAnnotated(classReader);

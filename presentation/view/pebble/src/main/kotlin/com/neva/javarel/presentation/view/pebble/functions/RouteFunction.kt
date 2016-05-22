@@ -5,13 +5,13 @@ import com.neva.javarel.communication.rest.api.UrlGenerator
 class RouteFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
 
     companion object {
-        val actionParam = "action"
-        val nameParam = "name"
-        val paramsParam = "params"
+        val ACTION_PARAM = "action"
+        val NAME_PARAM = "name"
+        val PARAMS_PARAM = "params"
     }
 
     override fun getArgumentNames(): MutableList<String>? {
-        return mutableListOf(actionParam, nameParam, paramsParam)
+        return mutableListOf(ACTION_PARAM, NAME_PARAM, PARAMS_PARAM)
     }
 
     override fun execute(args: MutableMap<String, Any>): Any {
@@ -19,12 +19,12 @@ class RouteFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
             throw IllegalArgumentException("Route function requires 'action' or 'name' argument specified.")
         }
 
-        val params = FunctionUtils.copyParams(paramsParam, args)
+        val params = FunctionUtils.copyParams(PARAMS_PARAM, args)
 
-        if (args.containsKey(nameParam)) {
-            return urlGenerator.name(args.get(nameParam) as String, params)
-        } else if (args.containsKey(actionParam)) {
-            return urlGenerator.action(args.get(actionParam) as String, params)
+        if (args.containsKey(NAME_PARAM)) {
+            return urlGenerator.name(args.get(NAME_PARAM) as String, params)
+        } else if (args.containsKey(ACTION_PARAM)) {
+            return urlGenerator.action(args.get(ACTION_PARAM) as String, params)
         }
 
         return urlGenerator.action(args.entries.first().value as String, params)

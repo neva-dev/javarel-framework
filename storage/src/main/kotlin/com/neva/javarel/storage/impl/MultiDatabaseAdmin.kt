@@ -22,14 +22,14 @@ import javax.persistence.spi.PersistenceUnitTransactionType
 class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
 
     companion object {
-        val log = LoggerFactory.getLogger(MultiDatabaseAdmin::class.java)
+        val LOG = LoggerFactory.getLogger(MultiDatabaseAdmin::class.java)
 
-        @Property(name = nameDefaultProp, value = "derby", label = "Default connection name")
-        const val nameDefaultProp = "nameDefault"
+        @Property(name = NAME_DEFAULT_PROP, value = "derby", label = "Default connection name")
+        const val NAME_DEFAULT_PROP = "nameDefault"
 
-        val entityFilter = EntityBundleFilter()
+        val ENTITY_FILTER = EntityBundleFilter()
 
-        val entityManagerProps = mapOf<String, Any>(
+        val ENTITY_MANAGER_CONFIG = mapOf<String, Any>(
                 "openjpa.DynamicEnhancementAgent" to "true",
                 "openjpa.RuntimeUnenhancedClasses" to "supported",
                 "openjpa.jdbc.SynchronizeMappings" to "buildSchema(foreignKeys=true')",
@@ -59,7 +59,7 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
     }
 
     private val nameDefault: String
-        get() = props!![nameDefaultProp] as String
+        get() = props!![NAME_DEFAULT_PROP] as String
 
     override fun database(): Database {
         return database(nameDefault)
@@ -89,7 +89,7 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
     private fun connect(connection: DatabaseConnection): Database {
         val props = Properties();
         props.put("openjpa.ConnectionFactory", connection.source)
-        props.putAll(entityManagerProps)
+        props.putAll(ENTITY_MANAGER_CONFIG)
 
         val info = BundlePersistenceInfo(context!!)
         info.persistenceProviderClassName = PersistenceProviderImpl::class.java.canonicalName
@@ -97,7 +97,7 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
         info.transactionType = PersistenceUnitTransactionType.RESOURCE_LOCAL
         info.setExcludeUnlistedClasses(false)
 
-        val classes = bundleScanner.scan(entityFilter)
+        val classes = bundleScanner.scan(ENTITY_FILTER)
         for (clazz in classes) {
             info.addManagedClassName(clazz.canonicalName)
         }
@@ -111,13 +111,13 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
 
     private fun check(connection: DatabaseConnection) {
         if (_connections.contains(connection.name)) {
-            log.warn("Connection named '${connection.name}' of type '${connection.javaClass.canonicalName}' overrides '${_connections[connection.name]!!.javaClass}'.")
+            LOG.warn("Connection named '${connection.name}' of type '${connection.javaClass.canonicalName}' overrides '${_connections[connection.name]!!.javaClass}'.")
         }
     }
 
     private fun disconnect(connection: DatabaseConnection) {
         if (_connectedDatabases.contains(connection.name)) {
-            log.info("Connection named '${connection.name}' is being disconnected.")
+            LOG.info("Connection named '${connection.name}' is being disconnected.")
             _connectedDatabases.remove(connection.name)
         }
     }
@@ -137,7 +137,7 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
     }
 
     override fun watch(event: BundleEvent) {
-        if (entityFilter.filterBundle(event.bundle)) {
+        if (ENTITY_FILTER.filterBundle(event.bundle)) {
             _connectedDatabases.clear()
         }
     }

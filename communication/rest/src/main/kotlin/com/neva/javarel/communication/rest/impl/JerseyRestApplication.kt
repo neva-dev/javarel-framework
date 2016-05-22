@@ -16,8 +16,8 @@ import java.util.*
 class JerseyRestApplication : RestApplication, BundleWatcher {
 
     companion object {
-        val log = LoggerFactory.getLogger(JerseyRestApplication::class.java)
-        val componentFilter = ComponentBundleFilter()
+        val LOG = LoggerFactory.getLogger(JerseyRestApplication::class.java)
+        val COMPONENT_FILTER = ComponentBundleFilter()
     }
 
     @Reference
@@ -49,7 +49,9 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
 
     private fun start() {
         try {
-            val components = bundleScanner.scan(componentFilter)
+            LOG.debug("Starting REST application.")
+
+            val components = bundleScanner.scan(COMPONENT_FILTER)
             var resourceConfig = OsgiResourceConfig(components)
             val servletContainer = ServletContainer(resourceConfig)
             val props = Hashtable<String, String>()
@@ -58,16 +60,18 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             router.configure(components)
             started = true
         } catch (e: Throwable) {
-            log.debug("REST application cannot be started properly.", e)
+            LOG.debug("REST application cannot be started properly.", e)
         }
 
     }
 
     private fun stop() {
         try {
+            LOG.debug("Stopping REST application.")
+
             httpService.unregister(config.uriPrefix)
         } catch (e: Throwable) {
-            log.debug("REST application cannot be stopped properly.", e)
+            LOG.debug("REST application cannot be stopped properly.", e)
         }
     }
 
@@ -85,7 +89,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
     }
 
     override fun watch(event: BundleEvent) {
-        if (componentFilter.filterBundle(event.bundle)) {
+        if (COMPONENT_FILTER.filterBundle(event.bundle)) {
             toggle(true)
         }
     }

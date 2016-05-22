@@ -11,8 +11,8 @@ import org.apache.felix.scr.annotations.Service
 class JerseyRestConfig {
 
     companion object {
-        @Property(name = uriPrefixProp, value = "/", label = "URI prefix", description = "Prepends path to resource")
-        const val uriPrefixProp = "uriPrefixProp"
+        @Property(name = URI_PREFIX_PROP, value = "/", label = "URI prefix", description = "Prepends path to resource")
+        const val URI_PREFIX_PROP = "uriPrefixProp"
     }
 
     private var props: Map<String, Any>? = null
@@ -23,7 +23,7 @@ class JerseyRestConfig {
     }
 
     val uriPrefix: String by lazy {
-        props?.get(uriPrefixProp) as String
+        props?.get(URI_PREFIX_PROP) as String
     }
 
 }

@@ -19,7 +19,7 @@ class ThrowableMapper : ExceptionMapper<Throwable> {
     private var resolver: ResourceResolver? = null
 
     companion object {
-        val logger = LoggerFactory.getLogger(ThrowableMapper::class.java)
+        val LOG = LoggerFactory.getLogger(ThrowableMapper::class.java)
     }
 
     override fun toResponse(causeException: Throwable): Response {
@@ -27,12 +27,12 @@ class ThrowableMapper : ExceptionMapper<Throwable> {
             when (causeException) {
                 is NotFoundException,
                 is ResourceNotFoundException -> {
-                    logger.debug("Resource not found", causeException)
+                    LOG.debug("Resource not found", causeException)
 
                     return respondView(causeException, "bundle://adm/view/error/not-found.peb")
                 }
                 else -> {
-                    logger.error("Request error", causeException)
+                    LOG.error("Request error", causeException)
                     if (resolver != null) {
                         return respondView(causeException, "bundle://adm/view/error/throwable.peb")
 
@@ -42,7 +42,7 @@ class ThrowableMapper : ExceptionMapper<Throwable> {
                 }
             }
         } catch (internalException: Throwable) {
-            logger.error("Internal error occurred while rendering request error view", internalException)
+            LOG.error("Internal error occurred while rendering request error view", internalException)
             return respondFallback(causeException)
         }
     }

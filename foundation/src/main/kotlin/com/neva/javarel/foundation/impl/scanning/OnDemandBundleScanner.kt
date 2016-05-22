@@ -20,7 +20,7 @@ import java.net.URL
 class OnDemandBundleScanner : BundleScanner {
 
     companion object {
-        val log = LoggerFactory.getLogger(OnDemandBundleScanner::class.java)
+        val LOG = LoggerFactory.getLogger(OnDemandBundleScanner::class.java)
     }
 
     private var context: BundleContext? = null
@@ -47,9 +47,9 @@ class OnDemandBundleScanner : BundleScanner {
                         classes.add(bundle.loadClass(className))
                     }
                 } catch (e: IOException) {
-                    log.warn("Class cannot be read: '$url'.")
+                    LOG.warn("Class cannot be read: '$url'.")
                 } catch (e: ClassNotFoundException) {
-                    log.warn("Class not found: '$url'")
+                    LOG.warn("Class not found: '$url'")
                 }
             }
         }
