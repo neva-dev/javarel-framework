@@ -31,7 +31,7 @@ class RequestGuard(val request: HttpServletRequest, authenticableProvider: Authe
     }
 
     private fun readFromSession() {
-        val identifier = (request.session.getAttribute(sessionIdentifier) as String).orEmpty()
+        val identifier = (request.session.getAttribute(sessionIdentifier) as String?).orEmpty()
         this.authenticated = authenticableProvider.byIdentifier(identifier) ?: authenticableProvider.guest
     }
 

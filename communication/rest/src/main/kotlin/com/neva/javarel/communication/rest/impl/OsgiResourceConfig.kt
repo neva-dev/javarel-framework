@@ -1,5 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
+import com.neva.javarel.communication.rest.api.Binder
 import com.neva.javarel.communication.rest.api.Uses
 import org.glassfish.hk2.api.InjectionResolver
 import org.glassfish.hk2.api.TypeLiteral
@@ -15,8 +16,14 @@ class OsgiResourceConfig(components: Set<Class<*>>) : ResourceConfig() {
                 bind(OsgiInjectionResolver::class.java).to(object : TypeLiteral<InjectionResolver<Uses>>() {}).`in`(Singleton::class.java)
             }
         })
+
         for (component in components) {
-            register(component)
+            if (component.isAnnotationPresent(Binder::class.java)) {
+                val binder = component.newInstance() as AbstractBinder
+                register(binder)
+            } else {
+                register(component)
+            }
         }
     }
 }
