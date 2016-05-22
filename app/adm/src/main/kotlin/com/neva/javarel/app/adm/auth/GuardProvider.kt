@@ -20,16 +20,16 @@ class GuardProvider : AbstractBinder(), Factory<Guard> {
     @Context
     private lateinit var request: HttpServletRequest
 
+    override fun configure() {
+        bindFactory(javaClass).to(Guard::class.java).`in`(RequestScoped::class.java)
+    }
+
     override fun provide(): Guard {
         return RequestGuard(request, userProvider)
     }
 
     override fun dispose(instance: Guard) {
         // nothing to do
-    }
-
-    override fun configure() {
-        bindFactory(GuardProvider::class.java).to(Guard::class.java).`in`(RequestScoped::class.java)
     }
 
 }
