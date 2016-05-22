@@ -57,7 +57,7 @@ class UserController {
     @Produces(MediaType.TEXT_HTML)
     fun getLogin(): Response {
         if (guard.attempt(Credentials())) {
-            return Redirect.to(urlGenerator.action("home"))
+            return Redirect.to(urlGenerator.name("home"))
         }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();

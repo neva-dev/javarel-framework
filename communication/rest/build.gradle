@@ -13,6 +13,7 @@ jar {
         name project.description
         instruction 'Export-Package', "com.neva.javarel.communication.rest.api.*;version=${project.version}"
         instruction 'Import-Package', "org.glassfish.hk2.*,*"
+        instruction 'Component-Scan', 'com.neva.javarel.communication.rest.impl.*'
     }
 }
 

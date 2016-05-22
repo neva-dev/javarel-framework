@@ -1,4 +1,4 @@
-package com.neva.javarel.security.auth.api.guard
+package com.neva.javarel.security.auth.impl
 
 import com.neva.javarel.security.auth.api.Authenticable
 import com.neva.javarel.security.auth.api.AuthenticableProvider

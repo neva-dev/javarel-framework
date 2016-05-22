@@ -1,10 +1,9 @@
-package com.neva.javarel.app.adm.auth
+package com.neva.javarel.security.auth.impl
 
 import com.neva.javarel.communication.rest.api.Binder
 import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.security.auth.api.AuthenticableProvider
 import com.neva.javarel.security.auth.api.Guard
-import com.neva.javarel.security.auth.api.guard.RequestGuard
 import org.glassfish.hk2.api.Factory
 import org.glassfish.hk2.utilities.binding.AbstractBinder
 import org.glassfish.jersey.process.internal.RequestScoped
@@ -21,7 +20,7 @@ class GuardProvider : AbstractBinder(), Factory<Guard> {
     private lateinit var request: HttpServletRequest
 
     override fun configure() {
-        bindFactory(javaClass).to(Guard::class.java).`in`(RequestScoped::class.java)
+        bindFactory(javaClass).to(Guard::class.java).proxy(true).proxyForSameScope(false).`in`(RequestScoped::class.java)
     }
 
     override fun provide(): Guard {
