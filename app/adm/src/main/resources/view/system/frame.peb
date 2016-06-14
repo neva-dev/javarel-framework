@@ -1,7 +1,0 @@
-{% extends "bundle://adm/view/layout/master.peb" %}
-
-{% block content %}
-    <iframe id="system-frame" src="javascript:"></iframe>
-{% endblock %}
-
-{% block footer %}{% endblock %}

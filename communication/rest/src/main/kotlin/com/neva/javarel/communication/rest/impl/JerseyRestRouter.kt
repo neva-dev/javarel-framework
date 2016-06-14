@@ -1,7 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
 import com.google.common.base.Splitter
-import com.neva.javarel.communication.rest.api.RestComponent
 import com.neva.javarel.communication.rest.api.RestException
 import com.neva.javarel.communication.rest.api.RestRoute
 import com.neva.javarel.communication.rest.api.RestRouter
@@ -17,16 +16,16 @@ import org.osgi.framework.BundleContext
 class JerseyRestRouter : RestRouter {
 
     companion object {
-        val aliasHeaderName = "Rest-Route-Alias"
-        val aliasSplitter = Splitter.on("\n").omitEmptyStrings().trimResults().withKeyValueSeparator("=")
-        val aliasPartDelimiter = "."
+        val ALIAS_HEADER_NAME = "Rest-Route-Alias"
+        val ALIAS_SPLITTER = Splitter.on("\n").omitEmptyStrings().trimResults().withKeyValueSeparator("=")
+        val ALIAS_PART_DELIMITER = "."
     }
 
-    private var components = emptySet<RestComponent>()
+    private var components = emptySet<Class<*>>()
 
     private var aliases = emptyMap<String, String>()
 
-    override fun configure(components: Set<RestComponent>) {
+    override fun configure(components: Set<Class<*>>) {
         this.components = components;
     }
 
@@ -35,7 +34,7 @@ class JerseyRestRouter : RestRouter {
             val routes = mutableSetOf<RestRoute>()
 
             components.forEach { component ->
-                val resource = Resource.from(component.javaClass)
+                val resource = Resource.from(component)
                 if (resource != null) {
                     resource.childResources.forEach { method ->
                         routes.add(JerseyRestRoute(resource, method))
@@ -54,7 +53,7 @@ class JerseyRestRouter : RestRouter {
     private fun collectAliases(context: BundleContext): MutableMap<String, String> {
         val result = mutableMapOf<String, String>()
         for (bundle in context.bundles) {
-            val bundleAliases = aliasSplitter.split(StringUtils.trimToEmpty(bundle.headers.get(aliasHeaderName)))
+            val bundleAliases = ALIAS_SPLITTER.split(StringUtils.trimToEmpty(bundle.headers.get(ALIAS_HEADER_NAME)))
             result.putAll(bundleAliases)
         }
 
@@ -80,11 +79,11 @@ class JerseyRestRouter : RestRouter {
     }
 
     private fun expandAlias(value: String): String {
-        val alias = value.substringBefore(aliasPartDelimiter)
-        val rest = value.substringAfter(aliasPartDelimiter)
+        val alias = value.substringBefore(ALIAS_PART_DELIMITER)
+        val rest = value.substringAfter(ALIAS_PART_DELIMITER)
 
         if (aliases.contains(alias)) {
-            return aliases.get(alias) + aliasPartDelimiter + rest
+            return aliases.get(alias) + ALIAS_PART_DELIMITER + rest
         }
 
         return value

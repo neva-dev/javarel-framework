@@ -13,14 +13,14 @@ import javax.sql.DataSource
 class DerbyDatabaseConnection : AbstractDatabaseConnection() {
 
     companion object {
-        @Property(name = nameProp, value = "derby", label = "Connection name", description = "Unique identifier")
-        const val nameProp = "name"
+        @Property(name = NAME_PROP, value = "derby", label = "Connection name", description = "Unique identifier")
+        const val NAME_PROP = "name"
 
-        @Property(name = userProp, value = "root", label = "Username")
-        const val userProp = "userProp"
+        @Property(name = USER_PROP, value = "root", label = "Username")
+        const val USER_PROP = "userProp"
 
-        @Property(name = dbNameProp, value = "javarel", label = "Database name")
-        const val dbNameProp = "dbNameProp"
+        @Property(name = DB_NAME_PROP, value = "javarel", label = "Database name")
+        const val DB_NAME_PROP = "dbNameProp"
     }
 
     private var props: Map<String, Any>? = null
@@ -31,13 +31,13 @@ class DerbyDatabaseConnection : AbstractDatabaseConnection() {
     }
 
     private val user: String
-        get() = props!![userProp] as String
+        get() = props!![USER_PROP] as String
 
     private val dbName: String
-        get() = props!![dbNameProp] as String
+        get() = props!![DB_NAME_PROP] as String
 
     override val name: String
-        get() = props!![nameProp] as String
+        get() = props!![NAME_PROP] as String
 
     override val source: DataSource
         get() {

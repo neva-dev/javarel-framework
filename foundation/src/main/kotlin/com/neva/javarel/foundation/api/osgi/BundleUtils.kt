@@ -1,13 +1,7 @@
 package com.neva.javarel.foundation.api.osgi
 
-import org.objectweb.asm.AnnotationVisitor
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.Opcodes
 import org.osgi.framework.Bundle
 import org.osgi.framework.Constants
-import java.net.URL
-import java.util.*
 
 object BundleUtils {
 
@@ -25,50 +19,12 @@ object BundleUtils {
         return null
     }
 
-    fun toClassName(classReader: ClassReader): String {
-        return classReader.className.replace("/", ".")
-    }
-
-    fun toClassName(url: URL): String {
-        val file = url.file
-        val canonicalName = file.substring(1, file.length - ".class".length)
-
-        return canonicalName.replace('/', '.')
-    }
-
-    fun isAnnotated(classReader: ClassReader, annotation: Class<out Annotation>): Boolean {
-        val annotationReader = AnnotationReader();
-        classReader.accept(annotationReader, ClassReader.SKIP_DEBUG);
-
-        return annotationReader.isAnnotationPresent(annotation);
-    }
-
-    class AnnotationReader : ClassVisitor(Opcodes.ASM5) {
-
-        private val annotations = ArrayList<String>()
-
-        override fun visit(paramInt1: Int, paramInt2: Int, paramString1: String?, paramString2: String?,
-                           paramString3: String?, paramArrayOfString: Array<String?>) {
-            annotations.clear()
-        }
-
-        override fun visitAnnotation(paramString: String?, paramBoolean: Boolean): AnnotationVisitor? {
-            if (paramString != null) {
-                val annotationClassName = getAnnotationClassName(paramString)
-                annotations.add(annotationClassName)
-            }
-
-            return super.visitAnnotation(paramString, paramBoolean)
-        }
-
-        fun isAnnotationPresent(annotation: Class<out Annotation>): Boolean {
-            val name = annotation.name
-
-            return annotations.contains(name)
-        }
-
-        private fun getAnnotationClassName(rawName: String): String {
-            return rawName.substring(1, rawName.length - 1).replace('/', '.')
+    fun isActive(bundle: Bundle): Boolean {
+        if (isFragment(bundle)) {
+            return bundle.state == Bundle.RESOLVED
+        } else {
+            return bundle.state == Bundle.ACTIVE
         }
     }
+
 }

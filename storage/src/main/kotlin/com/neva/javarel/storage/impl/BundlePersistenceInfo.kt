@@ -7,9 +7,16 @@ import org.osgi.framework.wiring.BundleWiring
 
 class BundlePersistenceInfo(val context: BundleContext) : PersistenceUnitInfoImpl() {
 
-    override fun getClassLoader(): ClassLoader? {
+    override fun getClassLoader(): ClassLoader {
         val cl = MultiClassLoader()
-        context.bundles.forEach { cl.addClassLoader(it.adapt(BundleWiring::class.java).getClassLoader()) }
+
+        context.bundles.forEach { bundle ->
+            val wiring = bundle.adapt(BundleWiring::class.java)
+            if (wiring != null) {
+                cl.addClassLoader(wiring.getClassLoader())
+
+            }
+        }
 
         return cl
     }

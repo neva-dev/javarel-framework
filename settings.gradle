@@ -7,8 +7,6 @@ include ':presentation:asset'
 include ':presentation:view'
 include ':presentation:view:pebble'
 include ':processing:scheduler'
+include ':security:auth'
 include ':storage'
-
-include ':app:core'
-include ':app:adm'
 

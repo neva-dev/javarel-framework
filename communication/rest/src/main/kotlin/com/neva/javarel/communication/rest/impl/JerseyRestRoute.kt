@@ -1,6 +1,6 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.neva.javarel.communication.rest.api.Rest
+import com.neva.javarel.communication.rest.api.Route
 import com.neva.javarel.communication.rest.api.RestRoute
 import org.apache.commons.lang3.StringUtils
 import org.glassfish.jersey.server.model.Resource
@@ -9,30 +9,30 @@ import java.lang.reflect.Method
 class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: Resource) : RestRoute {
 
     companion object {
-        val pathSeparator = "/"
-        val paramTypeDelimiter = ":"
-        val paramStart = "{"
-        val paramEnd = "}"
+        val PATH_SEPARATOR = "/"
+        val PARAM_TYPE_DELIMITER = ":"
+        val PARAM_TOKEN_START = "{"
+        val PARAM_TOKEN_END = "}"
 
         fun mergePath(vararg parts: String): String {
             val normalized = parts.fold(mutableListOf<String>(), { result, part ->
-                val path = part.removePrefix(pathSeparator).removeSuffix(pathSeparator)
+                val path = part.removePrefix(PATH_SEPARATOR).removeSuffix(PATH_SEPARATOR)
                 if (path.isNotBlank()) {
                     result.add(path);
                 }
                 result;
             })
 
-            return pathSeparator + normalized.joinToString(pathSeparator)
+            return PATH_SEPARATOR + normalized.joinToString(PATH_SEPARATOR)
         }
     }
 
     override val name: String?
         get() {
             var name: String? = null;
-            val ann = handlingMethod.declaredAnnotations.find { it is Rest }
-            if (ann != null) {
-                name = (ann as Rest).name
+            val routeAnnotation = handlingMethod.declaredAnnotations.find { it is Route }
+            if (routeAnnotation != null) {
+                name = (routeAnnotation as Route).name
             }
 
             return name
@@ -66,10 +66,10 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
     override fun assembleUri(params: Map<String, Any>): String {
         var result = path;
         for ((key, value) in params) {
-            StringUtils.substringsBetween(path, paramStart, paramEnd).forEach { variable ->
-                val name = variable.split(paramTypeDelimiter)[0]
+            StringUtils.substringsBetween(path, PARAM_TOKEN_START, PARAM_TOKEN_END).forEach { variable ->
+                val name = variable.split(PARAM_TYPE_DELIMITER)[0]
                 if (name == key) {
-                    result = StringUtils.replace(result, paramStart + variable + paramEnd, value as String)
+                    result = StringUtils.replace(result, PARAM_TOKEN_START + variable + PARAM_TOKEN_END, value as String)
                 }
             }
         }

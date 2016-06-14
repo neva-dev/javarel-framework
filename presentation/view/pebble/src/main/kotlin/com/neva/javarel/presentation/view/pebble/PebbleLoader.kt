@@ -12,14 +12,14 @@ import java.io.Reader
 class PebbleLoader(val resourceResolver: ResourceResolver) : Loader<String> {
 
     companion object {
-        val charset = "UTF-8"
+        val CHARSET = "UTF-8"
     }
 
     override fun getReader(template: String): Reader {
         try {
             val resource = resourceResolver.findOrFail(template)
 
-            return BufferedReader(InputStreamReader(resource.inputStream, charset))
+            return BufferedReader(InputStreamReader(resource.inputStream, CHARSET))
         } catch (e: ResourceException) {
             throw LoaderException(e, "Cannot read a template: '$template")
         } catch (e: IOException) {

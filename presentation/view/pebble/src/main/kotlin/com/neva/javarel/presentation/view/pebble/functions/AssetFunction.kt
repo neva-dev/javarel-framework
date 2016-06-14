@@ -7,28 +7,28 @@ import com.neva.javarel.resource.api.ResourceMapper
 class AssetFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
 
     companion object {
-        val routeName = "asset"
-        val pathParam = "path"
-        val paramsParam = "params"
+        val ROUTE_NAME = "asset"
+        val PATH_PARAM = "path"
+        val PARAMS_PARAM = "params"
     }
 
     override fun getArgumentNames(): MutableList<String>? {
-        return mutableListOf(pathParam, paramsParam)
+        return mutableListOf(PATH_PARAM, PARAMS_PARAM)
     }
 
     override fun execute(args: MutableMap<String, Any>): Any {
-        val path = if (args.containsKey(pathParam)) {
-            args.get(pathParam) as String
+        val path = if (args.containsKey(PATH_PARAM)) {
+            args.get(PATH_PARAM) as String
         } else if (args.size == 1) {
             args.entries.first().value as String
         } else {
             throw ViewException("Asset function should have 'path' argument specified.")
         }
 
-        val params = FunctionUtils.copyParams(paramsParam, args)
-        params.put(pathParam, ResourceMapper.uriToPath(path))
+        val params = FunctionUtils.copyParams(PARAMS_PARAM, args)
+        params.put(PATH_PARAM, ResourceMapper.uriToPath(path))
 
-        return urlGenerator.name(routeName, params)
+        return urlGenerator.name(ROUTE_NAME, params)
     }
 
 }

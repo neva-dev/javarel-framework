@@ -14,23 +14,23 @@ import javax.sql.DataSource
 class PgSqlDatabaseConnection : AbstractDatabaseConnection() {
 
     companion object {
-        @Property(name = nameProp, value = "pgsql", label = "Connection name", description = "Unique identifier")
-        const val nameProp = "name"
+        @Property(name = NAME_PROP, value = "pgsql", label = "Connection name", description = "Unique identifier")
+        const val NAME_PROP = "name"
 
-        @Property(name = hostProp, value = "localhost", label = "Host", description = "Hostname or IP address to server")
-        const val hostProp = "hostProp"
+        @Property(name = HOST_PROP, value = "localhost", label = "Host", description = "Hostname or IP address to server")
+        const val HOST_PROP = "hostProp"
 
-        @Property(name = portProp, value = "5432", label = "Port", description = "Port number")
-        const val portProp = "portProp"
+        @Property(name = PORT_PROP, value = "5432", label = "Port", description = "Port number")
+        const val PORT_PROP = "portProp"
 
-        @Property(name = dbNameProp, value = "javarel", label = "Database name")
-        const val dbNameProp = "dbNameProp"
+        @Property(name = DB_NAME_PROP, value = "javarel", label = "Database name")
+        const val DB_NAME_PROP = "dbNameProp"
 
-        @Property(name = userProp, value = "root", label = "Username")
-        const val userProp = "userProp"
+        @Property(name = USER_PROP, value = "root", label = "Username")
+        const val USER_PROP = "userProp"
 
-        @Property(name = passwordProp, value = "toor", label = "Password")
-        const val passwordProp = "passwordProp"
+        @Property(name = PASSWORD_PROP, value = "toor", label = "Password")
+        const val PASSWORD_PROP = "passwordProp"
     }
 
     private var props: Map<String, Any>? = null
@@ -41,22 +41,22 @@ class PgSqlDatabaseConnection : AbstractDatabaseConnection() {
     }
 
     override val name: String
-        get() = props!![nameProp] as String
+        get() = props!![NAME_PROP] as String
 
     private val host: String
-        get() = props!![hostProp] as String
+        get() = props!![HOST_PROP] as String
 
     private val port: Int
-        get() = Integer.parseInt(props!![portProp] as String)
+        get() = Integer.parseInt(props!![PORT_PROP] as String)
 
     private val dbName: String
-        get() = props!![dbNameProp] as String
+        get() = props!![DB_NAME_PROP] as String
 
     private val user: String
-        get() = props!![userProp] as String
+        get() = props!![USER_PROP] as String
 
     private val password: String
-        get() = props!![passwordProp] as String
+        get() = props!![PASSWORD_PROP] as String
 
     override val source: DataSource
         get() {

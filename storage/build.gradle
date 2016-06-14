@@ -5,8 +5,9 @@ buildscript {
 description = 'Javarel :: Storage'
 
 apply plugin: 'kotlin'
-apply plugin: 'osgi-module'
-apply plugin: 'com.twcable.scr'
+apply plugin: 'maven-publish'
+apply plugin: 'neva.osgi-module'
+apply plugin: 'neva.scr'
 
 jar {
     manifest {

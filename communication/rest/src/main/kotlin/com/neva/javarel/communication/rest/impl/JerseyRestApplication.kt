@@ -1,28 +1,27 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.google.common.collect.Sets
 import com.neva.javarel.communication.rest.api.RestApplication
-import com.neva.javarel.communication.rest.api.RestComponent
-import com.neva.javarel.communication.rest.api.RestRegistrar
 import com.neva.javarel.communication.rest.api.RestRouter
+import com.neva.javarel.foundation.api.scanning.BundleScanner
+import com.neva.javarel.foundation.api.scanning.BundleWatcher
 import org.apache.felix.scr.annotations.*
-import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
+import org.osgi.framework.BundleEvent
 import org.osgi.service.http.HttpService
+import org.slf4j.LoggerFactory
 import java.util.*
 
-/**
- * TODO update HTTP server using batch of component changes between e.g 1 sec / postpone
- */
 @Component(immediate = true, policy = ConfigurationPolicy.OPTIONAL)
 @Service
-class JerseyRestApplication : RestApplication {
+class JerseyRestApplication : RestApplication, BundleWatcher {
 
-    @Reference(referenceInterface = RestComponent::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-    private val components = Sets.newConcurrentHashSet<RestComponent>()
+    companion object {
+        val LOG = LoggerFactory.getLogger(JerseyRestApplication::class.java)
+        val COMPONENT_FILTER = ComponentBundleFilter()
+    }
 
-    @Reference(referenceInterface = RestRegistrar::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-    private val registrars = Sets.newConcurrentHashSet<RestRegistrar>()
+    @Reference
+    private lateinit var bundleScanner: BundleScanner
 
     @Reference
     private lateinit var httpService: HttpService
@@ -49,28 +48,30 @@ class JerseyRestApplication : RestApplication {
     }
 
     private fun start() {
-        var resourceConfig = ResourceConfig()
+        try {
+            LOG.debug("Starting REST application.")
 
-        for (registrar in registrars) {
-            registrar.register(resourceConfig)
+            val components = bundleScanner.scan(COMPONENT_FILTER)
+            var resourceConfig = OsgiResourceConfig(components)
+            val servletContainer = ServletContainer(resourceConfig)
+            val props = Hashtable<String, String>()
+
+            httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
+            router.configure(components)
+            started = true
+        } catch (e: Throwable) {
+            LOG.debug("REST application cannot be started properly.", e)
         }
-        for (resource in components) {
-            resourceConfig.register(resource)
-        }
 
-        val servletContainer = ServletContainer(resourceConfig)
-        val props = Hashtable<String, String>()
-
-        httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
-        router.configure(components)
-        started = true
     }
 
     private fun stop() {
         try {
+            LOG.debug("Stopping REST application.")
+
             httpService.unregister(config.uriPrefix)
         } catch (e: Throwable) {
-            // nothing interesting
+            LOG.debug("REST application cannot be stopped properly.", e)
         }
     }
 
@@ -87,23 +88,9 @@ class JerseyRestApplication : RestApplication {
         }
     }
 
-    private fun bindRestComponent(component: RestComponent) {
-        components.add(component)
-        toggle(true)
-    }
-
-    private fun unbindRestComponent(component: RestComponent) {
-        components.remove(component)
-        toggle(true)
-    }
-
-    private fun bindRestRegistrar(registrar: RestRegistrar) {
-        registrars.add(registrar)
-        toggle(true)
-    }
-
-    private fun unbindRestRegistrar(registrar: RestRegistrar) {
-        registrars.remove(registrar)
-        toggle(true)
+    override fun watch(event: BundleEvent) {
+        if (COMPONENT_FILTER.filterBundle(event.bundle)) {
+            toggle(true)
+        }
     }
 }

@@ -16,7 +16,7 @@ import org.osgi.framework.BundleContext
 class BundleResourceProvider : ResourceProvider {
 
     companion object {
-        val namespaceHeaderName = "Resource-Namespace"
+        val NAMESPACE_HEADER_NAME = "Resource-Namespace"
     }
 
     private val foundBundles = Maps.newConcurrentMap<String, Bundle>()
@@ -50,7 +50,7 @@ class BundleResourceProvider : ResourceProvider {
 
         if (!foundBundles.containsKey(namespace)) {
             for (bundle in context!!.bundles) {
-                if (namespace.equals(bundle.headers.get(namespaceHeaderName))) {
+                if (namespace.equals(bundle.headers.get(NAMESPACE_HEADER_NAME))) {
                     foundBundles.put(namespace, bundle)
                     break
                 }
