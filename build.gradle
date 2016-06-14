@@ -4,7 +4,7 @@ buildscript {
 
 defaultTasks 'createOsgiContainer'
 
-apply plugin: 'osgi-container'
+apply plugin: 'neva.osgi-container'
 
 allprojects {
     group 'com.neva.javarel'
