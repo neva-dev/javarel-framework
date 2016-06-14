@@ -76,13 +76,7 @@ subprojects { subProject ->
         compileTestJava compileOptions
     }
 
-    plugins.withId 'com.twcable.scr', {
-        processScrAnnotations {
-            skipInterfaceReferenceCheck = true
-        }
-    }
-
-    plugins.withId 'osgi-module', {
+    plugins.withId 'neva.osgi-module', {
         jar {
             manifest {
                 name subProject.description
