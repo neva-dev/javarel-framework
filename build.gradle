@@ -61,7 +61,7 @@ subprojects { subProject ->
     plugins.withId 'kotlin', {
         // testCompile group: 'junit', name: 'junit', version: '4.11'
 
-        jar.baseName = "${subProject.path.substring(1).replace(':', '-')}"
+        jar.baseName = "javarel-${subProject.path.substring(1).replace(':', '-')}"
 
         sourceCompatibility = 1.7
         targetCompatibility = 1.7
