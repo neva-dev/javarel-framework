@@ -27,7 +27,6 @@ dependencies {
     osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2'
     osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.16'
     osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.9.0'
-    osgiBundle 'org.glassfish.grizzly.osgi:grizzly-httpservice-bundle:2.3.28'
 
     osgiModule project(':foundation')
     osgiModule project(':resource')
