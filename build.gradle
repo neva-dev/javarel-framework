@@ -20,14 +20,14 @@ allprojects {
 }
 
 dependencies {
-    osgiMain 'org.apache.felix:org.apache.felix.main:5.4.0'
-    osgiBundle 'org.apache.felix:org.apache.felix.fileinstall:3.4.2'
-    osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.8'
-    osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.6'
+    osgiMain 'org.apache.felix:org.apache.felix.main:5.6.0'
+    osgiBundle 'org.apache.felix:org.apache.felix.fileinstall:3.5.4'
+    osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.10'
+    osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.8'
     osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2'
-    osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.14'
-    osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.8.5'
-    osgiBundle 'org.glassfish.grizzly.osgi:grizzly-httpservice-bundle:2.3.24'
+    osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.16'
+    osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.9.0'
+    osgiBundle 'org.glassfish.grizzly.osgi:grizzly-httpservice-bundle:2.3.28'
 
     osgiModule project(':foundation')
     osgiModule project(':resource')
@@ -94,13 +94,13 @@ subprojects { subProject ->
         }
 
         dependencies {
-            osgiBundle 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.2'
+            osgiBundle 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.4'
 
             osgiBundle 'org.osgi:org.osgi.enterprise:5.0.0'
             osgiBundle 'org.osgi:org.osgi.core:5.0.0'
 
-            osgiBundle 'org.apache.felix:org.apache.felix.scr:2.0.2'
-            compile 'org.apache.felix:org.apache.felix.scr.annotations:1.9.12'
+            osgiBundle 'org.apache.felix:org.apache.felix.scr:2.0.6'
+            compile 'org.apache.felix:org.apache.felix.scr.annotations:1.11.0'
 
             osgiBundle 'javax.servlet:javax.servlet-api:3.0.1'
             osgiBundle 'com.google.guava:guava:19.0'
