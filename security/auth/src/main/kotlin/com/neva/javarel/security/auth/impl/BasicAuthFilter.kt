@@ -15,7 +15,8 @@ import javax.servlet.Filter
 @Service(Filter::class)
 @Component(immediate = true)
 @Properties(
-        Property(name = "pattern", value = "/*")
+        Property(name = "service.ranking", value= "100"),
+        Property(name = "pattern", value = ".*")
 )
 class BasicAuthFilter : ShiroFilter {
 

@@ -4,12 +4,13 @@ import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestRouter
 import com.neva.javarel.foundation.api.scanning.BundleScanner
 import com.neva.javarel.foundation.api.scanning.BundleWatcher
+import org.apache.felix.http.api.ExtHttpService
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.servlet.ServletContainer
+import org.glassfish.jersey.servlet.ServletProperties
+import org.osgi.framework.BundleContext
 import org.osgi.framework.BundleEvent
-import org.osgi.service.http.HttpService
 import org.slf4j.LoggerFactory
-import java.util.*
 
 @Component(immediate = true)
 @Service
@@ -24,13 +25,13 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
     private lateinit var bundleScanner: BundleScanner
 
     @Reference
-    private lateinit var httpService: HttpService
-
-    @Reference
     private lateinit var config: JerseyRestConfig
 
     @Reference
     private lateinit var router: RestRouter
+
+    @Reference
+    private lateinit var http: ExtHttpService
 
     private var ready = false
 
@@ -47,29 +48,33 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
         toggle(false)
     }
 
+    private var filter: ServletContainer? = null
+
     private fun start() {
         try {
             LOG.debug("Starting REST application.")
 
             val components = bundleScanner.scan(COMPONENT_FILTER)
             val resourceConfig = OsgiResourceConfig(components)
-            val servletContainer = ServletContainer(resourceConfig)
-            val props = Hashtable<String, String>()
+            resourceConfig.properties = mapOf(ServletProperties.FILTER_CONTEXT_PATH to "/")
 
-            httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
+            this.filter = ServletContainer(resourceConfig)
+
+            http.registerFilter(filter, ".*", null, 200, null)
             router.configure(components)
             started = true
         } catch (e: Throwable) {
             LOG.debug("REST application cannot be started properly.", e)
         }
-
     }
 
     private fun stop() {
         try {
             LOG.debug("Stopping REST application.")
 
-            httpService.unregister(config.uriPrefix)
+            if (filter != null) {
+                http.unregisterFilter(filter)
+            }
         } catch (e: Throwable) {
             LOG.debug("REST application cannot be stopped properly.", e)
         }
@@ -90,7 +95,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
 
     override fun watch(event: BundleEvent) {
         if (COMPONENT_FILTER.filterBundle(event.bundle)) {
-            toggle(true)
+            //      toggle(true)
         }
     }
 }

@@ -23,20 +23,17 @@ class OnDemandBundleScanner : BundleScanner {
         val LOG = LoggerFactory.getLogger(OnDemandBundleScanner::class.java)
     }
 
-    private var _context: BundleContext? = null
+    private var context: BundleContext? = null
 
     @Activate
     protected fun activate(context: BundleContext) {
-        this._context = context
+        this.context = context
     }
-
-    override val context: BundleContext
-        get() = _context!!
 
     override fun scan(filter: BundleFilter): Set<Class<*>> {
         val classes = mutableListOf<Class<*>>()
 
-        for (bundle in _context!!.bundles) {
+        for (bundle in context!!.bundles) {
             if (!filter.filterBundle(bundle) || !BundleUtils.isActive(bundle)) {
                 continue
             }
