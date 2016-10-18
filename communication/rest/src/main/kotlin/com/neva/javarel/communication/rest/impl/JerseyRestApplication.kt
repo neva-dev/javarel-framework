@@ -58,7 +58,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             val resourceConfig = OsgiResourceConfig(components)
             resourceConfig.properties = mapOf(ServletProperties.FILTER_CONTEXT_PATH to "/")
 
-            this.filter = ServletContainer(resourceConfig)
+            this.filter = JerseyServletContainer(resourceConfig)
 
             http.registerFilter(filter, ".*", null, 200, null)
             router.configure(components)
@@ -95,7 +95,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
 
     override fun watch(event: BundleEvent) {
         if (COMPONENT_FILTER.filterBundle(event.bundle)) {
-            //      toggle(true)
+            toggle(true)
         }
     }
 }
