@@ -36,6 +36,7 @@ class BasicAuth : Auth {
         this._env = filter.env
     }
 
+    @Deactivate
     protected fun deactivate() {
         http.unregisterFilter(filter)
     }
