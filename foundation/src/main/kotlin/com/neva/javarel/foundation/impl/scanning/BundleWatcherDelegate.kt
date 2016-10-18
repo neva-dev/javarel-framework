@@ -6,8 +6,8 @@ import org.osgi.framework.BundleContext
 import org.osgi.framework.BundleEvent
 import org.osgi.framework.BundleListener
 
-@Service(BundleWatcherDelegate::class)
 @Component(immediate = true)
+@Service(BundleWatcherDelegate::class)
 class BundleWatcherDelegate : BundleListener {
 
     @Reference(referenceInterface = BundleWatcher::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)

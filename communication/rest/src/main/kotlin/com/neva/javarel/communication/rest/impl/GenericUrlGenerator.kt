@@ -11,7 +11,7 @@ import org.apache.felix.scr.annotations.Service
 import javax.ws.rs.core.Response
 import kotlin.reflect.KFunction1
 
-@Component
+@Component(immediate = true)
 @Service
 class GenericUrlGenerator : UrlGenerator {
 

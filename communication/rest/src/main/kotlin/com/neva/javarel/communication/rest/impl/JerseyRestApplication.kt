@@ -11,7 +11,7 @@ import org.osgi.service.http.HttpService
 import org.slf4j.LoggerFactory
 import java.util.*
 
-@Component(immediate = true, policy = ConfigurationPolicy.OPTIONAL)
+@Component(immediate = true)
 @Service
 class JerseyRestApplication : RestApplication, BundleWatcher {
 

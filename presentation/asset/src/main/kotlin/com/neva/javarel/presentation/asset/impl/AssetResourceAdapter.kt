@@ -8,7 +8,7 @@ import com.neva.javarel.resource.api.ResourceAdapter
 import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
-@Component
+@Component(immediate = true)
 @Service
 class AssetResourceAdapter : ResourceAdapter<Asset>() {
 

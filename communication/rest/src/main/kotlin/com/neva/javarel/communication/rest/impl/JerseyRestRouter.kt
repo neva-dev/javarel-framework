@@ -11,7 +11,7 @@ import org.apache.felix.scr.annotations.Service
 import org.glassfish.jersey.server.model.Resource
 import org.osgi.framework.BundleContext
 
-@Component
+@Component(immediate = true)
 @Service
 class JerseyRestRouter : RestRouter {
 

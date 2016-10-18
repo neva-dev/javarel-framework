@@ -9,7 +9,7 @@ import com.neva.javarel.resource.api.ResourceException
 import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
-@Component
+@Component(immediate = true)
 @Service
 class ViewResourceAdapter : ResourceAdapter<View>() {
 

@@ -8,7 +8,7 @@ import com.neva.javarel.foundation.api.adapting.AdaptingManager
 import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
-@Component
+@Component(immediate = true)
 @Service
 class GenericAdaptingManager : AdaptingManager {
 

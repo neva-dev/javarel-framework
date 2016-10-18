@@ -7,8 +7,8 @@ import com.neva.javarel.resource.api.ResourceDescriptor
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Service
 
-@Component
-@Service
+@Component(immediate = true)
+@Service(AssetFactory::class)
 class JsAssetFactory : AssetFactory {
 
     override fun supports(descriptor: ResourceDescriptor): Boolean {
