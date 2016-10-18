@@ -1,22 +1,36 @@
 package com.neva.javarel.security.auth.impl
 
-import org.apache.shiro.realm.Realm
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Properties
+import org.apache.felix.scr.annotations.Property
+import org.apache.felix.scr.annotations.Service
+import org.apache.shiro.realm.SimpleAccountRealm
 import org.apache.shiro.web.env.DefaultWebEnvironment
 import org.apache.shiro.web.env.EnvironmentLoader
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager
 import org.apache.shiro.web.servlet.ShiroFilter
+import javax.servlet.Filter
 
-class BasicAuthFilter(realms: Collection<Realm>) : ShiroFilter() {
+@Service(Filter::class)
+@Component(immediate = true)
+@Properties(
+        Property(name = "pattern", value = "/*")
+)
+class BasicAuthFilter : ShiroFilter {
 
-    val env = DefaultWebEnvironment()
-
-    init {
-        env.securityManager = DefaultWebSecurityManager(realms)
-        env.filterChainResolver = PathMatchingFilterChainResolver()
+    constructor() : super() {
+        // intentionally empty
     }
 
     override fun init() {
+        val realm = SimpleAccountRealm()
+        realm.addAccount("admin", "admin", "*:*")
+
+        val env = DefaultWebEnvironment()
+        env.securityManager = DefaultWebSecurityManager(realm)
+        env.filterChainResolver = PathMatchingFilterChainResolver()
+
         servletContext.setAttribute(EnvironmentLoader.ENVIRONMENT_ATTRIBUTE_KEY, env)
 
         super.init()

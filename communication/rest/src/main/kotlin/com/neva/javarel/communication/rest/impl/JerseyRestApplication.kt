@@ -52,7 +52,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             LOG.debug("Starting REST application.")
 
             val components = bundleScanner.scan(COMPONENT_FILTER)
-            var resourceConfig = OsgiResourceConfig(components)
+            val resourceConfig = OsgiResourceConfig(components)
             val servletContainer = ServletContainer(resourceConfig)
             val props = Hashtable<String, String>()
 

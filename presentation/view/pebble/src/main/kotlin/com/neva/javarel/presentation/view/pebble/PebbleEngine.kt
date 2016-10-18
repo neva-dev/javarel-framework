@@ -11,7 +11,7 @@ import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.felix.scr.annotations.*
 
 @Component(immediate = true)
-@Service
+@Service(ViewEngine::class)
 class PebbleEngine : ViewEngine {
 
     companion object {

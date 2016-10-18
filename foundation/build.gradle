@@ -17,5 +17,13 @@ jar {
 }
 
 dependencies {
+    osgiBundle 'org.apache.felix:org.apache.felix.fileinstall:3.5.4'
+    osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.10'
+    osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.8'
+    osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2'
+    osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.16'
+    osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.9.0'
+
     osgiBundle 'org.ow2.asm:asm:5.1'
+
 }
