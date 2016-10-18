@@ -22,7 +22,15 @@ dependencies {
     compile project(':foundation')
     compile project(':processing:scheduler')
 
-    osgiBundle 'org.glassfish.grizzly.osgi:grizzly-httpservice-bundle:2.3.28'
+    osgiBundle 'org.ops4j.pax.web:pax-web-api:4.3.0'
+    osgiBundle 'org.ops4j.pax.web:pax-web-spi:4.3.0'
+    osgiBundle 'org.ops4j.pax.web:pax-web-runtime:4.3.0'
+    osgiBundle 'org.ops4j.pax.web:pax-web-jetty-bundle:4.3.0'
+    osgiBundle 'org.ops4j.pax.web:pax-web-extender-whiteboard:4.3.0'
+
+    osgiBundle 'org.apache.xbean:xbean-finder:4.5'
+    osgiBundle 'org.ow2.asm:asm-commons:5.1'
+
     osgiBundle 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.22.2'
     osgiBundle 'org.glassfish.jersey.core:jersey-server:2.22.2'
     osgiBundle 'org.glassfish.jersey.media:jersey-media-json-jackson:2.22.2'

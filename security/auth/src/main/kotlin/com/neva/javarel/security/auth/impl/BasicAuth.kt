@@ -7,7 +7,9 @@ import org.apache.shiro.realm.Realm
 import org.apache.shiro.realm.SimpleAccountRealm
 import org.apache.shiro.web.env.WebEnvironment
 import org.apache.shiro.web.mgt.WebSecurityManager
-import org.glassfish.grizzly.osgi.httpservice.HttpServiceExtension
+import org.osgi.framework.BundleContext
+import org.osgi.service.http.HttpService
+import java.util.*
 import javax.servlet.Filter
 
 @Component(immediate = true)
@@ -18,27 +20,34 @@ class BasicAuth : Auth {
     private var realms = Sets.newConcurrentHashSet<Realm>()
 
     @Reference
-    private lateinit var http: HttpServiceExtension
+    private lateinit var http: HttpService
 
     private var _env: WebEnvironment? = null
 
     private var filter: Filter? = null
 
     @Activate
-    protected fun activate() {
+    protected fun activate(bundleContext: BundleContext) {
         val realm = SimpleAccountRealm()
         realm.addAccount("admin", "admin", "*:*")
         realms.add(realm)
 
         val filter = BasicAuthFilter(realms)
-        http.registerFilter(filter, "/*", null, null)
+
+
+        val props = Hashtable<String, Any>()
+       // val urls = arrayOf("/foo", "/protected")
+        props.put("filter-name", filter.javaClass.name)
+        props.put("urlPatterns", "/*")
+        bundleContext.registerService(Filter::class.java.name, filter, props)
+        //  http.registerFilter(filter, "/*", null, null)
 
         this._env = filter.env
     }
 
     @Deactivate
     protected fun deactivate() {
-        http.unregisterFilter(filter)
+        //   http.unregisterFilter(filter)
     }
 
     private fun bindRealms(realm: Realm) {

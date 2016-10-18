@@ -6,10 +6,12 @@ import com.neva.javarel.foundation.api.scanning.BundleScanner
 import com.neva.javarel.foundation.api.scanning.BundleWatcher
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.servlet.ServletContainer
+import org.osgi.framework.BundleContext
 import org.osgi.framework.BundleEvent
 import org.osgi.service.http.HttpService
 import org.slf4j.LoggerFactory
 import java.util.*
+import javax.servlet.Servlet
 
 @Component(immediate = true, policy = ConfigurationPolicy.OPTIONAL)
 @Service
@@ -24,9 +26,6 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
     private lateinit var bundleScanner: BundleScanner
 
     @Reference
-    private lateinit var httpService: HttpService
-
-    @Reference
     private lateinit var config: JerseyRestConfig
 
     @Reference
@@ -36,8 +35,12 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
 
     private var started = false
 
+    private var bundleContext: BundleContext? = null
+
     @Activate
-    fun activate() {
+    fun activate(bundleContext: BundleContext) {
+        this.bundleContext = bundleContext
+
         ready = true
         toggle(true)
     }
@@ -52,11 +55,14 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             LOG.debug("Starting REST application.")
 
             val components = bundleScanner.scan(COMPONENT_FILTER)
-            var resourceConfig = OsgiResourceConfig(components)
+            val resourceConfig = OsgiResourceConfig(components)
             val servletContainer = ServletContainer(resourceConfig)
             val props = Hashtable<String, String>()
 
-            httpService.registerServlet(config.uriPrefix, servletContainer, props, null)
+            props.put("alias", config.uriPrefix + "*")
+            props.put("servlet-name", servletContainer.javaClass.name)
+            bundleContext!!.registerService(Servlet::class.java.name, servletContainer, props)
+
             router.configure(components)
             started = true
         } catch (e: Throwable) {
@@ -69,7 +75,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
         try {
             LOG.debug("Stopping REST application.")
 
-            httpService.unregister(config.uriPrefix)
+            // httpService.unregister(config.uriPrefix)
         } catch (e: Throwable) {
             LOG.debug("REST application cannot be stopped properly.", e)
         }
