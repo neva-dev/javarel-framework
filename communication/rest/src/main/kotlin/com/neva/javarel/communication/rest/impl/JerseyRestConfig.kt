@@ -6,6 +6,9 @@ import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
 
+/**
+ * TODO remove it, we are attaching at root
+ */
 @Component(immediate = true, metatype = true, label = "${JavarelConstants.servicePrefix} REST Configuration", description = "Configuration for REST components.")
 @Service(JerseyRestConfig::class)
 class JerseyRestConfig {

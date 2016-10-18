@@ -6,7 +6,11 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JerseyServletContainer(resourceConfig: ResourceConfig) : ServletContainer(resourceConfig) {
+class JerseyFilter(resourceConfig: ResourceConfig) : ServletContainer(resourceConfig) {
+
+    companion object {
+        val RANKING = 100
+    }
 
     /**
      * TODO make patterns configurable somehow

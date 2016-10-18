@@ -8,7 +8,6 @@ import org.apache.felix.http.api.ExtHttpService
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.servlet.ServletContainer
 import org.glassfish.jersey.servlet.ServletProperties
-import org.osgi.framework.BundleContext
 import org.osgi.framework.BundleEvent
 import org.slf4j.LoggerFactory
 
@@ -58,9 +57,9 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             val resourceConfig = OsgiResourceConfig(components)
             resourceConfig.properties = mapOf(ServletProperties.FILTER_CONTEXT_PATH to "/")
 
-            this.filter = JerseyServletContainer(resourceConfig)
+            this.filter = JerseyFilter(resourceConfig)
 
-            http.registerFilter(filter, ".*", null, 200, null)
+            http.registerFilter(filter, ".*", null, JerseyFilter.RANKING, null)
             router.configure(components)
             started = true
         } catch (e: Throwable) {
