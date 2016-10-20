@@ -7,8 +7,6 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
-
-import javax.ws.rs.core.Response
 import kotlin.reflect.KFunction1
 
 @Component(immediate = true)
@@ -22,14 +20,11 @@ class GenericUrlGenerator : UrlGenerator {
     @Reference
     private lateinit var router: RestRouter
 
-    @Reference
-    private lateinit var config: JerseyRestConfig
-
-    override fun action(action: KFunction1<*, Response>): String {
+    override fun action(action: KFunction1<*, *>): String {
         return action(action, emptyMap())
     }
 
-    override fun action(action: KFunction1<*, Response>, params: Map<String, Any>): String {
+    override fun action(action: KFunction1<*, *>, params: Map<String, Any>): String {
         return action(StringUtils.substringBetween(action.toString(), "fun ", "():"), params)
     }
 
@@ -54,7 +49,7 @@ class GenericUrlGenerator : UrlGenerator {
         paramsWithoutHash.putAll(params)
 
         val hash = paramsWithoutHash.remove(HASH_PARAM) as String?
-        var url = JerseyRestRoute.mergePath(config.uriPrefix, route.assembleUri(paramsWithoutHash))
+        var url = route.assembleUri(paramsWithoutHash)
 
         if (StringUtils.isNotBlank(hash)) {
             url += "#$hash"

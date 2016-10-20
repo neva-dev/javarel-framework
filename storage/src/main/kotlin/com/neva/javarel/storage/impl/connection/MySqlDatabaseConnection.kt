@@ -9,7 +9,7 @@ import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
 import javax.sql.DataSource
 
-@Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - MySQL Connection")
+@Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.SERVICE_PREFIX} Storage - MySQL Connection")
 @Service
 class MySqlDatabaseConnection : AbstractDatabaseConnection() {
 

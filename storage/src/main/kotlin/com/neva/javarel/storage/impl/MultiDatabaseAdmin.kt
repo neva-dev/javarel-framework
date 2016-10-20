@@ -17,7 +17,7 @@ import javax.persistence.EntityManager
 import javax.persistence.spi.PersistenceProvider
 import javax.persistence.spi.PersistenceUnitTransactionType
 
-@Component(immediate = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - Database Admin")
+@Component(immediate = true, metatype = true, label = "${JavarelConstants.SERVICE_PREFIX} Storage - Database Admin")
 @Service(DatabaseAdmin::class, BundleWatcher::class)
 class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
 
@@ -130,6 +130,10 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
     private fun unbindConnection(connection: DatabaseConnection) {
         disconnect(connection)
         _connections.remove(connection.name)
+    }
+
+    override fun <R> session(connectionName: String, callback: (EntityManager) -> R): R {
+        return database(connectionName).session(callback)
     }
 
     override fun <R> session(callback: (EntityManager) -> R): R {

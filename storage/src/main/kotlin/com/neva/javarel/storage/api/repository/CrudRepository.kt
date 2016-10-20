@@ -1,6 +1,7 @@
 package com.neva.javarel.storage.api.repository
 
 import java.io.Serializable
+import javax.persistence.criteria.Predicate
 
 interface CrudRepository<T, ID : Serializable> : Repository<T, ID> {
 
@@ -24,5 +25,7 @@ interface CrudRepository<T, ID : Serializable> : Repository<T, ID> {
 
     fun exists(id: ID): Boolean
 
-    fun findBy(props: Map<String, Any>): Iterable<T>
+    fun findBy(props: Map<String, Any>, operator: Predicate.BooleanOperator = Predicate.BooleanOperator.AND): Iterable<T>
+
+    fun findOneBy(props: Map<String, Any>, operator: Predicate.BooleanOperator = Predicate.BooleanOperator.AND): T?
 }

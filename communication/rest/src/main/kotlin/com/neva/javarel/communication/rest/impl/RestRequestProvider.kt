@@ -1,32 +1,27 @@
-package com.neva.javarel.security.auth.impl
+package com.neva.javarel.communication.rest.impl
 
 import com.neva.javarel.communication.rest.api.AbstractBinder
 import com.neva.javarel.communication.rest.api.Binder
-import com.neva.javarel.communication.rest.api.Uses
-import com.neva.javarel.security.auth.api.AuthenticableProvider
-import com.neva.javarel.security.auth.api.Guard
+import com.neva.javarel.communication.rest.api.RestRequest
 import org.glassfish.jersey.process.internal.RequestScoped
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Context
 
 @Binder
-class GuardProvider : AbstractBinder<Guard>() {
-
-    @Uses
-    private lateinit var auth: AuthenticableProvider
+class RestRequestProvider : AbstractBinder<RestRequest>() {
 
     @Context
     private lateinit var request: HttpServletRequest
 
     override fun configure() {
         bindFactory(javaClass)
-                .to(Guard::class.java).proxy(true)
+                .to(RestRequest::class.java).proxy(true)
                 .proxyForSameScope(false)
                 .`in`(RequestScoped::class.java)
     }
 
-    override fun provide(): Guard {
-        return RequestGuard(request, auth)
+    override fun provide(): RestRequest {
+        return DefaultRestRequest(request)
     }
 
 }

@@ -18,9 +18,9 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
             val normalized = parts.fold(mutableListOf<String>(), { result, part ->
                 val path = part.removePrefix(PATH_SEPARATOR).removeSuffix(PATH_SEPARATOR)
                 if (path.isNotBlank()) {
-                    result.add(path);
+                    result.add(path)
                 }
-                result;
+                result
             })
 
             return PATH_SEPARATOR + normalized.joinToString(PATH_SEPARATOR)
@@ -41,8 +41,8 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
     override val methods: Collection<String>
         get() {
             return method.resourceMethods.fold(mutableListOf<String>(), { acc, item ->
-                acc.add(item.httpMethod); acc;
-            });
+                acc.add(item.httpMethod); acc
+            })
         }
     override val path: String
         get() = mergePath(resource.path, method.path)
@@ -59,12 +59,12 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
     override val parameters: Collection<String>
         get() {
             return method.resourceMethods.first().invocable.parameters.fold(mutableListOf<String>(), { result, parameter ->
-                result.add(parameter.sourceName); result;
-            });
+                result.add(parameter.sourceName); result
+            })
         }
 
     override fun assembleUri(params: Map<String, Any>): String {
-        var result = path;
+        var result = path
         for ((key, value) in params) {
             StringUtils.substringsBetween(path, PARAM_TOKEN_START, PARAM_TOKEN_END).forEach { variable ->
                 val name = variable.split(PARAM_TYPE_DELIMITER)[0]
@@ -74,7 +74,7 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
             }
         }
 
-        return result;
+        return result
     }
 
     private val handlingMethod: Method

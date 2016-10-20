@@ -23,6 +23,7 @@ class ConnectedDatabase(override val connection: DatabaseConnection, val emf: En
             em.transaction.begin()
             val result = callback(em)
             em.transaction.commit()
+
             return result
         } catch (e: Throwable) {
             if (em.transaction.isActive) {
@@ -30,6 +31,8 @@ class ConnectedDatabase(override val connection: DatabaseConnection, val emf: En
             }
 
             throw DatabaseException("Database session error.", e)
+        } finally {
+            em.close()
         }
     }
 }

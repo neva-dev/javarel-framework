@@ -17,18 +17,7 @@ Project assumptions:
 
 ## Documentation
 
-### Basics
-
-* [Quickstart](doc/quickstart.md)
-* [Controllers](doc/controllers.md)
-* [Views](doc/views.md)
-* [Models](doc/models.md)
-
-### Architecture
-
-* [Resources](doc/resources.md)
-* [Routing](doc/routing.md)
-* [Scheduling](doc/scheduling.md)
+See [quickstart project](https://github.com/neva-dev/javarel-quickstart) which has documentation included.
 
 ## Contributing
 
@@ -40,7 +29,7 @@ Project assumptions:
 
 ## History
 
-* 1.0 - Initial release.
+* 1.0.0.ALPHA - Initial release.
 
 ## License
 

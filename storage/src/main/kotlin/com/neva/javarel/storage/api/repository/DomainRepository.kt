@@ -2,11 +2,10 @@ package com.neva.javarel.storage.api.repository
 
 import java.io.Serializable
 import javax.persistence.EntityManager
+import javax.persistence.NoResultException
+import javax.persistence.NonUniqueResultException
 import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Path
-import javax.persistence.criteria.Root
+import javax.persistence.criteria.*
 import kotlin.reflect.KClass
 
 abstract class DomainRepository<T : Any, ID : Serializable>(protected val em: EntityManager, protected val flushOnChange: Boolean = true) : CrudRepository<T, ID> {
@@ -18,10 +17,10 @@ abstract class DomainRepository<T : Any, ID : Serializable>(protected val em: En
         get() = "id"
 
     override fun <S : T> save(entity: S): S {
-        em.persist(entity);
+        em.persist(entity)
         flush()
 
-        return entity;
+        return entity
     }
 
     override fun <S : T> save(entities: Iterable<S>): Iterable<S> {
@@ -39,15 +38,35 @@ abstract class DomainRepository<T : Any, ID : Serializable>(protected val em: En
         return em.find(domainClass.java, id)
     }
 
+    override fun findOneBy(props: Map<String, Any>, operator: Predicate.BooleanOperator): T? {
+        try {
+            return findByQuery(props, operator).singleResult
+        } catch (e: NoResultException) {
+            return null
+        } catch (e: NonUniqueResultException) {
+            return null
+        }
+    }
 
-    override fun findBy(props: Map<String, Any>): Iterable<T> {
-        return createQuery({ builder, criteria, root ->
-            for ((name, value) in props) {
-                criteria.where(builder.equal(root.get<Any>(name), value));
+    override fun findBy(props: Map<String, Any>, operator: Predicate.BooleanOperator): Iterable<T> {
+        return findByQuery(props, operator).resultList
+    }
+
+    private fun findByQuery(props: Map<String, Any>, operator: Predicate.BooleanOperator): TypedQuery<T> {
+        val query = createQuery({ builder, criteria, root ->
+            val predicates = props.entries.fold(mutableListOf<Predicate>(), { acc, entry ->
+                acc.add(builder.equal(root.get<Any>(entry.key), entry.value)); acc
+            }).toTypedArray()
+            val predicate = when (operator) {
+                Predicate.BooleanOperator.AND -> builder.and(*predicates)
+                Predicate.BooleanOperator.OR -> builder.or(*predicates)
             }
 
+            criteria.where(predicate)
+
             return@createQuery em.createQuery(criteria)
-        }).resultList
+        })
+        return query
     }
 
     override fun findAll(): Iterable<T> {
@@ -105,13 +124,13 @@ abstract class DomainRepository<T : Any, ID : Serializable>(protected val em: En
     }
 
     protected fun createQuery(): TypedQuery<T> {
-        return createQuery ({ builder, criteria, root -> em.createQuery(criteria) })
+        return createQuery({ builder, criteria, root -> em.createQuery(criteria) })
     }
 
     protected fun createQuery(configurer: ((builder: CriteriaBuilder, criteria: CriteriaQuery<T>, root: Root<T>) -> TypedQuery<T>)): TypedQuery<T> {
-        val builder = em.getCriteriaBuilder();
-        val criteria = builder.createQuery(domainClass.java);
-        val root = criteria.from(domainClass.java);
+        val builder = em.criteriaBuilder
+        val criteria = builder.createQuery(domainClass.java)
+        val root = criteria.from(domainClass.java)
 
         criteria.select(root)
 

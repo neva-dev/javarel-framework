@@ -5,9 +5,6 @@ import com.neva.javarel.security.auth.api.AuthenticableProvider
 import com.neva.javarel.security.auth.api.BasicGuard
 import javax.servlet.http.HttpServletRequest
 
-/**
- * TODO Encode session and make session abstract (create drivers)
- */
 class RequestGuard(val request: HttpServletRequest, authenticableProvider: AuthenticableProvider) : BasicGuard(authenticableProvider) {
 
     companion object {

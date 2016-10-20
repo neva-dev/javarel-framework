@@ -9,7 +9,7 @@ import org.apache.felix.scr.annotations.Service
 import org.postgresql.ds.PGSimpleDataSource
 import javax.sql.DataSource
 
-@Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.servicePrefix} Storage - PostgreSQL Connection")
+@Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.SERVICE_PREFIX} Storage - PostgreSQL Connection")
 @Service
 class PgSqlDatabaseConnection : AbstractDatabaseConnection() {
 

@@ -20,7 +20,6 @@ jar {
 
 dependencies {
     compile project(':foundation')
-    compile project(':processing:scheduler')
 
     osgiBundle 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
     osgiBundle 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.23.2'

@@ -27,6 +27,11 @@ interface DatabaseAdmin {
     /**
      * Perform operations on default database during transaction
      */
+    fun <R> session(connectionName: String, callback: (em: EntityManager) -> R): R
+
+    /**
+     * Perform operations on default database during transaction
+     */
     fun <R> session(callback: (em: EntityManager) -> R): R
 
 }

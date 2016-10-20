@@ -1,6 +1,7 @@
 package com.neva.javarel.communication.rest.impl
 
 import com.neva.javarel.communication.rest.api.RestApplication
+import com.neva.javarel.communication.rest.api.RestConfig
 import com.neva.javarel.communication.rest.api.RestRouter
 import com.neva.javarel.foundation.api.scanning.BundleScanner
 import com.neva.javarel.foundation.api.scanning.BundleWatcher
@@ -24,13 +25,13 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
     private lateinit var bundleScanner: BundleScanner
 
     @Reference
-    private lateinit var config: JerseyRestConfig
-
-    @Reference
     private lateinit var router: RestRouter
 
     @Reference
     private lateinit var http: ExtHttpService
+
+    @Reference
+    private lateinit var restConfig: RestConfig
 
     private var ready = false
 
@@ -57,7 +58,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             val resourceConfig = OsgiResourceConfig(components)
             resourceConfig.properties = mapOf(ServletProperties.FILTER_CONTEXT_PATH to "/")
 
-            this.filter = JerseyFilter(resourceConfig)
+            this.filter = JerseyFilter(restConfig, resourceConfig)
 
             http.registerFilter(filter, ".*", null, JerseyFilter.RANKING, null)
             router.configure(components)

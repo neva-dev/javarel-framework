@@ -4,10 +4,10 @@ open class BasicGuard(val authenticableProvider: AuthenticableProvider) : Guard 
 
     protected var authenticated: Authenticable? = null
 
-    override val isAuthenticated: Boolean
-        get() = authenticated != null
+    override val check: Boolean
+        get() = authenticated != null && user.authIdentifier != authenticableProvider.guest.authIdentifier
 
-    override val authenticable: Authenticable
+    override val user: Authenticable
         get() = authenticated ?: authenticableProvider.guest
 
     override fun login(authenticable: Authenticable) {
