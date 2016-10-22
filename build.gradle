@@ -21,7 +21,7 @@ allprojects {
 }
 
 dependencies {
-    osgiModule project(':integration')
+    osgiModule project(':framework')
 }
 
 osgiContainer {
@@ -46,6 +46,10 @@ subprojects { subProject ->
 
         sourceCompatibility = 1.7
         targetCompatibility = 1.7
+
+        sourceSets {
+            main.java.srcDirs += 'src/main/kotlin'
+        }
 
         def compileOptions = {
             options.encoding = "UTF-8"
@@ -76,3 +80,4 @@ subprojects { subProject ->
     }
 
 }
+

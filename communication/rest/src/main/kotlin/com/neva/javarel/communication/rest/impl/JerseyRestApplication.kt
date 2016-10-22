@@ -83,7 +83,7 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
     private val filterProps: Dictionary<String, Any>
         get() {
             val props = Hashtable<String, Any>()
-            props.put("jersey.config.servlet.filter.contextPath", "")
+            props.put(ServletProperties.FILTER_CONTEXT_PATH, "")
 
             return props
         }
