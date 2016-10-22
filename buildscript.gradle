@@ -1,7 +1,9 @@
 dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.4"
 
-    classpath "gradle.plugin.com.neva.gradle.plugin:osgi:1.0.0"
+    //classpath "gradle.plugin.com.neva.gradle.plugin:osgi:1.0.1"
+    classpath "com.neva.gradle.plugin:osgi:1.0.1"
+
     classpath "gradle.plugin.com.neva.gradle.plugin:openjpa:1.0.0"
     classpath "gradle.plugin.com.neva.gradle.plugin:scr:1.0.0"
 }
