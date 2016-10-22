@@ -17,7 +17,7 @@ jar {
 }
 
 dependencies {
-    compile 'org.apache.felix:org.apache.felix.main:5.6.0'
+    compile 'org.apache.felix:org.apache.felix.main:5.6.0', { transitive = false }
     compile 'org.apache.felix:org.apache.felix.scr.annotations:1.11.0'
 
     osgiBundle 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.4'
