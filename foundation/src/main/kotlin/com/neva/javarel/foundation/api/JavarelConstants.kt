@@ -10,11 +10,4 @@ object JavarelConstants {
 
     const val VERSION = "1.0.0.ALPHA"
 
-    fun asMap(): Map<String, String> {
-        val that = this
-        return javaClass.declaredFields.fold(mutableMapOf<String, String>(), { result, field ->
-            result.put(field.name, field.get(that) as String); result
-        })
-    }
-
 }

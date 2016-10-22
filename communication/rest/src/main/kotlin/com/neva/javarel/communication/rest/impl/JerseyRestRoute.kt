@@ -1,8 +1,9 @@
 package com.neva.javarel.communication.rest.impl
 
-import com.neva.javarel.communication.rest.api.Route
 import com.neva.javarel.communication.rest.api.RestRoute
+import com.neva.javarel.communication.rest.api.Route
 import org.apache.commons.lang3.StringUtils
+import org.glassfish.jersey.server.model.Parameter
 import org.glassfish.jersey.server.model.Resource
 import java.lang.reflect.Method
 
@@ -59,7 +60,10 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
     override val parameters: Collection<String>
         get() {
             return method.resourceMethods.first().invocable.parameters.fold(mutableListOf<String>(), { result, parameter ->
-                result.add(parameter.sourceName); result
+                when (parameter) {
+                    is Parameter.BeanParameter -> parameter.parameters.forEach { result.add(it.sourceName) }
+                    else -> result.add(parameter.sourceName)
+                }; result
             })
         }
 
