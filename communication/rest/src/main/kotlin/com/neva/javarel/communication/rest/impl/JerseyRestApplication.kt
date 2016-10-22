@@ -11,6 +11,7 @@ import org.glassfish.jersey.servlet.ServletContainer
 import org.glassfish.jersey.servlet.ServletProperties
 import org.osgi.framework.BundleEvent
 import org.slf4j.LoggerFactory
+import java.util.*
 
 @Component(immediate = true)
 @Service
@@ -57,10 +58,9 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             val components = bundleScanner.scan(COMPONENT_FILTER)
             val resourceConfig = OsgiResourceConfig(components)
             resourceConfig.properties = mapOf(ServletProperties.FILTER_CONTEXT_PATH to "/")
-
             this.filter = JerseyFilter(restConfig, resourceConfig)
 
-            http.registerFilter(filter, ".*", null, JerseyFilter.RANKING, null)
+            http.registerFilter(filter, ".*", filterProps, JerseyFilter.RANKING, null)
             router.configure(components)
             started = true
         } catch (e: Throwable) {
@@ -79,6 +79,14 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
             LOG.debug("REST application cannot be stopped properly.", e)
         }
     }
+
+    private val filterProps: Dictionary<String, Any>
+        get() {
+            val props = Hashtable<String, Any>()
+            props.put("jersey.config.servlet.filter.contextPath", "")
+
+            return props
+        }
 
     @Synchronized
     override fun toggle(start: Boolean) {

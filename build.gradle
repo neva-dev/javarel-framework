@@ -2,9 +2,10 @@ buildscript {
     apply from: project.rootProject.relativePath('buildscript.gradle'), to: buildscript
 }
 
-defaultTasks = ['clean', 'createOsgiContainer']
-
 apply plugin: 'neva.osgi-container'
+
+defaultTasks = ['clean', 'createOsgiContainer']
+description = "OSGi based, written in Kotlin, MVC framework for web artisans from Java community"
 
 allprojects {
     group 'com.neva.javarel'
@@ -21,22 +22,7 @@ allprojects {
 
 dependencies {
     osgiMain 'org.apache.felix:org.apache.felix.main:5.6.0'
-    osgiBundle 'org.apache.felix:org.apache.felix.fileinstall:3.5.4'
-    osgiBundle 'org.apache.felix:org.apache.felix.configadmin:1.8.10'
-    osgiBundle 'org.apache.felix:org.apache.felix.eventadmin:1.4.8'
-    osgiBundle 'org.apache.felix:org.apache.felix.metatype:1.1.2'
-    osgiBundle 'org.apache.felix:org.apache.felix.webconsole:4.2.16'
-    osgiBundle 'org.ops4j.pax.logging:pax-logging-service:1.9.0'
-
-    osgiModule project(':foundation')
-    osgiModule project(':resource')
-    osgiModule project(':communication:rest')
-    osgiModule project(':presentation:asset')
-    osgiModule project(':presentation:view')
-    osgiModule project(':presentation:view:pebble')
-    osgiModule project(':storage')
-    osgiModule project(':processing:scheduler')
-    osgiModule project(':security:auth')
+    osgiModule project(':integration')
 }
 
 osgiContainer {
@@ -49,7 +35,6 @@ osgiContainer {
             'xml-apis-1.3*',
             'antlr',
             'animal-sniffer-annotations',
-            'grizzly-httpservice-bundle*',
             'kxml2',
             'xmlpull',
     ])
@@ -58,8 +43,6 @@ osgiContainer {
 subprojects { subProject ->
 
     plugins.withId 'kotlin', {
-        // testCompile group: 'junit', name: 'junit', version: '4.11'
-
         jar.baseName = "javarel-${subProject.path.substring(1).replace(':', '-')}"
 
         sourceCompatibility = 1.7
@@ -90,26 +73,6 @@ subprojects { subProject ->
                 name subProject.description
                 instruction 'Bundle-Category', 'javarel'
             }
-        }
-
-        dependencies {
-            osgiBundle 'org.jetbrains.kotlin:kotlin-osgi-bundle:1.0.4'
-
-            osgiBundle 'org.osgi:org.osgi.enterprise:5.0.0'
-            osgiBundle 'org.osgi:org.osgi.core:5.0.0'
-
-            osgiBundle 'org.apache.felix:org.apache.felix.scr:2.0.6'
-            compile 'org.apache.felix:org.apache.felix.scr.annotations:1.11.0'
-
-            osgiBundle 'javax.servlet:javax.servlet-api:3.0.1'
-            osgiBundle 'com.google.guava:guava:19.0'
-            osgiBundle 'com.google.code.gson:gson:2.6.2'
-            osgiBundle 'commons-io:commons-io:2.4'
-            osgiBundle 'commons-fileupload:commons-fileupload:1.3.1'
-            osgiBundle 'org.json:json:20160212'
-            osgiBundle 'org.apache.commons:commons-lang3:3.4'
-            osgiBundle 'org.slf4j:slf4j-api:1.7.6'
-            osgiBundle 'org.slf4j:slf4j-log4j12:1.7.6'
         }
     }
 

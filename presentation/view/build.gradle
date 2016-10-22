@@ -19,3 +19,7 @@ jar {
         compile project(':resource')
     }
 }
+
+dependencies {
+    compile project(':foundation')
+}

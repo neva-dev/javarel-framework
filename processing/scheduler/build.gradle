@@ -17,5 +17,7 @@ jar {
 }
 
 dependencies {
+    compile project(':foundation')
+
     osgiBundle 'org.quartz-scheduler:quartz:2.2.2'
 }

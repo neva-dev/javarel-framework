@@ -17,6 +17,7 @@ jar {
 }
 
 dependencies {
+    compile project(':foundation')
     compile project(':resource')
     compile project(':communication:rest')
 
