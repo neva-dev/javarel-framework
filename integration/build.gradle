@@ -17,8 +17,6 @@ jar {
 }
 
 dependencies {
-    compile project(':foundation')
-
     osgiBundle project(':foundation')
     osgiBundle project(':resource')
     osgiBundle project(':communication:rest')

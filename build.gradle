@@ -21,7 +21,6 @@ allprojects {
 }
 
 dependencies {
-    osgiMain 'org.apache.felix:org.apache.felix.main:5.6.0'
     osgiModule project(':integration')
 }
 
