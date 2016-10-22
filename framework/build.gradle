@@ -1,0 +1,29 @@
+buildscript {
+    apply from: rootProject.file('buildscript.gradle'), to: buildscript
+}
+
+description = 'Javarel :: Framework'
+
+apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
+apply plugin: 'neva.osgi-module'
+apply plugin: 'neva.scr'
+
+jar {
+    manifest {
+        name project.description
+        instruction 'Export-Package', "com.neva.javarel.framework.api.*;version=${project.version}"
+    }
+}
+
+dependencies {
+    osgiBundle project(':foundation')
+    osgiBundle project(':resource')
+    osgiBundle project(':communication:rest')
+    osgiBundle project(':presentation:asset')
+    osgiBundle project(':presentation:view')
+    osgiBundle project(':presentation:view:pebble')
+    osgiBundle project(':storage')
+    osgiBundle project(':processing:scheduler')
+    osgiBundle project(':security:auth')
+}

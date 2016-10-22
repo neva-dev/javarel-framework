@@ -40,6 +40,7 @@ class JerseyRestConfig : RestConfig {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private val filterPaths: Array<String> by lazy {
         props?.get(FILTER_PATHS_PROP) as Array<String>? ?: arrayOf()
     }

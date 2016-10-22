@@ -11,7 +11,7 @@ class MultimapHelper(val pathSeparator: String = ".") {
     /**
      * Combine two multi-level maps recursively.
      */
-    @SuppressWarnings("unchecked")
+    @Suppress("UNCHECKED_CAST")
     fun extend(first: MutableMap<String, Any>, second: Map<String, Any>) {
         for ((key, value) in second) {
 
@@ -32,7 +32,7 @@ class MultimapHelper(val pathSeparator: String = ".") {
 
      * @param path Keys sequence joined by '/' character)
      */
-    @SuppressWarnings("unchecked")
+    @Suppress("UNCHECKED_CAST")
     operator fun get(map: Map<String, Any>, path: String): Any? {
         val parts = path.split(pathSeparator.toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
 
@@ -57,7 +57,7 @@ class MultimapHelper(val pathSeparator: String = ".") {
 
      * @param path Keys sequence joined by '/' character)
      */
-    @SuppressWarnings("unchecked")
+    @Suppress("UNCHECKED_CAST")
     fun put(map: MutableMap<String, in Any>, path: String, value: Any) {
         val parts = path.split(pathSeparator.toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
 
@@ -80,7 +80,7 @@ class MultimapHelper(val pathSeparator: String = ".") {
 
      * @param path Keys sequence joined by '/' character)
      */
-    @SuppressWarnings("unchecked")
+    @Suppress("UNCHECKED_CAST")
     fun remove(map: MutableMap<String, in Any>, path: String): Boolean {
         val parts = path.split(pathSeparator.toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
 
@@ -127,7 +127,7 @@ class MultimapHelper(val pathSeparator: String = ".") {
     /**
      * Find parent map by its child property value.
      */
-    @SuppressWarnings("unchecked")
+    @Suppress("UNCHECKED_CAST")
     fun find(map: Map<String, Any>, property: String, value: Any): Map<String, Any> {
         var result: Map<String, Any> = mutableMapOf()
         for ((key, value1) in map) {
