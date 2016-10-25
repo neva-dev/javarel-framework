@@ -23,7 +23,8 @@ dependencies {
     osgiBundle project(':presentation:asset')
     osgiBundle project(':presentation:view')
     osgiBundle project(':presentation:view:pebble')
-    osgiBundle project(':storage')
+    osgiBundle project(':storage:database')
+    osgiBundle project(':storage:repository')
     osgiBundle project(':processing:scheduler')
     osgiBundle project(':security:auth')
 }

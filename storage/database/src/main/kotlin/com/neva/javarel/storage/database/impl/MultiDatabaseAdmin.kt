@@ -3,10 +3,10 @@ package com.neva.javarel.storage.impl
 import com.neva.javarel.foundation.api.JavarelConstants
 import com.neva.javarel.foundation.api.scanning.BundleScanner
 import com.neva.javarel.foundation.api.scanning.BundleWatcher
-import com.neva.javarel.storage.api.Database
-import com.neva.javarel.storage.api.DatabaseAdmin
-import com.neva.javarel.storage.api.DatabaseConnection
-import com.neva.javarel.storage.api.DatabaseException
+import com.neva.javarel.storage.database.api.Database
+import com.neva.javarel.storage.database.api.DatabaseAdmin
+import com.neva.javarel.storage.database.api.DatabaseConnection
+import com.neva.javarel.storage.database.api.DatabaseException
 import org.apache.felix.scr.annotations.*
 import org.apache.openjpa.persistence.PersistenceProviderImpl
 import org.osgi.framework.BundleContext

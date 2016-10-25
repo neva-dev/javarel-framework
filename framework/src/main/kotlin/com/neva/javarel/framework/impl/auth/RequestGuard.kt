@@ -1,4 +1,4 @@
-package com.neva.javarel.security.auth.impl
+package com.neva.javarel.framework.impl.auth
 
 import com.neva.javarel.security.auth.api.Authenticable
 import com.neva.javarel.security.auth.api.AuthenticableProvider

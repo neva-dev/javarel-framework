@@ -6,7 +6,7 @@ import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
 import com.neva.javarel.security.auth.api.Guard
-import com.neva.javarel.storage.api.DatabaseAdmin
+import com.neva.javarel.storage.database.api.DatabaseAdmin
 import javax.ws.rs.core.Context
 
 abstract class Controller {

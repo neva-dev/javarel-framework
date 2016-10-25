@@ -44,6 +44,9 @@ class GenericUrlGenerator : UrlGenerator {
         return assemble(router.routeByName(name), params)
     }
 
+    /**
+     * TODO Reduce route params (and compose from rest query params)
+     */
     override fun assemble(route: RestRoute, params: Map<String, Any>): String {
         val paramsWithoutHash = mutableMapOf<String, Any>()
         paramsWithoutHash.putAll(params)

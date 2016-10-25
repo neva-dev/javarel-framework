@@ -1,4 +1,4 @@
-package com.neva.javarel.security.auth.impl
+package com.neva.javarel.framework.impl.auth
 
 import com.neva.javarel.communication.rest.api.AbstractBinder
 import com.neva.javarel.communication.rest.api.Binder

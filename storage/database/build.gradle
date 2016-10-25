@@ -12,7 +12,7 @@ apply plugin: 'neva.scr'
 jar {
     manifest {
         name project.description
-        instruction 'Export-Package', "com.neva.javarel.storage.api.*;version=${project.version}"
+        instruction 'Export-Package', "com.neva.javarel.storage.database.api.*;version=${project.version}"
     }
 }
 

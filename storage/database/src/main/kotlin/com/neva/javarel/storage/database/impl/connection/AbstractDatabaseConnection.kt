@@ -1,6 +1,6 @@
 package com.neva.javarel.storage.impl.connection
 
-import com.neva.javarel.storage.api.DatabaseConnection
+import com.neva.javarel.storage.database.api.DatabaseConnection
 import java.util.*
 import javax.persistence.spi.PersistenceUnitInfo
 

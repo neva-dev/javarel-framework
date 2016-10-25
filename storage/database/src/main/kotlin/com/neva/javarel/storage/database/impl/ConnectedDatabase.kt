@@ -1,8 +1,8 @@
 package com.neva.javarel.storage.impl
 
-import com.neva.javarel.storage.api.Database
-import com.neva.javarel.storage.api.DatabaseConnection
-import com.neva.javarel.storage.api.DatabaseException
+import com.neva.javarel.storage.database.api.Database
+import com.neva.javarel.storage.database.api.DatabaseConnection
+import com.neva.javarel.storage.database.api.DatabaseException
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.PersistenceException

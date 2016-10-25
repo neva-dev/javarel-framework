@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.api
+package com.neva.javarel.storage.database.api
 
 import java.util.*
 import javax.persistence.spi.PersistenceUnitInfo
