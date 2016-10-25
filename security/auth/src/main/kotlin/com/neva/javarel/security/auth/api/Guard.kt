@@ -15,7 +15,7 @@ interface Guard {
     /**
      * Set the current user.
      */
-    fun login(authenticable: Authenticable)
+    fun login(authenticable: Authenticable, remember: Boolean = false)
 
     /**
      * Unset current user.

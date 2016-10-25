@@ -1,6 +1,8 @@
 package com.neva.javarel.resource.api
 
-open class ResourceException : Exception {
+import com.neva.javarel.foundation.api.JavarelException
+
+open class ResourceException : JavarelException {
 
     constructor(message: String) : super(message)
 

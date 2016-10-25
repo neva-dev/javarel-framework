@@ -5,9 +5,13 @@ import com.neva.javarel.communication.rest.api.Route
 import org.apache.commons.lang3.StringUtils
 import org.glassfish.jersey.server.model.Parameter
 import org.glassfish.jersey.server.model.Resource
-import java.lang.reflect.Method
+import org.glassfish.jersey.server.model.ResourceMethod
 
-class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: Resource) : RestRoute {
+class JerseyRestRoute(
+        @Transient private val resource: Resource,
+        @Transient private val methodResource: Resource,
+        @Transient private val methodObj: ResourceMethod
+) : RestRoute {
 
     companion object {
         val PATH_SEPARATOR = "/"
@@ -30,8 +34,8 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
 
     override val name: String?
         get() {
-            var name: String? = null;
-            val routeAnnotation = handlingMethod.declaredAnnotations.find { it is Route }
+            var name: String? = null
+            val routeAnnotation = methodObj.invocable.handlingMethod.declaredAnnotations.find { it is Route }
             if (routeAnnotation != null) {
                 name = (routeAnnotation as Route).name
             }
@@ -39,30 +43,29 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
             return name
         }
 
-    override val methods: Collection<String>
+    override val method: String
         get() {
-            return method.resourceMethods.fold(mutableListOf<String>(), { acc, item ->
-                acc.add(item.httpMethod); acc
-            })
+            return methodObj.httpMethod
         }
+
     override val path: String
-        get() = mergePath(resource.path, method.path)
+        get() = mergePath(resource.path, methodResource.path)
 
     override val action: String
         get() = "$className.$methodName"
 
     override val methodName: String
-        get() = method.resourceMethods.first().invocable.handlingMethod.name
+        get() = methodObj.invocable.handlingMethod.name
 
     override val className: String
-        get() = method.handlerClasses.first().name
+        get() = methodResource.handlerClasses.first().name
 
     override val parameters: Collection<String>
         get() {
-            return method.resourceMethods.first().invocable.parameters.fold(mutableListOf<String>(), { result, parameter ->
+            return methodObj.invocable.parameters.fold(mutableListOf<String>(), { result, parameter ->
                 when (parameter) {
-                    is Parameter.BeanParameter -> parameter.parameters.forEach { result.add(it.sourceName) }
-                    else -> result.add(parameter.sourceName)
+                    is Parameter.BeanParameter -> parameter.parameters.forEach { if (it.sourceName != null) result.add(it.sourceName) }
+                    else -> if (parameter.sourceName != null) result.add(parameter.sourceName)
                 }; result
             })
         }
@@ -81,11 +84,8 @@ class JerseyRestRoute(@Transient val resource: Resource, @Transient val method: 
         return result
     }
 
-    private val handlingMethod: Method
-        get() = method.resourceMethods.first().invocable.handlingMethod
-
     override fun toString(): String {
-        return "REST Route (path=$path, methods=$methods, action=$action, name=$name)"
+        return "REST Route (path=$path, method=$method, action=$action, name=$name)"
     }
 
 }

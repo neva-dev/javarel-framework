@@ -1,5 +1,11 @@
 package com.neva.javarel.security.auth.api
 
-import java.util.*
+import java.io.Serializable
 
-class Credentials: LinkedHashMap<String, String>()
+interface Credentials : Serializable {
+
+    val principal: String
+
+    val remember: Boolean
+
+}

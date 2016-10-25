@@ -8,7 +8,7 @@ import com.neva.javarel.resource.api.*
 import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
-@Component(immediate = true)
+@Component
 @Service(ResourceResolver::class)
 class GenericResourceResolver : ResourceResolver, Adaptee {
 

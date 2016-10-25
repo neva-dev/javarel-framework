@@ -36,8 +36,10 @@ class JerseyRestRouter : RestRouter {
             components.forEach { component ->
                 val resource = Resource.from(component)
                 if (resource != null) {
-                    resource.childResources.forEach { method ->
-                        routes.add(JerseyRestRoute(resource, method))
+                    resource.childResources.forEach { childResource ->
+                        childResource.resourceMethods.forEach { resourceMethod ->
+                            routes.add(JerseyRestRoute(resource, childResource, resourceMethod))
+                        }
                     }
                 }
             }

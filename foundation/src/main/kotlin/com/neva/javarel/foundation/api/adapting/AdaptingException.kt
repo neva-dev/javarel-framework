@@ -1,9 +1,8 @@
 package com.neva.javarel.foundation.api.adapting
 
-open class AdaptingException : Exception {
+import com.neva.javarel.foundation.api.JavarelException
+
+open class AdaptingException : JavarelException {
 
     constructor(message: String) : super(message)
-
-    constructor(message: String, e: Throwable) : super(message, e)
-
 }

@@ -13,6 +13,7 @@ jar {
     manifest {
         name project.description
         instruction 'Export-Package', "com.neva.javarel.framework.api.*;version=${project.version}"
+        instruction 'Component-Scan', 'com.neva.javarel.framework.impl.*'
     }
 }
 
