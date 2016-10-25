@@ -13,6 +13,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Binder
+@Singleton
 class OsgiInjectionResolver : InjectionResolver<Uses>, AbstractBinder() {
 
     @Inject
