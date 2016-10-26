@@ -6,32 +6,21 @@ import com.neva.javarel.security.auth.api.*
 import org.apache.felix.scr.annotations.*
 
 @Component(
-        metatype = true,
-        label = "${JavarelConstants.SERVICE_PREFIX} Auth",
-        description = "Configuration for auth and realms."
+        immediate = true,
+        label = "${JavarelConstants.SERVICE_PREFIX} Multi Realm Auth"
 )
 @Service(Auth::class)
 class MultiRealmAuth : Auth {
 
-    companion object {
-        @Property(
-                name = GUEST_PRINCIPAL,
-                value = "guest",
-                label = "Guest principal",
-                description = "Name of account which will be used to find authenticable when current user is not authenticated."
-        )
-        const val GUEST_PRINCIPAL = "guestPrincipal"
-    }
+    @Reference
+    private lateinit var config: AuthConfig
 
-    @Reference(referenceInterface = Realm::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    @Reference(
+            referenceInterface = Realm::class,
+            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC
+    )
     private var allRealms = Sets.newConcurrentHashSet<Realm>()
-
-    private var props: Map<String, Any>? = null
-
-    @Activate
-    private fun activate(props: Map<String, Any>) {
-        this.props = props
-    }
 
     override fun supports(credentials: Credentials): Boolean {
         return allRealms.any { realm -> realm.supports(credentials) }
@@ -53,13 +42,10 @@ class MultiRealmAuth : Auth {
 
     override val guest: Authenticable
         get() {
-            val guest = byCredentials(PrincipalCredentials(guestPrincipal))
+            val guest = byCredentials(PrincipalCredentials(config.guestPrincipal))
 
-            return guest ?: throw AuthException("At least one realm must can authenticate using credentials with principal '$guestPrincipal'")
+            return guest ?: throw AuthException("At least one realm must can authenticate using credentials with principal '${config.guestPrincipal}'")
         }
-
-    override val guestPrincipal: String
-        get() = props!!.get(GUEST_PRINCIPAL) as String
 
     private fun bindAllRealms(realm: Realm) {
         allRealms.add(realm)

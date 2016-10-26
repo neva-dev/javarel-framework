@@ -12,7 +12,11 @@ import kotlin.reflect.KClass
 @Service
 class AssetResourceAdapter : ResourceAdapter<Asset>() {
 
-    @Reference(referenceInterface = AssetFactory::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    @Reference(
+            referenceInterface = AssetFactory::class,
+            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC
+    )
     private val factories = Sets.newConcurrentHashSet<AssetFactory>()
 
     override val targetType: KClass<Asset>

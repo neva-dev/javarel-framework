@@ -13,7 +13,11 @@ import kotlin.reflect.KClass
 @Service
 class ViewResourceAdapter : ResourceAdapter<View>() {
 
-    @Reference(referenceInterface = ViewEngine::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    @Reference(
+            referenceInterface = ViewEngine::class,
+            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC
+    )
     private val engines = Sets.newConcurrentHashSet<ViewEngine>()
 
     override val targetType: KClass<View>

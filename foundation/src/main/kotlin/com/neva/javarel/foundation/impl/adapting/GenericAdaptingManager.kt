@@ -12,7 +12,11 @@ import kotlin.reflect.KClass
 @Service
 class GenericAdaptingManager : AdaptingManager {
 
-    @Reference(referenceInterface = Adapter::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    @Reference(
+            referenceInterface = Adapter::class,
+            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC
+    )
     override val adapters = Maps.newConcurrentMap<KClass<Any>, MutableSet<Adapter<Any, Any>>>()
 
     @Suppress("UNCHECKED_CAST")

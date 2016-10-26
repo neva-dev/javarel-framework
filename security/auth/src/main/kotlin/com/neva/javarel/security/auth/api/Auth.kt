@@ -6,6 +6,4 @@ interface Auth : Realm {
 
     val guest: Authenticable
 
-    val guestPrincipal: String
-
 }

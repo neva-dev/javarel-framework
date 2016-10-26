@@ -43,7 +43,12 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
     @Reference
     private lateinit var bundleScanner: BundleScanner
 
-    @Reference(referenceInterface = DatabaseConnection::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindConnection", unbind = "unbindConnection")
+    @Reference(referenceInterface = DatabaseConnection::class,
+            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC,
+            bind = "bindConnection",
+            unbind = "unbindConnection"
+    )
     private var _connections: MutableMap<String, DatabaseConnection> = mutableMapOf()
 
     private var _connectedDatabases: MutableMap<String, Database> = mutableMapOf()

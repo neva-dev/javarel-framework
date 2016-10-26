@@ -21,7 +21,11 @@ class PebbleEngine : ViewEngine {
     @Reference
     private lateinit var resourceResolver: ResourceResolver
 
-    @Reference(referenceInterface = Extension::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    @Reference(
+            referenceInterface = Extension::class,
+            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC
+    )
     private var extensions = Sets.newConcurrentHashSet<Extension>()
 
     val loader: Loader<String>

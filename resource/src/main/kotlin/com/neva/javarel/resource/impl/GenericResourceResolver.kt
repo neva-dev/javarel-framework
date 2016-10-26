@@ -8,14 +8,18 @@ import com.neva.javarel.resource.api.*
 import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
-@Component
+@Component(immediate = true)
 @Service(ResourceResolver::class)
 class GenericResourceResolver : ResourceResolver, Adaptee {
 
     @Reference
     private lateinit var adaptingManager: AdaptingManager
 
-    @Reference(referenceInterface = ResourceProvider::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
+    @Reference(
+            referenceInterface = ResourceProvider::class,
+            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC
+    )
     private var providers = Sets.newConcurrentHashSet<ResourceProvider>()
 
     override fun find(uri: String): Resource? {
