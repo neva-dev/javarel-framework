@@ -24,6 +24,14 @@ class DefaultAuthConfig : AuthConfig {
                 description = "Name of account which will be used to find authenticable when current user is not authenticated."
         )
         const val GUEST_PRINCIPAL = "guestPrincipal"
+
+        @Property(
+                name = ADMIN_PRINCIPAL,
+                value = "admin",
+                label = "Admin principal",
+                description = "Name of account with super user privileges."
+        )
+        const val ADMIN_PRINCIPAL = "adminPrincipal"
     }
 
     private var props: Map<String, Any>? = null
@@ -35,5 +43,8 @@ class DefaultAuthConfig : AuthConfig {
 
     override val guestPrincipal: String
         get() = props!!.get(GUEST_PRINCIPAL) as String
+
+    override val adminPrincipal: String
+        get() = props!!.get(ADMIN_PRINCIPAL) as String
 
 }

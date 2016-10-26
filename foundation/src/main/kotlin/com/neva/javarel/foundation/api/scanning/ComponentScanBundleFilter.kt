@@ -1,5 +1,6 @@
 package com.neva.javarel.foundation.api.scanning
 
+import com.neva.javarel.foundation.api.osgi.BundleUtils
 import com.neva.javarel.foundation.api.osgi.ClassUtils
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.IOCase
@@ -15,7 +16,7 @@ abstract class ComponentScanBundleFilter : BundleFilter {
     private val classes = mutableMapOf<Long, Collection<Class<*>>>()
 
     override fun filterBundle(bundle: Bundle): Boolean {
-        return !getHeader(bundle).isNullOrBlank()
+        return BundleUtils.isActive(bundle) && !getHeader(bundle).isNullOrBlank()
     }
 
     private fun getHeader(bundle: Bundle) = bundle.headers.get(BUNDLE_HEADER)

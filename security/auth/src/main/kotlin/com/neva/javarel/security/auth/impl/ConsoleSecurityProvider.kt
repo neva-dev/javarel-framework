@@ -29,7 +29,8 @@ class ConsoleSecurityProvider : WebConsoleSecurityProvider3 {
             return false
         }
 
-        val (principal, password) = String(Base64.getDecoder().decode(header.substring(6))).split(":").toList()
+        val credentials = String(Base64.getDecoder().decode(header.substringAfter("Basic").trim()))
+        val (principal, password) = credentials.split(":").toList()
         val authenticable = auth.byCredentials(PrincipalPasswordCredentials(principal, password))
 
         return authenticable != null

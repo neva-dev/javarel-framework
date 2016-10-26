@@ -1,5 +1,6 @@
 package com.neva.javarel.foundation.impl.scanning
 
+import com.google.common.collect.Sets
 import com.neva.javarel.foundation.api.scanning.BundleWatcher
 import org.apache.felix.scr.annotations.*
 import org.osgi.framework.BundleContext
@@ -10,8 +11,12 @@ import org.osgi.framework.BundleListener
 @Service(BundleWatcherDelegate::class)
 class BundleWatcherDelegate : BundleListener {
 
-    @Reference(referenceInterface = BundleWatcher::class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC)
-    private var watchers = mutableSetOf<BundleWatcher>()
+    @Reference(
+            referenceInterface = BundleWatcher::class,
+            cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC
+    )
+    private var watchers = Sets.newConcurrentHashSet<BundleWatcher>()
 
     private var context: BundleContext? = null
 

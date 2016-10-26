@@ -8,7 +8,7 @@ import com.neva.javarel.security.auth.api.Guard
 import com.neva.javarel.security.auth.api.Session
 
 @Binder
-class SessionGuardProvider : AbstractBinder<Guard>() {
+class SessionGuardBinder : AbstractBinder<Guard>() {
 
     @Uses
     private lateinit var auth: Auth

@@ -4,4 +4,6 @@ interface AuthConfig {
 
     val guestPrincipal: String
 
+    val adminPrincipal: String
+
 }
