@@ -9,7 +9,7 @@ import java.io.IOException
 import java.io.StringWriter
 import java.util.*
 
-class PebbleView(val engine: PebbleEngine, resource: Resource) : ResourceAdaptee(resource), View {
+class PebbleView(val engine: PebbleViewEngine, resource: Resource) : ResourceAdaptee(resource), View {
 
     var context = HashMap<String, Any>()
 
