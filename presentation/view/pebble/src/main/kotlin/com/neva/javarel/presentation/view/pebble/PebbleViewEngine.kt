@@ -16,7 +16,7 @@ import org.apache.felix.scr.annotations.*
         immediate = true,
         metatype = true,
         label = "${JavarelConstants.SERVICE_PREFIX} Pebble View Engine",
-        description = "Configuration"
+        description = "Twig inspired, fastest robust template engine in Java"
 )
 @Service(ViewEngine::class)
 class PebbleViewEngine : ViewEngine {
@@ -41,17 +41,15 @@ class PebbleViewEngine : ViewEngine {
         const val STRICT_DEFAULT = true
     }
 
-    private var props: Map<String, Any>? = null
+    @Reference
+    private lateinit var resourceResolver: ResourceResolver
 
-    private var coreCached: PebbleEngine? = null
+    private var props: Map<String, Any>? = null
 
     @Activate
     private fun activate(props: Map<String, Any>) {
         this.props = props
     }
-
-    @Reference
-    private lateinit var resourceResolver: ResourceResolver
 
     @Reference(
             referenceInterface = Extension::class,
@@ -73,6 +71,8 @@ class PebbleViewEngine : ViewEngine {
         get() {
             return PebbleLoader(resourceResolver)
         }
+
+    private var coreCached: PebbleEngine? = null
 
     val core: PebbleEngine
         @Synchronized

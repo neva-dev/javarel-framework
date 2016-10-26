@@ -1,0 +1,24 @@
+buildscript {
+    apply from: rootProject.file('buildscript.gradle'), to: buildscript
+}
+
+description = 'Javarel :: Handlebars View Engine'
+
+apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
+apply plugin: 'neva.osgi-module'
+apply plugin: 'neva.scr'
+
+jar {
+    manifest {
+        instruction 'Export-Package', "com.neva.javarel.presentation.view.handlebars;version=${project.version}"
+    }
+
+    dependencies {
+        compile project(':resource')
+        compile project(':presentation:view')
+        compile project(':communication:rest')
+
+        osgiBundle 'com.github.jknack:handlebars:4.0.6'
+    }
+}

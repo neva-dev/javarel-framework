@@ -27,6 +27,9 @@ class PebbleLoader(val resourceResolver: ResourceResolver) : Loader<String> {
         }
     }
 
+    /**
+     * TODO Implement relative paths support in Pebble templates
+     */
     override fun resolveRelativePath(relativePath: String?, anchorPath: String?): String? {
         return relativePath
     }
