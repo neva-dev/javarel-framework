@@ -8,7 +8,12 @@ import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
 import javax.sql.DataSource
 
-@Component(immediate = true, configurationFactory = true, metatype = true, label = "${JavarelConstants.SERVICE_PREFIX} Storage - Derby Connection")
+@Component(
+        immediate = true,
+        configurationFactory = true,
+        metatype = true,
+        label = "${JavarelConstants.SERVICE_PREFIX} Storage - Derby Connection"
+)
 @Service
 class DerbyDatabaseConnection : AbstractDatabaseConnection() {
 
@@ -23,7 +28,7 @@ class DerbyDatabaseConnection : AbstractDatabaseConnection() {
         const val DB_NAME_PROP = "dbNameProp"
     }
 
-    private var props: Map<String, Any>? = null
+    private lateinit var props: Map<String, Any>
 
     @Activate
     private fun activate(props: Map<String, Any>) {
@@ -31,13 +36,13 @@ class DerbyDatabaseConnection : AbstractDatabaseConnection() {
     }
 
     private val user: String
-        get() = props!![USER_PROP] as String
+        get() = props[USER_PROP] as String
 
     private val dbName: String
-        get() = props!![DB_NAME_PROP] as String
+        get() = props[DB_NAME_PROP] as String
 
     override val name: String
-        get() = props!![NAME_PROP] as String
+        get() = props[NAME_PROP] as String
 
     override val source: DataSource
         get() {

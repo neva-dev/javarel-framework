@@ -1,6 +1,5 @@
 package com.neva.javarel.foundation.impl.fixture
 
-import com.google.common.collect.Sets
 import com.neva.javarel.foundation.api.fixture.Fixture
 import com.neva.javarel.foundation.api.fixture.FixtureManager
 import com.neva.javarel.foundation.api.osgi.BundleUtils
@@ -10,6 +9,7 @@ import org.osgi.framework.BundleEvent
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.time.LocalDateTime
+import java.util.*
 
 @Component(immediate = true)
 @Service(FixtureManager::class, BundleWatcher::class)
@@ -26,7 +26,7 @@ class AutomaticFixtureInstaller : FixtureManager, BundleWatcher {
             policy = ReferencePolicy.DYNAMIC
     )
 
-    private var fixtures = Sets.newTreeSet<Fixture>({ f1, f2 -> f1.order().compareTo(f2.order()) })
+    private var fixtures = Collections.synchronizedSortedSet(TreeSet<Fixture>({ f1, f2 -> f1.order.compareTo(f2.order) }))
 
     private fun bindFixtures(fixture: Fixture) {
         fixtures.add(fixture)

@@ -33,7 +33,7 @@ class PgSqlDatabaseConnection : AbstractDatabaseConnection() {
         const val PASSWORD_PROP = "passwordProp"
     }
 
-    private var props: Map<String, Any>? = null
+    private lateinit var props: Map<String, Any>
 
     @Activate
     private fun activate(props: Map<String, Any>) {
@@ -41,22 +41,22 @@ class PgSqlDatabaseConnection : AbstractDatabaseConnection() {
     }
 
     override val name: String
-        get() = props!![NAME_PROP] as String
+        get() = props[NAME_PROP] as String
 
     private val host: String
-        get() = props!![HOST_PROP] as String
+        get() = props[HOST_PROP] as String
 
     private val port: Int
-        get() = Integer.parseInt(props!![PORT_PROP] as String)
+        get() = Integer.parseInt(props[PORT_PROP] as String)
 
     private val dbName: String
-        get() = props!![DB_NAME_PROP] as String
+        get() = props[DB_NAME_PROP] as String
 
     private val user: String
-        get() = props!![USER_PROP] as String
+        get() = props[USER_PROP] as String
 
     private val password: String
-        get() = props!![PASSWORD_PROP] as String
+        get() = props[PASSWORD_PROP] as String
 
     override val source: DataSource
         get() {

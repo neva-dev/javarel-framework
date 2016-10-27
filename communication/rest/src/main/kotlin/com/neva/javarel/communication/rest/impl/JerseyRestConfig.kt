@@ -25,7 +25,7 @@ class JerseyRestConfig : RestConfig {
         const val FILTER_PATHS_PROP = "filterPathsProp"
     }
 
-    private var props: Map<String, Any>? = null
+    private lateinit var props: Map<String, Any>
 
     private val _filters = mutableMapOf<String, (HttpServletRequest) -> Boolean>()
 
@@ -42,7 +42,7 @@ class JerseyRestConfig : RestConfig {
 
     @Suppress("UNCHECKED_CAST")
     private val filterPaths: Array<String> by lazy {
-        props?.get(FILTER_PATHS_PROP) as Array<String>? ?: arrayOf()
+        props[FILTER_PATHS_PROP] as Array<String>? ?: arrayOf()
     }
 
     override val filters: Map<String, (HttpServletRequest) -> Boolean>

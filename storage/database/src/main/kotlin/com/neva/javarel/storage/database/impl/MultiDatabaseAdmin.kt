@@ -53,9 +53,9 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
 
     private var _connectedDatabases: MutableMap<String, Database> = mutableMapOf()
 
-    private var context: BundleContext? = null
+    private lateinit var context: BundleContext
 
-    private var props: Map<String, Any>? = null
+    private lateinit var props: Map<String, Any>
 
     @Activate
     protected fun start(context: BundleContext, props: Map<String, Any>) {
@@ -64,7 +64,7 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
     }
 
     private val nameDefault: String
-        get() = props!![NAME_DEFAULT_PROP] as String
+        get() = props[NAME_DEFAULT_PROP] as String
 
     override fun database(): Database {
         return database(nameDefault)
@@ -96,7 +96,7 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
         props.put("openjpa.ConnectionFactory", connection.source)
         props.putAll(ENTITY_MANAGER_CONFIG)
 
-        val info = BundlePersistenceInfo(context!!)
+        val info = BundlePersistenceInfo(context)
         info.persistenceProviderClassName = PersistenceProviderImpl::class.java.canonicalName
         info.persistenceUnitName = connection.name
         info.transactionType = PersistenceUnitTransactionType.RESOURCE_LOCAL

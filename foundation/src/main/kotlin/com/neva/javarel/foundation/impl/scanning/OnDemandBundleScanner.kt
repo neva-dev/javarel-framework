@@ -1,6 +1,5 @@
 package com.neva.javarel.foundation.impl.scanning
 
-import com.neva.javarel.foundation.api.osgi.BundleUtils
 import com.neva.javarel.foundation.api.osgi.ClassUtils
 import com.neva.javarel.foundation.api.scanning.BundleFilter
 import com.neva.javarel.foundation.api.scanning.BundleScanner
@@ -20,7 +19,7 @@ class OnDemandBundleScanner : BundleScanner {
         val LOG = LoggerFactory.getLogger(OnDemandBundleScanner::class.java)
     }
 
-    private var context: BundleContext? = null
+    private lateinit var context: BundleContext
 
     @Activate
     protected fun activate(context: BundleContext) {
@@ -30,7 +29,7 @@ class OnDemandBundleScanner : BundleScanner {
     override fun scan(filter: BundleFilter): Set<Class<*>> {
         val classes = mutableListOf<Class<*>>()
 
-        for (bundle in context!!.bundles) {
+        for (bundle in context.bundles) {
             if (!filter.filterBundle(bundle)) {
                 continue
             }

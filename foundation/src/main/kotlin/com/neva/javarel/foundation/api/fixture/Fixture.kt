@@ -5,7 +5,7 @@ package com.neva.javarel.foundation.api.fixture
  */
 interface Fixture {
 
-    fun order(): Int
+    val order: Int
 
     fun install()
 

@@ -1,9 +1,9 @@
 package com.neva.javarel.security.auth.impl
 
-import com.google.common.collect.Sets
 import com.neva.javarel.foundation.api.JavarelConstants
 import com.neva.javarel.security.auth.api.*
 import org.apache.felix.scr.annotations.*
+import java.util.*
 
 @Component(
         immediate = true,
@@ -20,7 +20,7 @@ class MultiRealmAuth : Auth {
             cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
             policy = ReferencePolicy.DYNAMIC
     )
-    private var allRealms = Sets.newConcurrentHashSet<Realm>()
+    private var allRealms = Collections.synchronizedSortedSet(TreeSet<Realm>({ r1, r2 -> r2.priority.compareTo(r1.priority) }))
 
     override fun supports(credentials: Credentials): Boolean {
         return allRealms.any { realm -> realm.supports(credentials) }
@@ -41,11 +41,10 @@ class MultiRealmAuth : Auth {
         get() = allRealms
 
     override val guest: Authenticable
-        get() {
-            val guest = byCredentials(PrincipalCredentials(config.guestPrincipal))
+        get() = byCredentials(PrincipalCredentials(config.guest.principal)) ?: config.guest
 
-            return guest ?: throw AuthException("At least one realm must can authenticate using credentials with principal '${config.guestPrincipal}'")
-        }
+    override val priority: Int
+        get() = throw UnsupportedOperationException("Multi auth realm aggregates another realms so it is not using priority in any kind.")
 
     private fun bindAllRealms(realm: Realm) {
         allRealms.add(realm)
