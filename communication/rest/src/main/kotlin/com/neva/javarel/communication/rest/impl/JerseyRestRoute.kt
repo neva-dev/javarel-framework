@@ -60,7 +60,7 @@ class JerseyRestRoute(
     override val className: String
         get() = methodResource.handlerClasses.first().name
 
-    override val parameters: Collection<String>
+    override val parameters: List<String>
         get() {
             return methodObj.invocable.parameters.fold(mutableListOf<String>(), { result, parameter ->
                 when (parameter) {
@@ -70,7 +70,7 @@ class JerseyRestRoute(
             })
         }
 
-    override fun assembleUri(params: Map<String, Any>): String {
+    override fun assemble(params: Map<String, Any>): String {
         var result = path
         for ((key, value) in params) {
             StringUtils.substringsBetween(path, PARAM_TOKEN_START, PARAM_TOKEN_END).forEach { variable ->

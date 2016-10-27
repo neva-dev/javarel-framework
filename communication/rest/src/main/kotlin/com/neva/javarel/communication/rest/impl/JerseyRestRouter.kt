@@ -23,10 +23,10 @@ class JerseyRestRouter : RestRouter {
 
     private var components = emptySet<Class<*>>()
 
-    private var aliases = emptyMap<String, String>()
+    override lateinit var aliases: Map<String, String>
 
     override fun configure(components: Set<Class<*>>) {
-        this.components = components;
+        this.components = components
     }
 
     override val routes: Set<RestRoute>

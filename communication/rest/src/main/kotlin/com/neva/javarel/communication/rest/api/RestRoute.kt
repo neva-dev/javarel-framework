@@ -14,8 +14,8 @@ interface RestRoute {
 
     val methodName: String
 
-    val parameters: Collection<String>
+    val parameters: List<String>
 
-    fun assembleUri(params: Map<String, Any>): String
+    fun assemble(params: Map<String, Any>): String
 
 }
