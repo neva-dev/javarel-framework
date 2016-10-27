@@ -54,11 +54,11 @@ class PebbleViewEngine : ViewEngine {
     }
 
     @Reference(
-            referenceInterface = Extension::class,
+            referenceInterface = PebbleExtension::class,
             cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
             policy = ReferencePolicy.DYNAMIC
     )
-    private var coreExtensions = Sets.newConcurrentHashSet<Extension>()
+    private var coreExtensions = Sets.newConcurrentHashSet<PebbleExtension>()
 
     @Suppress("UNCHECKED_CAST")
     val extensions: Array<String> by lazy {
@@ -78,11 +78,12 @@ class PebbleViewEngine : ViewEngine {
         @Synchronized
         get() {
             if (coreCached == null) {
-                coreCached = PebbleEngine.Builder()
+                val builder = PebbleEngine.Builder()
                         .strictVariables(strict)
                         .loader(loader)
-                        .extension(*coreExtensions.toTypedArray())
-                        .build()
+
+                coreExtensions.forEach { it.extend(builder) }
+                coreCached = builder.build()
             }
             return coreCached!!
         }
@@ -95,12 +96,12 @@ class PebbleViewEngine : ViewEngine {
         return PebbleView(this, resource)
     }
 
-    private fun bindCoreExtensions(extension: Extension) {
+    private fun bindCoreExtensions(extension: PebbleExtension) {
         coreExtensions.add(extension)
         coreCached = null
     }
 
-    private fun unbindCoreExtensions(extension: Extension) {
+    private fun unbindCoreExtensions(extension: PebbleExtension) {
         coreExtensions.remove(extension)
         coreCached = null
     }

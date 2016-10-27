@@ -34,11 +34,11 @@ class HandlebarsViewEngine : ViewEngine {
     private lateinit var resourceResolver: ResourceResolver
 
     @Reference(
-            referenceInterface = HandlebarsHelper::class,
+            referenceInterface = HandlebarsExtension::class,
             cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE,
             policy = ReferencePolicy.DYNAMIC
     )
-    private var coreExtensions = Sets.newConcurrentHashSet<HandlebarsHelper<*>>()
+    private var coreExtensions = Sets.newConcurrentHashSet<HandlebarsExtension>()
 
     private lateinit var props: Map<String, Any>
 
@@ -56,8 +56,10 @@ class HandlebarsViewEngine : ViewEngine {
         @Synchronized
         get() {
             if (coreCached == null) {
-                coreCached = Handlebars(loader)
-                coreExtensions.forEach { coreCached!!.registerHelper(it.name, it) }
+                val handlebars = Handlebars(loader)
+                coreExtensions.forEach { it.extend(handlebars) }
+
+                coreCached = handlebars
             }
             return coreCached!!
         }
@@ -80,12 +82,12 @@ class HandlebarsViewEngine : ViewEngine {
         return HandlebarsView(this, resource)
     }
 
-    private fun bindCoreExtensions(extension: HandlebarsHelper<*>) {
+    private fun bindCoreExtensions(extension: HandlebarsExtension) {
         coreExtensions.add(extension)
         coreCached = null
     }
 
-    private fun unbindCoreExtensions(extension: HandlebarsHelper<*>) {
+    private fun unbindCoreExtensions(extension: HandlebarsExtension) {
         coreExtensions.remove(extension)
         coreCached = null
     }
