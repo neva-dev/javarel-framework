@@ -2,8 +2,8 @@ package com.neva.javarel.security.auth.api
 
 interface AuthConfig {
 
-    val guestPrincipal: String
+    val guest: PrincipalPasswordAuthenticable
 
-    val adminPrincipal: String
+    val admin: PrincipalPasswordAuthenticable
 
 }

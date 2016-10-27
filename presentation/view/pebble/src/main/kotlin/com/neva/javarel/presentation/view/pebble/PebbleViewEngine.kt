@@ -41,7 +41,7 @@ class PebbleViewEngine : ViewEngine {
         const val STRICT_DEFAULT = true
     }
 
-    private var props: Map<String, Any>? = null
+    private lateinit var props: Map<String, Any>
 
     private var coreCached: PebbleEngine? = null
 
@@ -62,11 +62,11 @@ class PebbleViewEngine : ViewEngine {
 
     @Suppress("UNCHECKED_CAST")
     val extensions: Array<String> by lazy {
-        props?.get(EXTENSIONS_PROP) as Array<String>? ?: arrayOf()
+        props[EXTENSIONS_PROP] as Array<String>? ?: arrayOf()
     }
 
     val strict: Boolean by lazy {
-        props?.get(STRICT_PROP) as Boolean? ?: STRICT_DEFAULT
+        props[STRICT_PROP] as Boolean? ?: STRICT_DEFAULT
     }
 
     val loader: Loader<String>
