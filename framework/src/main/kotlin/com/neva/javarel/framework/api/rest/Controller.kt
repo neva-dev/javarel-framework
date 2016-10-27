@@ -27,11 +27,11 @@ abstract class Controller {
     protected lateinit var resourceResolver: ResourceResolver
 
     protected fun view(resourceUri: String): View {
-        return resourceResolver.findOrFail(resourceUri).adaptTo(View::class).with(viewGlobals())
+        return resourceResolver.findOrFail(resourceUri).adaptTo(View::class).with(context)
     }
 
-    protected fun viewGlobals(): Map<String, Any> {
-        return mapOf(
+    protected val context: Map<String, Any> by lazy {
+        mapOf(
                 "request" to request,
                 "guard" to guard
         )

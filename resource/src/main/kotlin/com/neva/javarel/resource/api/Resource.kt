@@ -9,6 +9,6 @@ interface Resource : Adaptee {
 
     val descriptor: ResourceDescriptor
 
-    val inputStream: InputStream
+    val input: InputStream
 
 }

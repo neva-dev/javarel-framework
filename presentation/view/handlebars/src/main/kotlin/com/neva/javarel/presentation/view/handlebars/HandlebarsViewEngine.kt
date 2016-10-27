@@ -1,7 +1,6 @@
 package com.neva.javarel.presentation.view.handlebars
 
 import com.github.jknack.handlebars.Handlebars
-import com.github.jknack.handlebars.Helper
 import com.github.jknack.handlebars.io.TemplateLoader
 import com.google.common.collect.Sets
 import com.neva.javarel.foundation.api.JavarelConstants
@@ -26,19 +25,9 @@ class HandlebarsViewEngine : ViewEngine {
                 name = EXTENSION_PROP,
                 value = ".hbs",
                 label = "Extension",
-                description = "Resource extension that engine will handle",
-                unbounded = PropertyUnbounded.ARRAY
+                description = "Resource extension that engine will handle"
         )
         const val EXTENSION_PROP = "extension"
-
-        @Property(
-                name = STRICT_PROP,
-                boolValue = booleanArrayOf(STRICT_DEFAULT),
-                label = "Strict",
-                description = "Verbose mode in which any undefined variable will cause an exception. Recommended only for development purposes."
-        )
-        const val STRICT_PROP = "strict"
-        const val STRICT_DEFAULT = true
     }
 
     @Reference
@@ -51,7 +40,7 @@ class HandlebarsViewEngine : ViewEngine {
     )
     private var coreExtensions = Sets.newConcurrentHashSet<HandlebarsHelper<*>>()
 
-    private var props: Map<String, Any>? = null
+    private lateinit var props: Map<String, Any>
 
     val loader: TemplateLoader
         get() {
@@ -75,7 +64,7 @@ class HandlebarsViewEngine : ViewEngine {
 
     @Suppress("UNCHECKED_CAST")
     val extension: String by lazy {
-        (props?.get(EXTENSION_PROP) as String?).orEmpty()
+        props[EXTENSION_PROP] as String
     }
 
     @Activate
@@ -90,7 +79,6 @@ class HandlebarsViewEngine : ViewEngine {
     override fun make(resource: Resource): View {
         return HandlebarsView(this, resource)
     }
-
 
     private fun bindCoreExtensions(extension: HandlebarsHelper<*>) {
         coreExtensions.add(extension)

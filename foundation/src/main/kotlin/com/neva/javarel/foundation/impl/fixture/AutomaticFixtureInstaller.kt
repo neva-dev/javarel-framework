@@ -1,19 +1,15 @@
 package com.neva.javarel.foundation.impl.fixture
 
+import com.google.common.collect.Lists
 import com.neva.javarel.foundation.api.fixture.Fixture
 import com.neva.javarel.foundation.api.fixture.FixtureManager
-import com.neva.javarel.foundation.api.osgi.BundleUtils
-import com.neva.javarel.foundation.api.scanning.BundleWatcher
+import com.neva.javarel.foundation.api.fixture.LockFixture
 import org.apache.felix.scr.annotations.*
-import org.osgi.framework.BundleEvent
 import org.slf4j.LoggerFactory
-import java.io.File
-import java.time.LocalDateTime
-import java.util.*
 
 @Component(immediate = true)
-@Service(FixtureManager::class, BundleWatcher::class)
-class AutomaticFixtureInstaller : FixtureManager, BundleWatcher {
+@Service(FixtureManager::class)
+class AutomaticFixtureInstaller : FixtureManager {
 
     companion object {
         val LOG = LoggerFactory.getLogger(AutomaticFixtureInstaller::class.java)
@@ -25,76 +21,28 @@ class AutomaticFixtureInstaller : FixtureManager, BundleWatcher {
             cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
             policy = ReferencePolicy.DYNAMIC
     )
-
-    private var fixtures = Collections.synchronizedSortedSet(TreeSet<Fixture>({ f1, f2 -> f1.order.compareTo(f2.order) }))
+    private var fixtures = Lists.newCopyOnWriteArrayList<Fixture>()
 
     private fun bindFixtures(fixture: Fixture) {
-        fixtures.add(fixture)
+        val locked = LockFixture(fixture)
+
+        fixtures.add(locked)
+        locked.install()
     }
 
     private fun unbindFixtures(fixture: Fixture) {
         fixtures.remove(fixture)
     }
 
-    override fun watch(event: BundleEvent) {
-        if (allBundlesActive(event)) {
-            installAll()
-        }
-    }
-
-    private fun allBundlesActive(event: BundleEvent): Boolean {
-        return event.bundle.bundleContext.bundles.all { BundleUtils.isActive(it) }
-    }
-
-    @Synchronized
     private fun installAll() {
-        fixtures.forEach { fixture ->
-            val clazz = fixture.javaClass.canonicalName
-            val lock = File(lockDir, "$clazz.lock")
+        fixtures.forEach(Fixture::install)
+    }
 
-            if (!lock.exists()) {
-                LOG.info("Installing fixture: {}", clazz)
-
-                try {
-                    fixture.install()
-
-                    lock.createNewFile()
-                    lock.writeText("Installed at ${LocalDateTime.now()}")
-                } catch (e: Throwable) {
-                    LOG.error("Fixture cannot be installed properly '$clazz'", e)
-                }
-            }
-        }
+    private fun uninstallAll() {
+        fixtures.reversed().forEach(Fixture::uninstall)
     }
 
     @Synchronized
-    private fun uninstallAll() {
-        fixtures.reversed().forEach { fixture ->
-            val clazz = fixture.javaClass.canonicalName
-            val lock = File(lockDir, "$clazz.lock")
-
-            if (lock.exists()) {
-                LOG.info("Uninstalling fixture: {}", fixture.javaClass.canonicalName)
-
-                try {
-                    fixture.uninstall()
-                    lock.delete()
-                } catch (e: Throwable) {
-                    LOG.error("Fixture cannot be uninstalled properly '$clazz'", e)
-                }
-            }
-        }
-    }
-
-    private val lockDir: File by lazy {
-        val dir = File(LOCK_DIR)
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-
-        dir
-    }
-
     override fun reinstall() {
         uninstallAll()
         installAll()

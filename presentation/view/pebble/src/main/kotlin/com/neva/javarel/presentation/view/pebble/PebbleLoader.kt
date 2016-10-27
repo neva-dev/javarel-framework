@@ -4,10 +4,9 @@ import com.mitchellbosecke.pebble.error.LoaderException
 import com.mitchellbosecke.pebble.loader.Loader
 import com.neva.javarel.resource.api.ResourceException
 import com.neva.javarel.resource.api.ResourceResolver
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStreamReader
 import java.io.Reader
+import java.nio.charset.Charset
 
 class PebbleLoader(val resourceResolver: ResourceResolver) : Loader<String> {
 
@@ -19,7 +18,7 @@ class PebbleLoader(val resourceResolver: ResourceResolver) : Loader<String> {
         try {
             val resource = resourceResolver.findOrFail(template)
 
-            return BufferedReader(InputStreamReader(resource.inputStream, CHARSET))
+            return resource.input.bufferedReader(Charset.forName(CHARSET))
         } catch (e: ResourceException) {
             throw LoaderException(e, "Cannot read a template: '$template")
         } catch (e: IOException) {

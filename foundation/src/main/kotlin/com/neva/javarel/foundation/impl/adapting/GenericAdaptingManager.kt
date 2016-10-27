@@ -15,7 +15,8 @@ class GenericAdaptingManager : AdaptingManager {
     @Reference(
             referenceInterface = Adapter::class,
             cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
-            policy = ReferencePolicy.DYNAMIC
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
     )
     override val adapters = Maps.newConcurrentMap<KClass<Any>, MutableSet<Adapter<Any, Any>>>()
 

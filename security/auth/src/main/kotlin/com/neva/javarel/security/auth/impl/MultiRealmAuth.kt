@@ -27,14 +27,15 @@ class MultiRealmAuth : Auth {
     }
 
     override fun byCredentials(credentials: Credentials): Authenticable? {
-        var authenticable: Authenticable? = null
-
-        val realm = allRealms.firstOrNull { realm -> realm.supports(credentials) }
-        if (realm != null) {
-            authenticable = realm.byCredentials(credentials)
+        val realms = allRealms.filter { realm -> realm.supports(credentials) }
+        for (realm in realms) {
+            val authenticable = realm.byCredentials(credentials)
+            if (authenticable != null) {
+                return authenticable
+            }
         }
 
-        return authenticable
+        return null
     }
 
     override val realms: Set<Realm>

@@ -2,7 +2,7 @@ buildscript {
     apply from: rootProject.file('buildscript.gradle'), to: buildscript
 }
 
-description = 'Javarel :: Storage :: Repository'
+description = 'Javarel :: Repository Storage (Morphia)'
 
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'

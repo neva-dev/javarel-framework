@@ -36,7 +36,6 @@ osgiContainer {
             'animal-sniffer-annotations',
             'kxml2',
             'xmlpull',
-            'rhino-1.7*',
     ])
 }
 

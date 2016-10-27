@@ -18,7 +18,8 @@ class GenericResourceResolver : ResourceResolver, Adaptee {
     @Reference(
             referenceInterface = ResourceProvider::class,
             cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
-            policy = ReferencePolicy.DYNAMIC
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
     )
     private var providers = Sets.newConcurrentHashSet<ResourceProvider>()
 

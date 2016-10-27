@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.impl.connection
+package com.neva.javarel.storage.database.impl.connection
 
 import com.neva.javarel.foundation.api.JavarelConstants
 import org.apache.commons.lang3.StringUtils

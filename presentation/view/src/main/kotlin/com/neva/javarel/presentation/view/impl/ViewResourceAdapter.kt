@@ -15,8 +15,9 @@ class ViewResourceAdapter : ResourceAdapter<View>() {
 
     @Reference(
             referenceInterface = ViewEngine::class,
-            cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
-            policy = ReferencePolicy.DYNAMIC
+            cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE,
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
     )
     private val engines = Sets.newConcurrentHashSet<ViewEngine>()
 

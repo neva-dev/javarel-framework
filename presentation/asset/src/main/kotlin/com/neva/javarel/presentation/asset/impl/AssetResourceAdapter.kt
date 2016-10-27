@@ -15,7 +15,8 @@ class AssetResourceAdapter : ResourceAdapter<Asset>() {
     @Reference(
             referenceInterface = AssetFactory::class,
             cardinality = ReferenceCardinality.MANDATORY_MULTIPLE,
-            policy = ReferencePolicy.DYNAMIC
+            policy = ReferencePolicy.DYNAMIC,
+            policyOption = ReferencePolicyOption.GREEDY
     )
     private val factories = Sets.newConcurrentHashSet<AssetFactory>()
 

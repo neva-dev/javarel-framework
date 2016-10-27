@@ -11,8 +11,8 @@ abstract class ResourceAdaptee(protected val resource: Resource) : Resource {
     override val descriptor: ResourceDescriptor
         get() = resource.descriptor
 
-    override val inputStream: InputStream
-        get() = resource.inputStream
+    override val input: InputStream
+        get() = resource.input
 
     override fun <T : Any> adaptTo(clazz: KClass<T>): T {
         return resource.adaptTo(clazz)

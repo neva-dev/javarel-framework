@@ -19,6 +19,9 @@ jar {
         compile project(':presentation:view')
         compile project(':communication:rest')
 
-        osgiBundle 'com.github.jknack:handlebars:4.0.6'
+        osgiBundle 'com.github.jknack:handlebars:4.0.6', {
+            exclude group: 'org.mozilla', module: 'rhino'
+        }
+        osgiBundle 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.rhino:1.7.7.1_1'
     }
 }

@@ -11,7 +11,7 @@ import java.net.URL
 
 class UrlResource(override val resolver: ResourceResolver, override val descriptor: ResourceDescriptor, private val url: URL) : AdaptableResource() {
 
-    override val inputStream: InputStream
+    override val input: InputStream
         get() {
             try {
                 return url.openStream()

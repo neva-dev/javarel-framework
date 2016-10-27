@@ -19,7 +19,7 @@ open class FileAsset(resource: Resource) : ResourceAdaptee(resource), Asset {
     override val mimeType: String
         get() {
             try {
-                return TIKA.detect(inputStream, descriptor.name)
+                return TIKA.detect(input, descriptor.name)
             } catch (e: ResourceException) {
                 throw AssetException("Cannot determine mime type for a resource: '$resource'", e)
             } catch (e: IOException) {
@@ -29,7 +29,7 @@ open class FileAsset(resource: Resource) : ResourceAdaptee(resource), Asset {
 
     override fun read(): InputStream {
         try {
-            return inputStream
+            return input
         } catch (e: ResourceException) {
             throw AssetException("Cannot read file asset from resource: '$resource'", e)
         }

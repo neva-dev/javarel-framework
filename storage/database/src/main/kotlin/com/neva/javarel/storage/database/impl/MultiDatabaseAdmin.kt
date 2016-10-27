@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.impl
+package com.neva.javarel.storage.database.impl
 
 import com.neva.javarel.foundation.api.JavarelConstants
 import com.neva.javarel.foundation.api.scanning.BundleScanner

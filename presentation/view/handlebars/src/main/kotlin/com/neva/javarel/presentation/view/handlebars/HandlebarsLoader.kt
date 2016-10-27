@@ -9,7 +9,7 @@ class HandlebarsLoader(val resourceResolver: ResourceResolver) : AbstractTemplat
 
     override fun sourceAt(location: String): TemplateSource {
         val resource = resourceResolver.findOrFail(location)
-        val content = resource.inputStream.bufferedReader().use { it.readText() }
+        val content = resource.input.bufferedReader().use { it.readText() }
         val fileName = resource.descriptor.baseName
 
         return StringTemplateSource(fileName, content)

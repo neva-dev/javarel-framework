@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.impl.connection
+package com.neva.javarel.storage.database.impl.connection
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import com.neva.javarel.foundation.api.JavarelConstants

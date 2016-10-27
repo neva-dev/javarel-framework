@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.impl.connection
+package com.neva.javarel.storage.database.impl.connection
 
 import com.neva.javarel.storage.database.api.DatabaseConnection
 import java.util.*

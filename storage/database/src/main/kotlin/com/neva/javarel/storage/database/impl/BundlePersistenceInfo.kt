@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.impl
+package com.neva.javarel.storage.database.impl
 
 import org.apache.openjpa.lib.util.MultiClassLoader
 import org.apache.openjpa.persistence.PersistenceUnitInfoImpl
