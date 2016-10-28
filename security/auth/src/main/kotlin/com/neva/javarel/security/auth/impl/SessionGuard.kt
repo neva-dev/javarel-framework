@@ -1,14 +1,27 @@
 package com.neva.javarel.security.auth.impl
 
+import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.security.auth.api.*
+import javax.inject.Inject
 
-class SessionGuard(val session: Session, val auth: Auth) : Guard {
+class SessionGuard : Guard {
 
     companion object {
         val PRINCIPAL_ATTR = "guard.authenticable.principal"
     }
 
-    protected var authenticated: Authenticable = read()
+    private val session: Session
+
+    private val auth: Auth
+
+    private lateinit var authenticated: Authenticable
+
+    @Inject
+    constructor(session: Session, @Uses auth: Auth) {
+        this.session = session
+        this.auth = auth
+        this.authenticated = read()
+    }
 
     /**
      * TODO Implement remember me support

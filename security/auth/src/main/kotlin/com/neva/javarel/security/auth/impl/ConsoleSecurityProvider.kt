@@ -37,7 +37,7 @@ class ConsoleSecurityProvider : WebConsoleSecurityProvider3 {
     }
 
     private fun authenticateUsingSession(request: HttpServletRequest): Boolean {
-        val session = RequestSession(request.session)
+        val session = RequestSession(request)
         val guard = SessionGuard(session, auth)
 
         return guard.check
@@ -52,7 +52,7 @@ class ConsoleSecurityProvider : WebConsoleSecurityProvider3 {
     }
 
     override fun logout(request: HttpServletRequest, response: HttpServletResponse) {
-        val session = RequestSession(request.session)
+        val session = RequestSession(request)
         val guard = SessionGuard(session, auth)
 
         guard.logout()
