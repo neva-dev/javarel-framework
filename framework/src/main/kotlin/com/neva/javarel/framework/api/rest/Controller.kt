@@ -1,25 +1,26 @@
 package com.neva.javarel.framework.api.rest
 
+import com.neva.javarel.communication.rest.api.Osgi
 import com.neva.javarel.communication.rest.api.UrlGenerator
-import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
 import com.neva.javarel.security.auth.api.Guard
 import com.neva.javarel.storage.database.api.DatabaseAdmin
+import javax.inject.Inject
 
 abstract class Controller {
 
-    @Uses
+    @Inject
     protected lateinit var guard: Guard
 
-    @Uses
+    @Osgi
     protected lateinit var db: DatabaseAdmin
 
-    @Uses
+    @Osgi
     protected lateinit var urlGenerator: UrlGenerator
 
-    @Uses
+    @Osgi
     protected lateinit var resourceResolver: ResourceResolver
 
     protected fun view(resourceUri: String): View {

@@ -1,6 +1,6 @@
 package com.neva.javarel.security.auth.impl
 
-import com.neva.javarel.communication.rest.api.Uses
+import com.neva.javarel.communication.rest.api.Osgi
 import com.neva.javarel.security.auth.api.*
 import javax.inject.Inject
 
@@ -17,10 +17,20 @@ class SessionGuard : Guard {
     private lateinit var authenticated: Authenticable
 
     @Inject
-    constructor(session: Session, @Uses auth: Auth) {
+    constructor(session: Session, @Osgi auth: Auth) {
         this.session = session
         this.auth = auth
         this.authenticated = read()
+    }
+
+    private fun read(): Authenticable {
+        var authenticable: Authenticable? = null
+        val principal = session.get(PRINCIPAL_ATTR) as String?
+        if (!principal.isNullOrBlank()) {
+            authenticable = auth.byCredentials(PrincipalCredentials(principal!!))
+        }
+
+        return authenticable ?: auth.guest
     }
 
     /**
@@ -36,16 +46,6 @@ class SessionGuard : Guard {
         this.authenticated = auth.guest
 
         session.remove(SessionGuard.PRINCIPAL_ATTR)
-    }
-
-    private fun read(): Authenticable {
-        var authenticable: Authenticable? = null
-        val principal = session.get(PRINCIPAL_ATTR) as String?
-        if (!principal.isNullOrBlank()) {
-            authenticable = auth.byCredentials(PrincipalCredentials(principal!!))
-        }
-
-        return authenticable ?: auth.guest
     }
 
     override val check: Boolean
