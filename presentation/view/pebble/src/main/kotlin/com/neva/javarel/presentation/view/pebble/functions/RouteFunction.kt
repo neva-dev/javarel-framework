@@ -3,6 +3,9 @@ package com.neva.javarel.presentation.view.pebble.functions
 import com.neva.javarel.communication.rest.api.UrlGenerator
 import com.neva.javarel.presentation.view.api.ViewException
 
+/**
+ * Generate an URL using route (by action or name) and its parameters
+ */
 class RouteFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
 
     companion object {
@@ -11,7 +14,7 @@ class RouteFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
         val PARAMS_PARAM = "params"
     }
 
-    override fun getArgumentNames(): MutableList<String>? {
+    override fun getArgumentNames(): MutableList<String> {
         return mutableListOf(ACTION_PARAM, NAME_PARAM, PARAMS_PARAM)
     }
 

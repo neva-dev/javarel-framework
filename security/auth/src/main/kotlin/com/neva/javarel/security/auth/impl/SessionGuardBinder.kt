@@ -1,6 +1,6 @@
 package com.neva.javarel.security.auth.impl
 
-import com.neva.javarel.communication.rest.api.AbstractBinder
+import com.neva.javarel.communication.rest.api.BinderFactory
 import com.neva.javarel.communication.rest.api.Binder
 import com.neva.javarel.communication.rest.api.Uses
 import com.neva.javarel.security.auth.api.Auth
@@ -8,7 +8,7 @@ import com.neva.javarel.security.auth.api.Guard
 import com.neva.javarel.security.auth.api.Session
 
 @Binder
-class SessionGuardBinder : AbstractBinder<Guard>() {
+class SessionGuardBinder : BinderFactory<Guard>() {
 
     @Uses
     private lateinit var auth: Auth

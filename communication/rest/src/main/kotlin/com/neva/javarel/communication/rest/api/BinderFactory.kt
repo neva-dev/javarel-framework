@@ -6,7 +6,7 @@ import org.glassfish.jersey.process.internal.RequestScoped
 import kotlin.reflect.KClass
 import org.glassfish.hk2.utilities.binding.AbstractBinder as BaseBinder
 
-abstract class AbstractBinder<T : Any> : BaseBinder(), Factory<T> {
+abstract class BinderFactory<T : Any> : BaseBinder(), Factory<T> {
 
     override fun dispose(instance: T) {
         // nothing to do

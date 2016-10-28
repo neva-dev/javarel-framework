@@ -12,7 +12,7 @@ class AssetFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
         val PARAMS_PARAM = "params"
     }
 
-    override fun getArgumentNames(): MutableList<String>? {
+    override fun getArgumentNames(): MutableList<String> {
         return mutableListOf(PATH_PARAM, PARAMS_PARAM)
     }
 

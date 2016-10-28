@@ -93,7 +93,7 @@ class GenericUrlGenerator : UrlGenerator {
             }
         }
 
-        return route.assemble(pathParams) + QueryParams(queryParams).toString()
+        return route.assemble(pathParams) + QueryParams.fromMap(queryParams).toString()
     }
 
 }

@@ -1,18 +1,14 @@
 package com.neva.javarel.framework.api.rest
 
-import com.neva.javarel.communication.rest.api.RestRequest
 import com.neva.javarel.communication.rest.api.UrlGenerator
 import com.neva.javarel.communication.rest.api.Uses
+import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
 import com.neva.javarel.security.auth.api.Guard
 import com.neva.javarel.storage.database.api.DatabaseAdmin
-import javax.ws.rs.core.Context
 
 abstract class Controller {
-
-    @Context
-    protected lateinit var request: RestRequest
 
     @Uses
     protected lateinit var guard: Guard
@@ -30,9 +26,12 @@ abstract class Controller {
         return resourceResolver.findOrFail(resourceUri).adaptTo(View::class).with(context)
     }
 
+    protected fun asset(path: String): Asset {
+        return resourceResolver.findOrFail(path).adaptTo(Asset::class)
+    }
+
     protected val context: Map<String, Any> by lazy {
         mapOf(
-                "request" to request,
                 "guard" to guard
         )
     }
