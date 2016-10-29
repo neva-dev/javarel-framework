@@ -10,7 +10,7 @@ class OsgiInjectionResolver : InjectionResolver<Osgi> {
 
     override fun resolve(injectee: Injectee, root: ServiceHandle<*>?): Any? {
         val service = OsgiUtils(javaClass).serviceOf<Any>(injectee.requiredType.typeName)
-        if (service == null) {
+        if (service == null && !injectee.isOptional) {
             throw MultiException(UnsatisfiedDependencyException(injectee))
         }
 

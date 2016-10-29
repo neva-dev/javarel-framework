@@ -7,6 +7,6 @@ import kotlin.reflect.KClass
  */
 interface AdaptingManager : Adapting<Any> {
 
-    val adapters: Map<KClass<Any>, MutableSet<Adapter<Any, Any>>>
+    val adapters: Map<KClass<Any>, Set<Adapter<Any, Any>>>
 
 }
