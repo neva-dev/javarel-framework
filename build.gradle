@@ -75,6 +75,7 @@ subprojects { subProject ->
             manifest {
                 name subProject.description
                 instruction 'Bundle-Category', 'javarel'
+                instructionReplace 'Bundle-SymbolicName', "${subProject.group}.${subProject.path.substring(1).replaceAll(":", ".")}"
             }
         }
     }
