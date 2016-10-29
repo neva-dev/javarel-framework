@@ -2,7 +2,6 @@ package com.neva.javarel.storage.database.impl.connection
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 import com.neva.javarel.foundation.api.JavarelConstants
-import org.apache.commons.lang3.StringUtils
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
@@ -64,10 +63,10 @@ class MySqlDatabaseConnection : AbstractDatabaseConnection() {
 
             ds.setURL("jdbc:mysql://$host:$port/$dbName");
 
-            if (StringUtils.isNotBlank(user)) {
+            if (!user.isNullOrBlank()) {
                 ds.user = user
             }
-            if (StringUtils.isNotBlank(password)) {
+            if (!password.isNullOrBlank()) {
                 ds.setPassword(password)
             }
 

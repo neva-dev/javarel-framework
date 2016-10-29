@@ -1,7 +1,6 @@
 package com.neva.javarel.storage.database.impl.connection
 
 import com.neva.javarel.foundation.api.JavarelConstants
-import org.apache.commons.lang3.StringUtils
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
@@ -66,10 +65,10 @@ class PgSqlDatabaseConnection : AbstractDatabaseConnection() {
             ds.setDatabaseName(dbName);
             ds.setPortNumber(port);
 
-            if (!StringUtils.isBlank(user)) {
+            if (!user.isNullOrBlank()) {
                 ds.user = user;
             }
-            if (!StringUtils.isBlank(password)) {
+            if (!password.isNullOrBlank()) {
                 ds.password = password;
             }
 
