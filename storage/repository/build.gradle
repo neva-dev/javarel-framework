@@ -18,4 +18,9 @@ jar {
 
 dependencies {
     compile project(':foundation')
+
+    osgiBundle 'org.mongodb.morphia:morphia:1.2.1', { transitive = false }
+    osgiBundle group: 'org.apache.servicemix.bundles', name: 'org.apache.servicemix.bundles.cglib', version: '3.2.4_1'
+    osgiBundle group: 'com.thoughtworks.proxytoys', name: 'proxytoys', version: '1.0', { transitive = false }
+    osgiBundle group: 'org.mongodb', name: 'mongo-java-driver', version: '3.3.0', { transitive = false }
 }

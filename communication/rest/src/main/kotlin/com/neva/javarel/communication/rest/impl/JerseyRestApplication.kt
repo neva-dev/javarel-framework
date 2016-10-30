@@ -1,10 +1,12 @@
 package com.neva.javarel.communication.rest.impl
 
+import com.neva.javarel.communication.rest.api.Binder
 import com.neva.javarel.communication.rest.api.RestApplication
 import com.neva.javarel.communication.rest.api.RestConfig
 import com.neva.javarel.communication.rest.api.RestRouter
 import com.neva.javarel.foundation.api.scanning.BundleScanner
 import com.neva.javarel.foundation.api.scanning.BundleWatcher
+import com.neva.javarel.foundation.api.scanning.ComponentScanBundleFilter
 import org.apache.felix.http.api.ExtHttpService
 import org.apache.felix.scr.annotations.*
 import org.glassfish.jersey.servlet.ServletContainer
@@ -12,6 +14,9 @@ import org.glassfish.jersey.servlet.ServletProperties
 import org.osgi.framework.BundleEvent
 import org.slf4j.LoggerFactory
 import java.util.*
+import javax.ws.rs.ApplicationPath
+import javax.ws.rs.Path
+import javax.ws.rs.ext.Provider
 
 @Component(immediate = true)
 @Service
@@ -19,7 +24,12 @@ class JerseyRestApplication : RestApplication, BundleWatcher {
 
     companion object {
         val LOG = LoggerFactory.getLogger(JerseyRestApplication::class.java)
-        val COMPONENT_FILTER = ComponentBundleFilter()
+        val COMPONENT_FILTER = ComponentScanBundleFilter(setOf(
+                Path::class.java,
+                Provider::class.java,
+                ApplicationPath::class.java,
+                Binder::class.java
+        ))
     }
 
     @Reference

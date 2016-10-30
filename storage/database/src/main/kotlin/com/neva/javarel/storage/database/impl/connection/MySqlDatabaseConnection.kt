@@ -16,7 +16,7 @@ class MySqlDatabaseConnection : AbstractDatabaseConnection() {
         @Property(name = NAME_PROP, value = "mysql", label = "Connection name", description = "Unique identifier")
         const val NAME_PROP = "name"
 
-        @Property(name = HOST_PROP, value = "localhost", label = "Host", description = "Hostname or IP address to server")
+        @Property(name = HOST_PROP, value = "localhost", label = "Host", description = "Server IP address or hostname")
         const val HOST_PROP = "hostProp"
 
         @Property(name = PORT_PROP, value = "3306", label = "Port", description = "Port number")

@@ -12,13 +12,15 @@ import javax.sql.DataSource
         immediate = true,
         configurationFactory = true,
         metatype = true,
-        label = "${JavarelConstants.SERVICE_PREFIX} Storage - Derby Connection"
+        label = "${JavarelConstants.SERVICE_PREFIX} Storage - Derby Embedded Connection"
 )
 @Service
-class DerbyDatabaseConnection : AbstractDatabaseConnection() {
+class DerbyEmbeddedDatabaseConnection : AbstractDatabaseConnection() {
 
     companion object {
-        @Property(name = NAME_PROP, value = "derby", label = "Connection name", description = "Unique identifier")
+        const val NAME_DEFAULT = "derbyEmbedded"
+
+        @Property(name = NAME_PROP, value = NAME_DEFAULT, label = "Connection name", description = "Unique identifier")
         const val NAME_PROP = "name"
 
         @Property(name = USER_PROP, value = "root", label = "Username")

@@ -7,7 +7,7 @@ import org.apache.commons.io.IOCase
 import org.objectweb.asm.ClassReader
 import org.osgi.framework.Bundle
 
-abstract class ComponentScanBundleFilter : BundleFilter {
+class ComponentScanBundleFilter(val annotations: Set<Class<out Annotation>>) : BundleFilter {
 
     companion object {
         const val BUNDLE_HEADER = "Component-Scan"
@@ -33,5 +33,4 @@ abstract class ComponentScanBundleFilter : BundleFilter {
         return FilenameUtils.wildcardMatch(ClassUtils.toClassName(classReader), getHeader(bundle), IOCase.INSENSITIVE)
     }
 
-    abstract val annotations: Set<Class<out Annotation>>
 }
