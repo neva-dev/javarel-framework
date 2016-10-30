@@ -82,6 +82,8 @@ class MultiRepositoryAdmin : RepositoryAdmin, BundleWatcher {
         val morphia = Morphia(mapper, classes)
         val dataStore = morphia.createDatastore(connection.client, connection.dbName)
 
+        dataStore.ensureIndexes()
+
         return ConnectedRepository(connection, dataStore)
     }
 

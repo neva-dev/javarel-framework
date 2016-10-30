@@ -7,6 +7,7 @@ import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
 import com.neva.javarel.security.auth.api.Guard
 import com.neva.javarel.storage.database.api.DatabaseAdmin
+import com.neva.javarel.storage.repository.api.RepositoryAdmin
 import javax.inject.Inject
 
 abstract class Controller {
@@ -15,7 +16,10 @@ abstract class Controller {
     protected lateinit var guard: Guard
 
     @Osgi
-    protected lateinit var db: DatabaseAdmin
+    protected lateinit var dbAdmin: DatabaseAdmin
+
+    @Osgi
+    protected lateinit var repoAdmin: RepositoryAdmin
 
     @Osgi
     protected lateinit var urlGenerator: UrlGenerator
