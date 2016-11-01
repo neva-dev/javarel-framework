@@ -40,7 +40,7 @@ class BundleResourceProvider : ResourceProvider {
 
         var resource: Resource? = null
         if (url != null) {
-            resource = UrlResource(resolver, descriptor, url)
+            resource = BundleResource(resolver, descriptor, url)
         }
 
         return resource
