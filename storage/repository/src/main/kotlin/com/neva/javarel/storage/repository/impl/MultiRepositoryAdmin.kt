@@ -49,11 +49,11 @@ class MultiRepositoryAdmin : RepositoryAdmin, BundleWatcher {
         this.props = props
     }
 
-    private val nameDefault: String
+    override val connectionDefault: String
         get() = props[NAME_DEFAULT_PROP] as String
 
     override fun repository(): Repository {
-        return repository(nameDefault)
+        return repository(connectionDefault)
     }
 
     override fun repository(connectionName: String): Repository {

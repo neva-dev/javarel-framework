@@ -5,6 +5,11 @@ import javax.persistence.EntityManager
 interface DatabaseAdmin {
 
     /**
+     * Name of default connection
+     */
+    val connectionDefault : String
+
+    /**
      * Select default database
      */
     fun database(): Database

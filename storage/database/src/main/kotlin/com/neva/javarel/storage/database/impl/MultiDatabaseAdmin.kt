@@ -64,11 +64,11 @@ class MultiDatabaseAdmin : DatabaseAdmin, BundleWatcher {
         this.props = props
     }
 
-    private val nameDefault: String
+    override val connectionDefault: String
         get() = props[NAME_DEFAULT_PROP] as String
 
     override fun database(): Database {
-        return database(nameDefault)
+        return database(connectionDefault)
     }
 
     @Synchronized

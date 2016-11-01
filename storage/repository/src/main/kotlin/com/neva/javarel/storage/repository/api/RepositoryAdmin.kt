@@ -3,6 +3,11 @@ package com.neva.javarel.storage.repository.api
 interface RepositoryAdmin {
 
     /**
+     * Name of default connection
+     */
+    val connectionDefault: String
+
+    /**
      * Select default repository
      */
     fun repository(): Repository
