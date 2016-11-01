@@ -3,7 +3,7 @@
 Modular - [OSGi](https://www.osgi.org) based, written in [Kotlin](https://kotlinlang.org), MVC framework for web artisans from Java community.
 Inspired by [Laravel](https://laravel.com) Framework.
 
-Project assumptions:
+**Project assumptions:**
 
 * beautiful code
 * modern technologies
@@ -14,6 +14,16 @@ Project assumptions:
 * data layer abstraction
 * multiple SQL and NO-SQL storages
 * multiple template engines
+
+**Integrated technologies**
+
+| Category | Implementation | API |
+|---|---|---|
+| REST | [Glassfish Jersey](https://jersey.java.net) | JAX-RS, JAX-WS |
+| SQL | [Apache OpenJPA](http://openjpa.apache.org) | JPA |
+| noSQL | [MongoDB](https://www.mongodb.com), [Morphia](https://mongodb.github.io/morphia) | |
+| Job scheduling | [Quartz](http://www.quartz-scheduler.org) | |
+| Templating | [Pebble](http://www.mitchellbosecke.com/pebble), [Handlebars](https://jknack.github.io/handlebars.java) | |
 
 ## Documentation
 

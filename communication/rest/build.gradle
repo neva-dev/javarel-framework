@@ -22,8 +22,10 @@ dependencies {
     compile project(':foundation')
 
     osgiBundle 'org.apache.felix:org.apache.felix.http.bundle:2.3.2'
-    osgiBundle 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.23.2'
-    osgiBundle 'org.glassfish.jersey.core:jersey-server:2.23.2'
-    osgiBundle 'org.glassfish.jersey.media:jersey-media-json-jackson:2.23.2'
-    osgiBundle 'org.glassfish.jersey.media:jersey-media-jaxb:2.23.2'
+
+    osgiBundle 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.24'
+    osgiBundle 'org.glassfish.jersey.core:jersey-server:2.24'
+    osgiBundle 'org.glassfish.jersey.media:jersey-media-json-jackson:2.24'
+    osgiBundle 'org.glassfish.jersey.media:jersey-media-jaxb:2.24'
+    osgiBundle 'org.glassfish.jersey.media:jersey-media-multipart:2.24'
 }
