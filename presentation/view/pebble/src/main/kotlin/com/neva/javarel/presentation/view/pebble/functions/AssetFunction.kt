@@ -1,24 +1,23 @@
 package com.neva.javarel.presentation.view.pebble.functions
 
 import com.neva.javarel.communication.rest.api.UrlGenerator
+import com.neva.javarel.presentation.asset.api.AssetPath
 import com.neva.javarel.presentation.view.api.ViewException
-import com.neva.javarel.resource.api.ResourceMapper
 
 class AssetFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
 
     companion object {
-        val ROUTE_NAME = "asset"
-        val PATH_PARAM = "path"
+        val URI_PARAM = "uri"
         val PARAMS_PARAM = "params"
     }
 
     override fun getArgumentNames(): MutableList<String> {
-        return mutableListOf(PATH_PARAM, PARAMS_PARAM)
+        return mutableListOf(URI_PARAM, PARAMS_PARAM)
     }
 
     override fun execute(args: MutableMap<String, Any>): Any {
-        val path = if (args.containsKey(PATH_PARAM)) {
-            args.get(PATH_PARAM) as String
+        val uri = if (args.containsKey(URI_PARAM)) {
+            args.get(URI_PARAM) as String
         } else if (args.size == 1) {
             args.entries.first().value as String
         } else {
@@ -26,9 +25,8 @@ class AssetFunction(val urlGenerator: UrlGenerator) : BaseFunction() {
         }
 
         val params = FunctionUtils.copyParams(PARAMS_PARAM, args)
-        params.put(PATH_PARAM, ResourceMapper.uriToPath(path))
 
-        return urlGenerator.name(ROUTE_NAME, params)
+        return AssetPath(urlGenerator).generate(uri, params)
     }
 
 }

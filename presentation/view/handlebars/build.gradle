@@ -17,6 +17,7 @@ jar {
     dependencies {
         compile project(':resource')
         compile project(':presentation:view')
+        compile project(':presentation:asset')
         compile project(':communication:rest')
 
         osgiBundle 'com.github.jknack:handlebars:4.0.6', {

@@ -1,6 +1,7 @@
 package com.neva.javarel.storage.repository.api.repository
 
 import com.neva.javarel.storage.repository.api.Repository
+import org.bson.types.ObjectId
 import org.mongodb.morphia.Key
 import org.mongodb.morphia.query.Query
 import kotlin.reflect.KClass
@@ -30,6 +31,19 @@ abstract class DomainRepository<T : Any>(protected val base: Repository, protect
 
     open protected fun lookup(entity: T) {
         // use file storage to post construct entity
+    }
+
+    fun find(id: String): T? {
+        val entity = base.dataStore.get<T, ObjectId>(domainClass.java, ObjectId(id))
+        if (entity != null) {
+            lookup(entity)
+        }
+
+        return entity
+    }
+
+    fun delete(entity: T) {
+        base.dataStore.delete(entity)
     }
 
 }
