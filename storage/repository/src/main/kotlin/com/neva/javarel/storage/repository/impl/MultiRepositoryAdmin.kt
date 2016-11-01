@@ -52,13 +52,6 @@ class MultiRepositoryAdmin : RepositoryAdmin, BundleWatcher {
     private val nameDefault: String
         get() = props[NAME_DEFAULT_PROP] as String
 
-    private val mapper: Mapper by lazy {
-        val mapper = Mapper()
-        mapper.options.objectFactory = BundleObjectFactory(bundleContext)
-
-        mapper
-    }
-
     override fun repository(): Repository {
         return repository(nameDefault)
     }
@@ -79,6 +72,9 @@ class MultiRepositoryAdmin : RepositoryAdmin, BundleWatcher {
 
     private fun connect(connection: RepositoryConnection): Repository {
         val classes = bundleScanner.scan(ENTITY_FILTER)
+        val mapper = Mapper()
+        mapper.options.objectFactory = EntityObjectFactory(classes)
+
         val morphia = Morphia(mapper, classes)
         val dataStore = morphia.createDatastore(connection.client, connection.dbName)
 
