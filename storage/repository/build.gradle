@@ -18,6 +18,7 @@ jar {
 
 dependencies {
     compile project(':foundation')
+    compile project(':resource')
 
     osgiBundle 'org.mongodb.morphia:morphia:1.2.1', { transitive = false }
     osgiBundle group: 'org.apache.servicemix.bundles', name: 'org.apache.servicemix.bundles.cglib', version: '3.2.4_1'

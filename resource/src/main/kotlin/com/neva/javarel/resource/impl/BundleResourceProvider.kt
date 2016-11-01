@@ -16,12 +16,13 @@ import org.osgi.framework.BundleContext
 class BundleResourceProvider : ResourceProvider {
 
     companion object {
+        val PROTOCOL = "bundle"
         val NAMESPACE_HEADER_NAME = "Resource-Namespace"
     }
 
-    private val foundBundles = Maps.newConcurrentMap<String, Bundle>()
+    private val bundlesPerNamespace = Maps.newConcurrentMap<String, Bundle>()
 
-    private var context: BundleContext? = null
+    private lateinit var context: BundleContext
 
     @Activate
     protected fun start(context: BundleContext) {
@@ -29,7 +30,7 @@ class BundleResourceProvider : ResourceProvider {
     }
 
     override fun handles(descriptor: ResourceDescriptor): Boolean {
-        return findBundle(descriptor) != null
+        return descriptor.protocol == PROTOCOL
     }
 
     override fun provide(resolver: ResourceResolver, descriptor: ResourceDescriptor): Resource? {
@@ -48,16 +49,9 @@ class BundleResourceProvider : ResourceProvider {
     private fun findBundle(descriptor: ResourceDescriptor): Bundle? {
         val namespace = getResourceNamespace(descriptor)
 
-        if (!foundBundles.containsKey(namespace)) {
-            for (bundle in context!!.bundles) {
-                if (namespace.equals(bundle.headers.get(NAMESPACE_HEADER_NAME))) {
-                    foundBundles.put(namespace, bundle)
-                    break
-                }
-            }
-        }
-
-        return foundBundles[namespace]
+        return bundlesPerNamespace.getOrPut(namespace, {
+            context.bundles.find { bundle -> namespace == bundle.headers.get(NAMESPACE_HEADER_NAME) }
+        })
     }
 
     private fun getResourcePath(descriptor: ResourceDescriptor) = descriptor.parts.subList(1, descriptor.parts.size).joinToString("/")
