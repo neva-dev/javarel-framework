@@ -1,10 +1,10 @@
-package com.neva.javarel.storage.repository.impl
+package com.neva.javarel.storage.store.impl
 
 import com.mongodb.MongoClient
 import com.mongodb.MongoCredential
 import com.mongodb.ServerAddress
 import com.neva.javarel.foundation.api.JavarelConstants
-import com.neva.javarel.storage.repository.api.RepositoryConnection
+import com.neva.javarel.storage.store.api.StoreConnection
 import org.apache.felix.scr.annotations.Activate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
@@ -14,10 +14,10 @@ import org.apache.felix.scr.annotations.Service
         immediate = true,
         configurationFactory = true,
         metatype = true,
-        label = "${JavarelConstants.SERVICE_PREFIX} Storage - Repository Connection"
+        label = "${JavarelConstants.SERVICE_PREFIX} Storage - Store Connection"
 )
 @Service
-class MultiRepositoryConnection : RepositoryConnection {
+class MultiStoreConnection : StoreConnection {
 
     companion object {
         const val NAME_DEFAULT = "default"

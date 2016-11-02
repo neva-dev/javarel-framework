@@ -1,16 +1,16 @@
-package com.neva.javarel.storage.repository.impl
+package com.neva.javarel.storage.store.impl
 
 import com.mongodb.DB
 import com.mongodb.gridfs.GridFS
-import com.neva.javarel.storage.repository.api.Repository
-import com.neva.javarel.storage.repository.api.RepositoryConnection
+import com.neva.javarel.storage.store.api.Store
+import com.neva.javarel.storage.store.api.StoreConnection
 import org.mongodb.morphia.Datastore
 
-class ConnectedRepository(
-        override val connection: RepositoryConnection,
+class ConnectedStore(
+        override val connection: StoreConnection,
         override val dataStore: Datastore,
         override val db: DB = DB(dataStore.mongo, connection.dbName)
-) : Repository {
+) : Store {
 
     private val fileStores = mutableMapOf<String, GridFS>()
 

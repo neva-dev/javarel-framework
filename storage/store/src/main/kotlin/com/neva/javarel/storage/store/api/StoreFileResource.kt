@@ -1,13 +1,13 @@
-package com.neva.javarel.storage.repository.api
+package com.neva.javarel.storage.store.api
 
 import com.mongodb.gridfs.GridFSDBFile
 import com.neva.javarel.resource.api.AdaptableResource
 import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.resource.api.ResourceResolver
-import com.neva.javarel.storage.repository.impl.RepositoryFileResourceProvider
+import com.neva.javarel.storage.store.impl.StoreFileResourceProvider
 import java.io.InputStream
 
-class RepositoryFileResource(
+class StoreFileResource(
         val file: GridFSDBFile,
         override val descriptor: ResourceDescriptor,
         override val resolver: ResourceResolver
@@ -15,7 +15,7 @@ class RepositoryFileResource(
 
     companion object {
         fun uri(connection: String, fileStore: String, fileId: String): String {
-            return "${RepositoryFileResourceProvider.PROTOCOL}://$connection/$fileStore/$fileId"
+            return "${StoreFileResourceProvider.PROTOCOL}://$connection/$fileStore/$fileId"
         }
     }
 

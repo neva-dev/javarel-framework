@@ -26,6 +26,7 @@ dependencies {
     osgiBundle project(':presentation:view:pebble')
     osgiBundle project(':presentation:view:handlebars')
     osgiBundle project(':storage:database')
+    osgiBundle project(':storage:store')
     osgiBundle project(':storage:repository')
     osgiBundle project(':processing:scheduler')
     osgiBundle project(':security:auth')

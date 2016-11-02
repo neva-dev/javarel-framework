@@ -1,4 +1,4 @@
-package com.neva.javarel.storage.repository.impl
+package com.neva.javarel.storage.store.impl
 
 import com.mongodb.DBObject
 import org.mongodb.morphia.annotations.ConstructorArgs

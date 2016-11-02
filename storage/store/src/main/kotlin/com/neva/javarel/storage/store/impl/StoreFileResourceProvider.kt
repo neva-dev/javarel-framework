@@ -1,12 +1,12 @@
-package com.neva.javarel.storage.repository.impl
+package com.neva.javarel.storage.store.impl
 
 import com.mongodb.gridfs.GridFS
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.resource.api.ResourceProvider
 import com.neva.javarel.resource.api.ResourceResolver
-import com.neva.javarel.storage.repository.api.RepositoryAdmin
-import com.neva.javarel.storage.repository.api.RepositoryFileResource
+import com.neva.javarel.storage.store.api.StoreAdmin
+import com.neva.javarel.storage.store.api.StoreFileResource
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.Service
@@ -14,13 +14,13 @@ import org.bson.types.ObjectId
 
 @Component(immediate = true)
 @Service
-class RepositoryFileResourceProvider : ResourceProvider {
+class StoreFileResourceProvider : ResourceProvider {
 
     @Reference
-    private lateinit var repoAdmin: RepositoryAdmin
+    private lateinit var repoAdmin: StoreAdmin
 
     companion object {
-        val PROTOCOL = "repository-file"
+        val PROTOCOL = "store-file"
     }
 
     override fun handles(descriptor: ResourceDescriptor): Boolean {
@@ -30,11 +30,11 @@ class RepositoryFileResourceProvider : ResourceProvider {
     override fun provide(resolver: ResourceResolver, descriptor: ResourceDescriptor): Resource? {
         var result: Resource? = null
 
-        val file = repoAdmin.repository(getConnectionName(descriptor))
+        val file = repoAdmin.store(getConnectionName(descriptor))
                 .fileStore(getFileStore(descriptor))
                 .findOne(ObjectId(getFileId(descriptor)))
         if (file != null) {
-            result = RepositoryFileResource(file, descriptor, resolver)
+            result = StoreFileResource(file, descriptor, resolver)
         }
 
         return result

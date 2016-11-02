@@ -1,8 +1,8 @@
-package com.neva.javarel.storage.repository.api
+package com.neva.javarel.storage.store.api
 
 import com.mongodb.MongoClient
 
-interface RepositoryConnection {
+interface StoreConnection {
 
     val name : String
 

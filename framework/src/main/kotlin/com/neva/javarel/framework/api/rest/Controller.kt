@@ -7,7 +7,7 @@ import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
 import com.neva.javarel.security.auth.api.Guard
 import com.neva.javarel.storage.database.api.DatabaseAdmin
-import com.neva.javarel.storage.repository.api.RepositoryAdmin
+import com.neva.javarel.storage.store.api.StoreAdmin
 import javax.inject.Inject
 
 abstract class Controller {
@@ -19,7 +19,7 @@ abstract class Controller {
     protected lateinit var dbAdmin: DatabaseAdmin
 
     @Osgi
-    protected lateinit var repoAdmin: RepositoryAdmin
+    protected lateinit var storeAdmin: StoreAdmin
 
     @Osgi
     protected lateinit var urlGenerator: UrlGenerator

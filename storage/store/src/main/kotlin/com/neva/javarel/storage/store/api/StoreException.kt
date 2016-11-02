@@ -1,6 +1,6 @@
-package com.neva.javarel.storage.repository.api
+package com.neva.javarel.storage.store.api
 
-open class RepositoryException : Exception {
+open class StoreException : Exception {
 
     constructor(message: String) : super(message)
 

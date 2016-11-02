@@ -1,12 +1,12 @@
-package com.neva.javarel.storage.repository.api
+package com.neva.javarel.storage.store.api
 
 import com.mongodb.DB
 import com.mongodb.gridfs.GridFS
 import org.mongodb.morphia.Datastore
 
-interface Repository {
+interface Store {
 
-    val connection: RepositoryConnection
+    val connection: StoreConnection
 
     val db: DB
 
