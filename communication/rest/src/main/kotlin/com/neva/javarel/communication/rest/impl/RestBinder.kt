@@ -2,7 +2,7 @@ package com.neva.javarel.communication.rest.impl
 
 import com.neva.javarel.communication.rest.api.AbstractBinder
 import com.neva.javarel.communication.rest.api.Binder
-import com.neva.javarel.communication.rest.api.Osgi
+import com.neva.javarel.foundation.api.injection.Osgi
 import org.glassfish.hk2.api.InjectionResolver
 import org.glassfish.hk2.api.TypeLiteral
 

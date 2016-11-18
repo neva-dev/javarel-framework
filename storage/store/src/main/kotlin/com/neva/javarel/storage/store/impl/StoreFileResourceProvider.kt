@@ -19,12 +19,8 @@ class StoreFileResourceProvider : ResourceProvider {
     @Reference
     private lateinit var repoAdmin: StoreAdmin
 
-    companion object {
-        val PROTOCOL = "store-file"
-    }
-
     override fun handles(descriptor: ResourceDescriptor): Boolean {
-        return descriptor.protocol == PROTOCOL
+        return descriptor.protocol == StoreFileResource.PROTOCOL
     }
 
     override fun provide(resolver: ResourceResolver, descriptor: ResourceDescriptor): Resource? {

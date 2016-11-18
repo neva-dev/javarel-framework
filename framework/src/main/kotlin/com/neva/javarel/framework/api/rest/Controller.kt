@@ -1,7 +1,7 @@
 package com.neva.javarel.framework.api.rest
 
-import com.neva.javarel.communication.rest.api.Osgi
 import com.neva.javarel.communication.rest.api.UrlGenerator
+import com.neva.javarel.foundation.api.injection.Osgi
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver

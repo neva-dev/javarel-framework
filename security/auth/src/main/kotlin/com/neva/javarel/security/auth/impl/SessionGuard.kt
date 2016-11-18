@@ -1,6 +1,6 @@
 package com.neva.javarel.security.auth.impl
 
-import com.neva.javarel.communication.rest.api.Osgi
+import com.neva.javarel.foundation.api.injection.Osgi
 import com.neva.javarel.security.auth.api.*
 import javax.inject.Inject
 

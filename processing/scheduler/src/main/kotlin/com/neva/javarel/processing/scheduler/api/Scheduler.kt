@@ -2,8 +2,8 @@ package com.neva.javarel.processing.scheduler.api
 
 import org.quartz.Scheduler
 
-interface TaskScheduler {
+interface Scheduler {
 
-    fun getScheduler() : Scheduler
+    val scheduler : Scheduler
 
 }

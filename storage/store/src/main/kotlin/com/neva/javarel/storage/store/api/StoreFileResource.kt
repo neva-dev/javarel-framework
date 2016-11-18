@@ -4,7 +4,6 @@ import com.mongodb.gridfs.GridFSDBFile
 import com.neva.javarel.resource.api.AdaptableResource
 import com.neva.javarel.resource.api.ResourceDescriptor
 import com.neva.javarel.resource.api.ResourceResolver
-import com.neva.javarel.storage.store.impl.StoreFileResourceProvider
 import java.io.InputStream
 
 class StoreFileResource(
@@ -14,8 +13,10 @@ class StoreFileResource(
 ) : AdaptableResource() {
 
     companion object {
+        const val PROTOCOL = "store-file"
+
         fun uri(connection: String, fileStore: String, fileId: String): String {
-            return "${StoreFileResourceProvider.PROTOCOL}://$connection/$fileStore/$fileId"
+            return "${PROTOCOL}://$connection/$fileStore/$fileId"
         }
     }
 
