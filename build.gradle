@@ -41,8 +41,10 @@ osgiContainer {
 
 subprojects { subProject ->
 
+    def baseName = "javarel-${subProject.path.substring(1).replace(':', '.')}"
+
     plugins.withId 'kotlin', {
-        jar.baseName = "javarel-${subProject.path.substring(1).replace(':', '-')}"
+        jar.baseName = baseName
 
         sourceCompatibility = 1.7
         targetCompatibility = 1.7
@@ -75,7 +77,7 @@ subprojects { subProject ->
             manifest {
                 name subProject.description
                 instruction 'Bundle-Category', 'javarel'
-                instructionReplace 'Bundle-SymbolicName', "${subProject.group}.${subProject.path.substring(1).replaceAll(":", ".")}"
+                instructionReplace 'Bundle-SymbolicName', baseName
             }
         }
     }
