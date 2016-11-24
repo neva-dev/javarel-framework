@@ -2,6 +2,7 @@ package com.neva.javarel.framework.api.rest
 
 import com.neva.javarel.communication.rest.api.UrlGenerator
 import com.neva.javarel.foundation.api.injection.Osgi
+import com.neva.javarel.framework.api.structure.App
 import com.neva.javarel.presentation.asset.api.Asset
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.resource.api.ResourceResolver
@@ -14,6 +15,9 @@ abstract class Controller {
 
     @Inject
     protected lateinit var guard: Guard
+
+    @Osgi
+    protected lateinit var app: App
 
     @Osgi
     protected lateinit var dbAdmin: DatabaseAdmin
@@ -37,7 +41,8 @@ abstract class Controller {
 
     protected val context: Map<String, Any> by lazy {
         mapOf(
-                "guard" to guard
+                "guard" to guard,
+                "app" to app
         )
     }
 

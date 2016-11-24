@@ -1,6 +1,5 @@
 package com.neva.javarel.framework.impl.structure
 
-import com.google.common.collect.Sets
 import com.neva.javarel.framework.api.structure.App
 import com.neva.javarel.framework.api.structure.Module
 import org.apache.felix.scr.annotations.*
@@ -16,10 +15,10 @@ class MultiModuleApp : App {
             policy = ReferencePolicy.DYNAMIC,
             policyOption = ReferencePolicyOption.GREEDY
     )
-    private val allModules = Sets.newConcurrentHashSet<Module>(TreeSet<Module>({ m1, m2 -> m1.priority.compareTo(m2.priority) }))
+    private val allModules = Collections.synchronizedSortedSet(TreeSet<Module>({ m1, m2 -> m1.priority.compareTo(m2.priority) }))
 
-    override val modules: Set<Module>
-        get() = allModules.toSet()
+    override val modules: List<Module>
+        get() = allModules.toList()
 
     protected fun bindModule(module: Module) {
         allModules.add(module)
