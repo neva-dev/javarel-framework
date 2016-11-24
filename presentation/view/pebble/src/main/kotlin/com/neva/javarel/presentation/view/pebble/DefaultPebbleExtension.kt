@@ -4,10 +4,8 @@ import com.mitchellbosecke.pebble.PebbleEngine
 import com.mitchellbosecke.pebble.extension.AbstractExtension
 import com.mitchellbosecke.pebble.extension.Function
 import com.neva.javarel.communication.rest.api.UrlGenerator
-import com.neva.javarel.presentation.view.pebble.functions.AssetFunction
-import com.neva.javarel.presentation.view.pebble.functions.NowFunction
-import com.neva.javarel.presentation.view.pebble.functions.RenderFunction
-import com.neva.javarel.presentation.view.pebble.functions.RouteFunction
+import com.neva.javarel.foundation.api.osgi.OsgiUtils
+import com.neva.javarel.presentation.view.pebble.functions.*
 import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Reference
@@ -27,6 +25,7 @@ class DefaultPebbleExtension : PebbleExtension {
         engineBuilder.extension(object : AbstractExtension() {
             override fun getFunctions(): MutableMap<String, Function> {
                 return mutableMapOf(
+                        "service" to ServiceFunction(OsgiUtils()),
                         "asset" to AssetFunction(urlGenerator),
                         "render" to RenderFunction(resourceResolver),
                         "route" to RouteFunction(urlGenerator),

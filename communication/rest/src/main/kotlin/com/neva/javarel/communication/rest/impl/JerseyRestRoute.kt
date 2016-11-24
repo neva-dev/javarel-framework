@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils
 import org.glassfish.jersey.server.model.Parameter
 import org.glassfish.jersey.server.model.Resource
 import org.glassfish.jersey.server.model.ResourceMethod
+import java.util.*
 
 class JerseyRestRoute(
         @Transient private val resource: Resource,
@@ -32,15 +33,15 @@ class JerseyRestRoute(
         }
     }
 
-    override val name: String?
+    override val names: List<String>
         get() {
-            var name: String? = null
+            var result: List<String> = Collections.emptyList()
             val routeAnnotation = methodObj.invocable.handlingMethod.declaredAnnotations.find { it is Route }
             if (routeAnnotation != null) {
-                name = (routeAnnotation as Route).name
+                result = (routeAnnotation as Route).names.toList()
             }
 
-            return name
+            return result
         }
 
     override val method: String
@@ -85,7 +86,7 @@ class JerseyRestRoute(
     }
 
     override fun toString(): String {
-        return "REST Route (path=$path, method=$method, action=$action, name=$name)"
+        return "REST Route (path=$path, method=$method, action=$action, names=$names)"
     }
 
 }

@@ -8,7 +8,7 @@ interface RestRoute {
 
     val action: String
 
-    val name: String?
+    val names: List<String>
 
     val className: String
 

@@ -43,7 +43,7 @@ class PebbleViewEngine : ViewEngine {
 
     private lateinit var props: Map<String, Any>
 
-    @Reference
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY)
     private lateinit var resourceResolver: ResourceResolver
 
     private var coreCached: PebbleEngine? = null

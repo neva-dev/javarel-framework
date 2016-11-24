@@ -9,4 +9,4 @@ import javax.inject.Qualifier
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class Route(val name: String)
+annotation class Route(val names: Array<String>)

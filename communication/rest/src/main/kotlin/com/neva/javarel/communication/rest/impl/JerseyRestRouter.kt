@@ -10,6 +10,7 @@ import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Service
 import org.glassfish.jersey.server.model.Resource
 import org.osgi.framework.BundleContext
+import java.util.*
 
 @Component(immediate = true)
 @Service
@@ -23,29 +24,26 @@ class JerseyRestRouter : RestRouter {
 
     private var components = emptySet<Class<*>>()
 
+    private var allRoutes: Set<RestRoute> = Collections.emptySet()
+
     override lateinit var aliases: Map<String, String>
 
     override fun configure(components: Set<Class<*>>) {
         this.components = components
+        this.allRoutes = components.fold(mutableSetOf<RestRoute>(), { results, component ->
+            val resource = Resource.from(component)
+            if (resource != null) {
+                resource.childResources.forEach { childResource ->
+                    childResource.resourceMethods.forEach { resourceMethod ->
+                        results.add(JerseyRestRoute(resource, childResource, resourceMethod))
+                    }
+                }
+            }; results
+        })
     }
 
     override val routes: Set<RestRoute>
-        get() {
-            val routes = mutableSetOf<RestRoute>()
-
-            components.forEach { component ->
-                val resource = Resource.from(component)
-                if (resource != null) {
-                    resource.childResources.forEach { childResource ->
-                        childResource.resourceMethods.forEach { resourceMethod ->
-                            routes.add(JerseyRestRoute(resource, childResource, resourceMethod))
-                        }
-                    }
-                }
-            }
-
-            return routes
-        }
+        get() = allRoutes
 
     @Activate
     protected fun start(context: BundleContext) {
@@ -53,13 +51,9 @@ class JerseyRestRouter : RestRouter {
     }
 
     private fun collectAliases(context: BundleContext): MutableMap<String, String> {
-        val result = mutableMapOf<String, String>()
-        for (bundle in context.bundles) {
-            val bundleAliases = ALIAS_SPLITTER.split(StringUtils.trimToEmpty(bundle.headers.get(ALIAS_HEADER_NAME)))
-            result.putAll(bundleAliases)
-        }
-
-        return result
+        return context.bundles.fold(mutableMapOf<String, String>(), { aliases, bundle ->
+            aliases.putAll(ALIAS_SPLITTER.split(StringUtils.trimToEmpty(bundle.headers.get(ALIAS_HEADER_NAME)))); aliases
+        })
     }
 
     override fun routeByAction(action: String): RestRoute {
@@ -67,17 +61,11 @@ class JerseyRestRouter : RestRouter {
     }
 
     override fun routeByName(name: String): RestRoute {
-        return routeBy({ it.name == expandAlias(name) }, "Route cannot be found by name '$name'")
+        return routeBy({ it.names.contains(name) }, "Route cannot be found by name '$name'")
     }
 
     private fun routeBy(predicate: (RestRoute) -> Boolean, notFoundMessage: String): RestRoute {
-        routes.forEach { route ->
-            if (predicate(route)) {
-                return route;
-            }
-        }
-
-        throw RestException(notFoundMessage)
+        return routes.firstOrNull(predicate) ?: throw RestException(notFoundMessage)
     }
 
     private fun expandAlias(value: String): String {

@@ -1,17 +1,20 @@
 package com.neva.javarel.presentation.view.impl
 
 import com.google.common.collect.Sets
+import com.neva.javarel.foundation.api.adapting.Adapter
 import com.neva.javarel.presentation.view.api.View
 import com.neva.javarel.presentation.view.api.ViewEngine
+import com.neva.javarel.presentation.view.api.ViewManager
 import com.neva.javarel.resource.api.Resource
 import com.neva.javarel.resource.api.ResourceAdapter
 import com.neva.javarel.resource.api.ResourceException
+import com.neva.javarel.resource.api.ResourceResolver
 import org.apache.felix.scr.annotations.*
 import kotlin.reflect.KClass
 
 @Component(immediate = true)
-@Service
-class ViewResourceAdapter : ResourceAdapter<View>() {
+@Service(ViewManager::class, Adapter::class)
+class MultiViewManager : ViewManager, ResourceAdapter<View>() {
 
     @Reference(
             referenceInterface = ViewEngine::class,
@@ -20,6 +23,9 @@ class ViewResourceAdapter : ResourceAdapter<View>() {
             policyOption = ReferencePolicyOption.GREEDY
     )
     private val engines = Sets.newConcurrentHashSet<ViewEngine>()
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY)
+    private lateinit var resourceResolver: ResourceResolver
 
     override val targetType: KClass<View>
         get() = View::class
@@ -32,6 +38,18 @@ class ViewResourceAdapter : ResourceAdapter<View>() {
         }
 
         throw ResourceException("Cannot find a view engine for resource: '${adaptable.descriptor}'")
+    }
+
+    override fun make(resource: Resource): View {
+        return adapt(resource)
+    }
+
+    override fun make(resourceUri: String): View {
+        return make(resourceResolver.findOrFail(resourceUri))
+    }
+
+    override fun make(template: String, extension: String): View {
+        return make(ViewTemplateResource(template, extension, resourceResolver))
     }
 
     protected fun bindViewEngine(engine: ViewEngine) {
