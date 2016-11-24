@@ -30,7 +30,7 @@ class HandlebarsViewEngine : ViewEngine {
         const val EXTENSION_PROP = "extension"
     }
 
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY)
+    @Reference
     private lateinit var resourceResolver: ResourceResolver
 
     @Reference(

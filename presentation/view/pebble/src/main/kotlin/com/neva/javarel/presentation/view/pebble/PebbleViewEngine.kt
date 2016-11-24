@@ -2,7 +2,6 @@ package com.neva.javarel.presentation.view.pebble
 
 import com.google.common.collect.Sets
 import com.mitchellbosecke.pebble.PebbleEngine
-import com.mitchellbosecke.pebble.extension.Extension
 import com.mitchellbosecke.pebble.loader.Loader
 import com.neva.javarel.foundation.api.JavarelConstants
 import com.neva.javarel.presentation.view.api.View
@@ -43,7 +42,7 @@ class PebbleViewEngine : ViewEngine {
 
     private lateinit var props: Map<String, Any>
 
-    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY)
+    @Reference
     private lateinit var resourceResolver: ResourceResolver
 
     private var coreCached: PebbleEngine? = null
