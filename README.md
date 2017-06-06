@@ -1,5 +1,11 @@
 # Javarel Framework
 
+<br>
+<p align="center">
+  <img src="doc/javarel-logo.png"/>
+</p>
+<br>
+
 Modular - [OSGi](https://www.osgi.org) based, written in [Kotlin](https://kotlinlang.org), MVC framework for web artisans from Java community.
 Inspired by [Laravel](https://laravel.com) Framework.
 
